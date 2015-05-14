@@ -1,0 +1,8 @@
+<!ELEMENT icons (icon)+>
+<!ELEMENT icon EMPTY>
+<!ATTLIST icon
+	name CDATA #REQUIRED
+	texture CDATA #REQUIRED
+	width CDATA #REQUIRED
+	height CDATA #REQUIRED
+>

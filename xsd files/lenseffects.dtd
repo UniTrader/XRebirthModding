@@ -1,0 +1,31 @@
+<!ELEMENT lenseffects (lenseffect*)>
+<!ELEMENT lenseffect (parameters elements)>
+<!ELEMENT elements (element*)>
+<!ELEMENT element EMPTY>
+<!ATTLIST lenseffect 
+  name ID #REQUIRED
+  >
+<!ATTLIST parameters
+  scale NMTOKEN "100" 
+  lengthscale NMTOKEN "100" 
+  distancescale NMTOKEN "linear" 
+  hueshift NMTOKEN "0" 
+  sizeinfluence NMTOKEN "none"
+  >
+<!ATTLIST element
+  name ID #REQUIRED
+  part NMTOKEN #REQUIRED
+  position NMTOKEN #REQUIRED
+  minsize NMTOKEN #REQUIRED
+  maxsize NMTOKEN #REQUIRED
+  inviewvariation NMTOKEN "0"
+  inviewduration NMTOKEN "0"
+  blendorder NMTOKEN "behind"
+  glow NMTOKEN "0"
+  shinebehind NMTOKEN "0"
+  distancescale NMTOKEN "linear"
+  rotation NMTOKEN "0"
+  fadeangle NMTOKEN "0"
+  r2dtype NMTOKEN "static"
+  active NMTOKEN "1"
+  >

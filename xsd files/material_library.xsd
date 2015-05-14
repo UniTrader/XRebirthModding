@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="blendmodelookup">
+    <xs:restriction base="xs:string">
+      <!-- <xs:enumeration value="undefined" /> -->
+      <!-- <xs:enumeration value="default" /> -->
+      <xs:enumeration value="none" />
+      <xs:enumeration value="wireframe" />
+      <xs:enumeration value="wireframe_noculling" />
+      <xs:enumeration value="twosided" />
+      <xs:enumeration value="alpha1" />
+      <xs:enumeration value="solid_fading" />
+      <xs:enumeration value="alpha1_fading" />
+      <xs:enumeration value="linedraw" />
+      <xs:enumeration value="alpha8" />
+      <xs:enumeration value="prealpha8" />
+      <xs:enumeration value="screen" />
+      <xs:enumeration value="additive" />
+      <xs:enumeration value="additive_ss" />
+      <xs:enumeration value="multiply" />
+      <xs:enumeration value="subtractive" />
+      <xs:enumeration value="srccolor" />
+      <xs:enumeration value="hazeblend" />
+      <xs:enumeration value="alpha8_anark" />
+      <xs:enumeration value="screen_anark" />
+      <xs:enumeration value="multiply_anark" />
+      <xs:enumeration value="overlay_anark" />
+      <xs:enumeration value="bleach_anark" />
+      <xs:enumeration value="ghost_anark" />
+      <xs:enumeration value="saturate_anark" />
+      <xs:enumeration value="screen_glow" />
+      <xs:enumeration value="additive_glow" />
+      <xs:enumeration value="wireframe_overlay" />
+      <xs:enumeration value="alpha8_overlay" />
+      <xs:enumeration value="alpha8_single" />
+      <xs:enumeration value="additive_single" />
+      <xs:enumeration value="distortion" />
+      <xs:enumeration value="hair" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="materiallibrary">
+    <xs:annotation>
+      <xs:documentation>
+        Root element of material_library.xml
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="collection">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="material" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="properties">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="property" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="name" use="required" />
+                              <xs:attribute name="type">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="Float" />
+                                    <xs:enumeration value="BitMap" />
+                                    <xs:enumeration value="Color" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                              <xs:attribute name="value" />
+                              <xs:attribute name="preload" />
+                              <xs:attribute name="r" />
+                              <xs:attribute name="g" />
+                              <xs:attribute name="b" />
+                              <xs:attribute name="a" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="variations" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="areas" minOccurs="0" maxOccurs="1" />
+                  </xs:sequence>
+                  <xs:attribute name="name" use="required">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Name
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                  <xs:attribute name="shader" use="required" />
+                  <xs:attribute name="blendmode" type="blendmodelookup" use="required" />
+                  <xs:attribute name="priority" type="xs:integer" />
+                  <xs:attribute name="preview" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" use="required">
+              <xs:annotation>
+                <xs:documentation>
+                  Name
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+          <xs:key name="material_name">
+            <xs:selector xpath="material" />
+            <xs:field xpath="@name" />
+          </xs:key>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:key name="collection_name">
+      <xs:selector xpath="collection" />
+      <xs:field xpath="@name" />
+    </xs:key>
+  </xs:element>
+
+</xs:schema>

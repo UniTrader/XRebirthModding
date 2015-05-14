@@ -1,0 +1,147 @@
+<!ELEMENT effects (effect*)>
+<!ELEMENT effect (references|elements|propagation|states|gametriggers)*>
+<!ELEMENT references (reference)*>
+<!ELEMENT reference EMPTY>
+<!ELEMENT elements (element|elementset)*>
+<!ELEMENT element ((propagation|force|sound|areadamage)*)>
+<!ELEMENT elementset ((propagation|element)*)>
+<!ELEMENT gametriggers (gametrigger)+>
+<!ELEMENT gametrigger EMPTY>
+<!ELEMENT states (state)+>
+<!ELEMENT state EMPTY>
+<!ELEMENT propagation (start*)>
+<!ELEMENT start EMPTY>
+<!ELEMENT force (linear|rumble)*>
+<!ELEMENT linear (factors*)>
+<!ELEMENT factors EMPTY>
+<!ELEMENT rumble (camera|controller)*>
+<!ELEMENT camera (component*)>
+<!ELEMENT component (amplitude*)>
+<!ELEMENT amplitude (position|rotation|quaternion)*>
+<!ELEMENT controller (high|low)*>
+<!ELEMENT low EMPTY>
+<!ELEMENT high EMPTY>
+<!ELEMENT position EMPTY>
+<!ELEMENT rotation EMPTY>
+<!ELEMENT quaternion EMPTY>
+<!ELEMENT sound EMPTY>
+<!ELEMENT areadamage EMPTY>
+<!ATTLIST reference
+  effect NMTOKEN #REQUIRED
+  delay CDATA #IMPLIED
+  >
+<!ATTLIST effect
+  name ID #REQUIRED
+  alignment CDATA #IMPLIED
+  emitterspace CDATA #IMPLIED
+  timeout CDATA #IMPLIED
+  minscale CDATA #IMPLIED
+  maxscale CDATA #IMPLIED
+  basesize CDATA #IMPLIED
+  forcezonespace CDATA #IMPLIED
+  >
+<!ATTLIST element
+  id CDATA #REQUIRED
+  ref NMTOKEN "none"
+  forkeffect NMTOKEN "none"
+	forklod NMTOKEN "none"
+  forkmaterial NMTOKEN "none"
+  alignment CDATA #IMPLIED
+  emitterspace CDATA #IMPLIED
+  minscale CDATA #IMPLIED
+  maxscale CDATA #IMPLIED
+  basesize CDATA #IMPLIED
+  forcezonespace CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  duration CDATA #IMPLIED
+  fadein CDATA #IMPLIED
+  fadeout CDATA #IMPLIED
+  chance CDATA #IMPLIED
+  >
+<!ATTLIST gametrigger
+  name CDATA #REQUIRED
+  time CDATA #REQUIRED
+  value CDATA #IMPLIED
+  value2 CDATA #IMPLIED
+  >
+<!ATTLIST state
+  name CDATA #IMPLIED
+  time CDATA #REQUIRED
+  >
+<!ATTLIST propagation
+  number CDATA #IMPLIED
+  duration CDATA #IMPLIED
+  timevariance CDATA #IMPLIED
+  timefunction CDATA #IMPLIED
+  directional CDATA #IMPLIED
+  >
+<!ATTLIST start
+  x CDATA #IMPLIED
+  y CDATA #IMPLIED
+  z CDATA #IMPLIED
+  >
+<!ATTLIST force
+  range CDATA #IMPLIED
+  falloff CDATA #IMPLIED
+  reapplydelay CDATA #IMPLIED
+  >
+<!ATTLIST linear
+  attackduration CDATA #IMPLIED
+  sustainduration CDATA #IMPLIED
+  releaseduration CDATA #IMPLIED
+  >
+<!ATTLIST factors
+  x CDATA #IMPLIED
+  y CDATA #IMPLIED
+  z CDATA #IMPLIED
+  >
+<!ATTLIST component
+  frequency CDATA #IMPLIED
+  attackduration CDATA #IMPLIED
+  sustainduration CDATA #IMPLIED
+  releaseduration CDATA #IMPLIED
+  >
+<!ATTLIST amplitude
+  randomize CDATA #IMPLIED
+  >
+<!ATTLIST high
+  amplitude CDATA #IMPLIED
+  attackduration CDATA #IMPLIED
+  sustainduration CDATA #IMPLIED
+  releaseduration CDATA #IMPLIED
+  >
+<!ATTLIST low
+  amplitude CDATA #IMPLIED
+  attackduration CDATA #IMPLIED
+  sustainduration CDATA #IMPLIED
+  releaseduration CDATA #IMPLIED
+  >
+<!ATTLIST position
+  x CDATA #IMPLIED
+  y CDATA #IMPLIED
+  z CDATA #IMPLIED
+  >
+<!ATTLIST rotation
+  pitch CDATA #IMPLIED
+  yaw CDATA #IMPLIED
+  roll CDATA #IMPLIED
+  >
+<!ATTLIST quaternion
+  qx CDATA #IMPLIED
+  qy CDATA #IMPLIED
+  qz CDATA #IMPLIED
+  qw CDATA #IMPLIED
+  >
+<!ATTLIST sound
+  ref CDATA #REQUIRED
+  volume CDATA #IMPLIED
+  distance CDATA #IMPLIED
+  repeat CDATA #IMPLIED
+  flags CDATA #IMPLIED
+  >
+<!ATTLIST areadamage
+  range CDATA #IMPLIED
+  falloff CDATA #IMPLIED
+  duration CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  >

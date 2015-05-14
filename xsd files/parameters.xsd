@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="unitvalue">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]+[\.]?[0-9]*([ ]*(m|km|ms|s|min|h))?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="colorvalue">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0" />
+      <xs:maxInclusive value="255" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="profilelookup">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="flat">
+        <xs:annotation>
+          <xs:documentation>
+            Flat (linear) distribution, default if no profile specified
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="increasing">
+        <xs:annotation>
+          <xs:documentation>
+            Higher numbers are more likely
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="decreasing">
+        <xs:annotation>
+          <xs:documentation>
+            Lower numbers are more likely
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="bell">
+        <xs:annotation>
+          <xs:documentation>
+            Numbers in the middle of the range are more likely
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="inversebell">
+        <xs:annotation>
+          <xs:documentation>
+            Higher and lower numbers are more likely than those in the middle
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:attributeGroup name="random">
+    <xs:attribute name="exact" type="unitvalue">
+      <xs:annotation>
+        <xs:documentation>
+          Exact value (takes priority over min/max/profile/scale)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="min" type="unitvalue">
+      <xs:annotation>
+        <xs:documentation>
+          Minimum random number (ignored if exact is set)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="max" type="unitvalue">
+      <xs:annotation>
+        <xs:documentation>
+          Maximum random number (ignored if exact is set)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="profile" type="profilelookup">
+      <xs:annotation>
+        <xs:documentation>
+          Random number profile (ignored if exact is set)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="scale">
+      <xs:annotation>
+        <xs:documentation>
+          Scale of random number profile (ignored if exact is set or if profile is flat)
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="2" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:simpleType name="locations">
+    <xs:annotation>
+      <xs:documentation>
+        Possible location types. Specify multiple separated by space. Allows all if omitted
+      </xs:documentation>
+    </xs:annotation>
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="infopoint" />
+          <xs:enumeration value="missionoffer" />
+          <xs:enumeration value="platform" />
+          <xs:enumeration value="tradeoffer" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+
+  <xs:complexType name="amount">
+    <xs:attributeGroup ref="random" >
+      <xs:annotation>
+        <xs:documentation>
+          Random amount value.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attributeGroup>
+  </xs:complexType>
+
+  <xs:complexType name="time">
+    <xs:attributeGroup ref="random" >
+      <xs:annotation>
+        <xs:documentation>
+          Random time value.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attributeGroup>
+  </xs:complexType>
+
+  <xs:complexType name="distance">
+    <xs:attributeGroup ref="random">
+      <xs:annotation>
+        <xs:documentation>
+          Maximum distance at which to unlock (default: as defined by globals node)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attributeGroup>
+  </xs:complexType>
+
+  <xs:complexType name="viewangle">
+    <xs:annotation>
+      <xs:documentation>
+        Maximum angle away from crosshair center (horizontal or vertical), in positive degrees (default: 180, i.e. no restriction)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="max">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="1" />
+          <xs:maxInclusive value="180" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="coneratio">
+    <xs:attributeGroup ref="random">
+      <xs:annotation>
+        <xs:documentation>
+          Higher value means centering is more important to get an identified scan result.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attributeGroup>
+  </xs:complexType>
+
+  <xs:simpleType name="chance">
+    <xs:annotation>
+      <xs:documentation>
+        Chance value, defaults to 100.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1" />
+      <xs:maxInclusive value="100" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:attributeGroup name="highlightcolour">
+    <xs:annotation>
+      <xs:documentation>
+        Control highlighting options
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="r" type="colorvalue">
+      <xs:annotation>
+        <xs:documentation>
+          Red color value (0-255, default: 0)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="g" type="colorvalue">
+      <xs:annotation>
+        <xs:documentation>
+          Green color value (0-255, default: 0)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="b" type="colorvalue">
+      <xs:annotation>
+        <xs:documentation>
+          Blue color value (0-255, default: 0)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="a" type="colorvalue">
+      <xs:annotation>
+        <xs:documentation>
+          Alpha value (0-255, default: 255)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="duration" type="xs:float" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Duration of the highlight effect
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="frequency" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          Frequency of oscillation effect (default: 0, no oscillation)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="minalpha">
+      <xs:annotation>
+        <xs:documentation>
+          Minimum alpha value for oscillation effect (0.0-1.0, default: 0)
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:float">
+          <xs:minInclusive value="0" />
+          <xs:maxInclusive value="1" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="maxalpha">
+      <xs:annotation>
+        <xs:documentation>
+          Maximum alpha value for oscillation effect (0.0-1.0, default: 1)
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:float">
+          <xs:minInclusive value="0" />
+          <xs:maxInclusive value="1" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:complexType name="highlightdef">
+    <xs:sequence>
+      <xs:element name="outline" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Outline effect
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="highlightcolour" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fill" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Fill effect
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="highlightcolour" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="scan">
+    <xs:sequence>
+      <xs:element name="outline" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Outline effect
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="highlightcolour" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fill" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Fill effect
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="highlightcolour" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="minlevel" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Minimum scan level to trigger this effect
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="0" />
+          <xs:maxInclusive value="9" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="highlight">
+    <xs:sequence>
+      <xs:element name="infopoint" minOccurs="0" maxOccurs="1" >
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="target" type="highlightdef" minOccurs="0" maxOccurs="1" />
+            <xs:element name="environmentobject" type="highlightdef" minOccurs="0" maxOccurs="1" />
+            <xs:element name="scan" type="scan" minOccurs="0" maxOccurs="9" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="platform" minOccurs="0" maxOccurs="1" >
+        <xs:complexType>
+          <xs:sequence>
+          <xs:element name="target" type="highlightdef" minOccurs="0" maxOccurs="1" />
+          <xs:element name="environmentobject" type="highlightdef" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="tradeoffer" minOccurs="0" maxOccurs="1" >
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="target" type="highlightdef" minOccurs="0" maxOccurs="1" />
+            <xs:element name="environmentobject" type="highlightdef" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="parameters">
+    <xs:annotation>
+      <xs:documentation>
+        Parameters library document node
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="playerflight" minOccurs="0" maxOccurs="1" />
+        <xs:element name="playerfirstperson" minOccurs="0" maxOccurs="1" />
+        <xs:element name="playercamera" minOccurs="0" maxOccurs="1" />
+        <xs:element name="environmentobject" minOccurs="0" maxOccurs="1" />
+        <xs:element name="highlight" type="highlight" minOccurs="0" maxOccurs="1" >
+          <xs:annotation>
+            <xs:documentation>
+              Highlight settings
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="scanlevel" minOccurs="0" maxOccurs="1" />
+        <xs:element name="holomap" minOccurs="0" maxOccurs="1" />
+        <xs:element name="minigame" minOccurs="0" maxOccurs="1" />
+        <xs:element name="longrangescan" minOccurs="0" maxOccurs="1" />
+        <xs:element name="drop" minOccurs="0" maxOccurs="1" />
+        <xs:element name="hintpositions" minOccurs="0" maxOccurs="1" />
+        <xs:element name="physics" minOccurs="0" maxOccurs="1" />
+        <xs:element name="bonuscontent" minOccurs="0" maxOccurs="1" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

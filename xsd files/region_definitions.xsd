@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!-- define additional simple types-->
+  <xs:simpleType name="PositiveInteger">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RefString">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Za-z0-9_\-#]+" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="NonNegativeFloat">
+    <xs:restriction base="xs:float">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- regions node -->
+  <xs:element name="regions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="region" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- regions/region -->
+  <xs:element name="region">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="asteroids" />
+        <xs:element ref="nebula" />
+        <xs:element ref="debris" />
+        <xs:element ref="flag" />
+        <xs:element ref="effect" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:ID" use="required" />
+      <xs:attribute name="size" type="xs:string" use="required" />
+      <xs:attribute name="count" type="PositiveInteger" />
+      <xs:attribute name="moving" type="xs:float" />
+      <xs:attribute name="rotation" type="xs:float" />
+    </xs:complexType>
+  </xs:element>
+  <!-- regions/region/asteroids -->
+  <xs:element name="asteroids">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="flag" />
+        <xs:element ref="effect" />
+      </xs:choice>
+      <xs:attribute name="ref" type="RefString" use="required" />
+      <xs:attribute name="percentage" type="xs:string" use="required" />
+      <xs:attribute name="moving" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="movingvariation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="rotation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="rotationvariation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="sizevariation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="resource" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="ore" />
+            <xs:enumeration value="nividium" />
+            <xs:enumeration value="silicon" />
+            <xs:enumeration value="gas" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="resourcefactor" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="yield" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="yieldvariation" type="NonNegativeFloat" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <!-- regions/region/nebula -->
+  <xs:element name="nebula">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="flag" />
+        <xs:element ref="effect" />
+      </xs:choice>
+      <xs:attribute name="ref" type="RefString" use="required" />
+      <xs:attribute name="percentage" type="xs:string" use="required" />
+      <xs:attribute name="moving" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="movingvariation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="rotation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="rotationvariation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="sizevariation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="resource" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="energy" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="resourcefactor" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="yield" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="yieldvariation" type="NonNegativeFloat" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <!-- regions/region/debris -->
+  <xs:element name="debris">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="flag" />
+        <xs:element ref="effect" />
+      </xs:choice>
+      <xs:attribute name="ref" type="RefString" use="required" />
+      <xs:attribute name="percentage" type="xs:string" use="required" />
+      <xs:attribute name="moving" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="movingvariation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="rotation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="rotationvariation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="sizevariation" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="resource" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="ice" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="resourcefactor" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="yield" type="NonNegativeFloat" use="required" />
+      <xs:attribute name="yieldvariation" type="NonNegativeFloat" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <!-- regions/region/*/effect -->
+  <xs:element name="effect">
+    <xs:complexType>
+      <xs:attribute default="none" name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="none" />
+            <xs:enumeration value="hide" />
+            <xs:enumeration value="electric" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <!-- regions/region/*/flag -->
+  <xs:element name="flag">
+    <xs:complexType>
+      <xs:attribute default="none" name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="none" />
+            <xs:enumeration value="jump" />
+            <xs:enumeration value="stayinregion" />
+            <xs:enumeration value="exclusionarea" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="time" type="xs:string" />
+      <xs:attribute name="modifier">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="randomstart" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

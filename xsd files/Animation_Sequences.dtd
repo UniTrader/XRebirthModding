@@ -1,0 +1,22 @@
+<!ELEMENT sequencestates (state*)>
+<!-- states without a transition are considered invalid -->
+<!ELEMENT state (transition*)>
+<!-- name is declared as an ID to ensure uniqueness in the file -->
+<!ATTLIST state
+	name ID #REQUIRED
+	force CDATA #IMPLIED
+>
+<!ELEMENT transition (select*)>
+<!ATTLIST transition
+	autostart CDATA #IMPLIED
+	select CDATA #IMPLIED
+        trigger CDATA #IMPLIED
+	nextstate IDREF #IMPLIED
+	selection (random|one|choose) "one"
+>
+<!ELEMENT select EMPTY>
+<!ATTLIST select
+	nextstate IDREF #REQUIRED
+	weight CDATA #IMPLIED
+	index CDATA #IMPLIED
+>
