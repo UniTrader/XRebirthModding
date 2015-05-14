@@ -4405,7 +4405,7 @@
               <xs:element name="macro">
                 <xs:complexType>
                   <xs:attribute name="ref" type="macroname" />
-                  <xs:attributeGroup ref="range" />
+                  <xs:attributeGroup ref="random" />
                 </xs:complexType>
               </xs:element>
             </xs:choice>
@@ -4429,7 +4429,7 @@
                         </xs:documentation>
                       </xs:annotation>
                       <xs:complexType>
-                        <xs:attributeGroup ref="range" />
+                        <xs:attributeGroup ref="random" />
                       </xs:complexType>
                     </xs:element>
                     <xs:element name="fillvalue" minOccurs="0" maxOccurs="1">
@@ -4439,7 +4439,7 @@
                         </xs:documentation>
                       </xs:annotation>
                       <xs:complexType>
-                        <xs:attributeGroup ref="range" />
+                        <xs:attributeGroup ref="random" />
                       </xs:complexType>
                     </xs:element>
                   </xs:all>
@@ -4501,7 +4501,7 @@
                         </xs:documentation>
                       </xs:annotation>
                       <xs:complexType>
-                        <xs:attributeGroup ref="range" />
+                        <xs:attributeGroup ref="random" />
                       </xs:complexType>
                     </xs:element>
                     <xs:element name="fillvalue" minOccurs="0" maxOccurs="1">
@@ -4511,7 +4511,7 @@
                         </xs:documentation>
                       </xs:annotation>
                       <xs:complexType>
-                        <xs:attributeGroup ref="range" />
+                        <xs:attributeGroup ref="random" />
                       </xs:complexType>
                     </xs:element>
                   </xs:all>
@@ -4585,7 +4585,7 @@
                   <xs:attribute name="category" type="unitcategorylookup" use="required" />
                   <xs:attribute name="mk" type="expression" />
                   <xs:attribute name="tags" type="expression" />
-                  <xs:attributeGroup ref="range" />
+                  <xs:attributeGroup ref="random" />
                 </xs:complexType>
               </xs:element>
             </xs:choice>
@@ -4637,7 +4637,7 @@
             </xs:documentation>
           </xs:annotation>
           <xs:complexType>
-            <xs:attributeGroup ref="range" />
+            <xs:attributeGroup ref="random" />
             <xs:attribute name="tags" type="expression">
               <xs:annotation>
                 <xs:documentation>
@@ -4663,7 +4663,7 @@
                   </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
-                  <xs:attributeGroup ref="range" />
+                  <xs:attributeGroup ref="random" />
                   <xs:attribute name="type" type="entityskilllookup">
                     <xs:annotation>
                       <xs:documentation>
@@ -5898,6 +5898,25 @@
             <xs:annotation>
               <xs:documentation>
                 Object which is performing the tagging, or group of objects (attribute must be present if tagged not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_target_invalid">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when an object's target is invalid, e.g. jumped away, does not exist any more etc. (object = object with an invalid target, param = invalid target)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="target" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Invalid target
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -14243,6 +14262,17 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="trigger_autosave">
+        <xs:annotation>
+          <xs:documentation>
+            Trigger an autosave
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="trigger_boarding">
         <xs:annotation>
           <xs:documentation>
@@ -14508,6 +14538,26 @@
           </xs:attribute>
           <xs:attribute name="price" type="lvaluename" use="required" />
           <xs:attribute name="buildplan" type="expression" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="get_pilot_dockslot">
+        <xs:annotation>
+          <xs:documentation>
+            Retrieve the dockslot that a pilot entity is currently using for docking.
+            NOTE: This action is not supposed to be used normally, it only exists for fixing a bug that appears in early game versions.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="pilot" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Pilot
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="result" type="lvaluename" use="required" />
         </xs:complexType>
       </xs:element>
 
