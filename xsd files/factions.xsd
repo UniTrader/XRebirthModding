@@ -305,6 +305,13 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="hide" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Whether the faction should show up in info library/encyclopedia
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="range">

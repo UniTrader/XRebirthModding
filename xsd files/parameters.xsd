@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
+  <xs:include schemaLocation="common.xsd" />
+
   <xs:simpleType name="unitvalue">
     <xs:restriction base="xs:string">
       <xs:pattern value="[0-9]+[\.]?[0-9]*([ ]*(m|km|ms|s|min|h))?" />
@@ -13,89 +15,6 @@
       <xs:maxInclusive value="255" />
     </xs:restriction>
   </xs:simpleType>
-
-  <xs:simpleType name="profilelookup">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="flat">
-        <xs:annotation>
-          <xs:documentation>
-            Flat (linear) distribution, default if no profile specified
-          </xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="increasing">
-        <xs:annotation>
-          <xs:documentation>
-            Higher numbers are more likely
-          </xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="decreasing">
-        <xs:annotation>
-          <xs:documentation>
-            Lower numbers are more likely
-          </xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="bell">
-        <xs:annotation>
-          <xs:documentation>
-            Numbers in the middle of the range are more likely
-          </xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="inversebell">
-        <xs:annotation>
-          <xs:documentation>
-            Higher and lower numbers are more likely than those in the middle
-          </xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:attributeGroup name="random">
-    <xs:attribute name="exact" type="unitvalue">
-      <xs:annotation>
-        <xs:documentation>
-          Exact value (takes priority over min/max/profile/scale)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="min" type="unitvalue">
-      <xs:annotation>
-        <xs:documentation>
-          Minimum random number (ignored if exact is set)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="max" type="unitvalue">
-      <xs:annotation>
-        <xs:documentation>
-          Maximum random number (ignored if exact is set)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="profile" type="profilelookup">
-      <xs:annotation>
-        <xs:documentation>
-          Random number profile (ignored if exact is set)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="scale">
-      <xs:annotation>
-        <xs:documentation>
-          Scale of random number profile (ignored if exact is set or if profile is flat)
-        </xs:documentation>
-      </xs:annotation>
-      <xs:simpleType>
-        <xs:restriction base="xs:integer">
-          <xs:minInclusive value="2" />
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
-  </xs:attributeGroup>
 
   <xs:simpleType name="locations">
     <xs:annotation>
@@ -115,36 +34,6 @@
     </xs:list>
   </xs:simpleType>
 
-  <xs:complexType name="amount">
-    <xs:attributeGroup ref="random" >
-      <xs:annotation>
-        <xs:documentation>
-          Random amount value.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attributeGroup>
-  </xs:complexType>
-
-  <xs:complexType name="time">
-    <xs:attributeGroup ref="random" >
-      <xs:annotation>
-        <xs:documentation>
-          Random time value.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attributeGroup>
-  </xs:complexType>
-
-  <xs:complexType name="distance">
-    <xs:attributeGroup ref="random">
-      <xs:annotation>
-        <xs:documentation>
-          Maximum distance at which to unlock (default: as defined by globals node)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attributeGroup>
-  </xs:complexType>
-
   <xs:complexType name="viewangle">
     <xs:annotation>
       <xs:documentation>
@@ -159,16 +48,6 @@
         </xs:restriction>
       </xs:simpleType>
     </xs:attribute>
-  </xs:complexType>
-
-  <xs:complexType name="coneratio">
-    <xs:attributeGroup ref="random">
-      <xs:annotation>
-        <xs:documentation>
-          Higher value means centering is more important to get an identified scan result.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attributeGroup>
   </xs:complexType>
 
   <xs:simpleType name="chance">
@@ -352,6 +231,31 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="scriptparams">
+    <xs:sequence>
+      <xs:element name="category" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="param" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:attribute name="name" type="idname" use="required" />
+                <xs:attribute name="value" type="expression" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="name" type="idname" use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="anycontent">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:any processContents="skip" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+
   <xs:element name="parameters">
     <xs:annotation>
       <xs:documentation>
@@ -360,30 +264,32 @@
     </xs:annotation>
     <xs:complexType>
       <xs:all>
-        <xs:element name="playerflight" minOccurs="0" maxOccurs="1" />
-        <xs:element name="playerfirstperson" minOccurs="0" maxOccurs="1" />
-        <xs:element name="playercamera" minOccurs="0" maxOccurs="1" />
-        <xs:element name="environmentobject" minOccurs="0" maxOccurs="1" />
-        <xs:element name="highlight" type="highlight" minOccurs="0" maxOccurs="1" >
+        <xs:element name="playerflight" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="playerfirstperson" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="playercamera" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="environmentobject" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="highlight" type="highlight" minOccurs="0" maxOccurs="1">
           <xs:annotation>
             <xs:documentation>
               Highlight settings
             </xs:documentation>
           </xs:annotation>
         </xs:element>
-        <xs:element name="scanlevel" minOccurs="0" maxOccurs="1" />
-        <xs:element name="holomap" minOccurs="0" maxOccurs="1" />
-        <xs:element name="minigame" minOccurs="0" maxOccurs="1" />
-        <xs:element name="longrangescan" minOccurs="0" maxOccurs="1" />
-        <xs:element name="drop" minOccurs="0" maxOccurs="1" />
-        <xs:element name="hintpositions" minOccurs="0" maxOccurs="1" />
-        <xs:element name="physics" minOccurs="0" maxOccurs="1" />
-        <xs:element name="bonuscontent" minOccurs="0" maxOccurs="1" />
-        <xs:element name="damagestate" minOccurs="0" maxOccurs="1" />
-        <xs:element name="engine" minOccurs="0" maxOccurs="1" />
-        <xs:element name="controlpanel" minOccurs="0" maxOccurs="1" />
-        <xs:element name="materials" minOccurs="0" maxOccurs="1" />
-        <xs:element name="hazardwarning" minOccurs="0" maxOccurs="1" />
+        <xs:element name="scanlevel" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="holomap" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="minigame" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="longrangescan" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="drop" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="hintpositions" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="physics" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="bonuscontent" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="damagestate" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="engine" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="controlpanel" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="materials" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="economy" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="hazardwarning" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="scriptparams" type="scriptparams" minOccurs="0" maxOccurs="1" />
       </xs:all>
     </xs:complexType>
   </xs:element>

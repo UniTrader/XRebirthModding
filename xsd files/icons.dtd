@@ -2,7 +2,10 @@
 <!ELEMENT icon EMPTY>
 <!ATTLIST icon
 	name CDATA #REQUIRED
-	texture CDATA #REQUIRED
-	width CDATA #REQUIRED
-	height CDATA #REQUIRED
+	texture CDATA #IMPLIED
+	width CDATA #IMPLIED
+	height CDATA #IMPLIED
+	selected CDATA #IMPLIED	
+	active CDATA #IMPLIED
+	inactive CDATA #IMPLIED
 >

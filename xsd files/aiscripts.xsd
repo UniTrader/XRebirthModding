@@ -298,6 +298,20 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
+		  <xs:enumeration value="command.explore">
+            <xs:annotation>
+              <xs:documentation>
+                Explore Command
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+		  <xs:enumeration value="command.withdrawbattle">
+            <xs:annotation>
+              <xs:documentation>
+                Withdraw from Battle Command
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
         </xs:restriction>
       </xs:simpleType>
     </xs:union>
@@ -905,7 +919,7 @@
           <xs:attributeGroup ref="blockingaction" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="abortpath" type="booleanexpression" />
-          <xs:attribute name="finishonapproach" type="boolean" />
+          <xs:attribute name="finishonapproach" type="booleanexpression" />
           <xs:attribute name="destination" type="expression">
             <xs:annotation>
               <xs:documentation>
@@ -1010,7 +1024,7 @@
           </xs:sequence>
           <xs:attributeGroup ref="blockingaction" />
           <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="finishonapproach" type="boolean" />          
+          <xs:attribute name="finishonapproach" type="booleanexpression" />          
           <xs:attribute name="dock" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
@@ -1055,7 +1069,7 @@
           <xs:attributeGroup ref="blockingaction" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="abortpath" type="booleanexpression" />
-          <xs:attribute name="finishonapproach" type="boolean" />
+          <xs:attribute name="finishonapproach" type="booleanexpression" />
           <xs:attribute name="gate" type="expression">
             <xs:annotation>
               <xs:documentation>
@@ -1095,7 +1109,7 @@
           <xs:attributeGroup ref="blockingaction" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="abortpath" type="booleanexpression" />
-          <xs:attribute name="finishonapproach" type="boolean" />
+          <xs:attribute name="finishonapproach" type="booleanexpression" />
           <xs:attribute name="usemasstrafficlane" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
@@ -1151,7 +1165,7 @@
           <xs:attributeGroup ref="blockingaction" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="abortpath" type="booleanexpression" />
-          <xs:attribute name="finishonapproach" type="boolean" />
+          <xs:attribute name="finishonapproach" type="booleanexpression" />
           <xs:attribute name="destination" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
@@ -1268,7 +1282,13 @@
           <xs:attributeGroup ref="blockingaction" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="abortpath" type="booleanexpression" />
-          <xs:attribute name="finishonapproach" type="boolean" />
+          <xs:attribute name="finishonapproach" type="booleanexpression" >
+            <xs:annotation>
+              <xs:documentation>
+                Whether the object should stop if the movement is approaching to finish (defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="usehighways" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>

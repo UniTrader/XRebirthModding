@@ -48,7 +48,7 @@
   <xs:simpleType name="expression">
     <xs:restriction base="xs:string">
       <!--               ([ a non-string character                    ]|(' any string  '))+ -->
-      <xs:pattern value="([A-Za-z0-9_$!?@=&lt;&gt;,\.\+\-\*/%(){}\[\] ]|('([^'\\]|\\.)*'))+" />
+      <xs:pattern value="([A-Za-z0-9_$!?@=&lt;&gt;,\.\+\-\*/%\^(){}\[\] ]|('([^'\\]|\\.)*'))+" />
     </xs:restriction>
   </xs:simpleType>
 
@@ -381,6 +381,24 @@
     <xs:restriction base="expression" />
   </xs:simpleType>
 
+  <xs:simpleType name="attackerrequired">
+    <xs:annotation>
+      <xs:documentation>
+        Object which is attacking the target (attribute must be present if target not supplied)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="expression" />
+  </xs:simpleType>
+
+  <xs:simpleType name="attackedrequired">
+    <xs:annotation>
+      <xs:documentation>
+        Object which is attacked, or group of objects (attribute must be present if attacker not supplied)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="expression" />
+  </xs:simpleType>
+
   <xs:simpleType name="claimedrequired">
     <xs:annotation>
       <xs:documentation>
@@ -547,24 +565,6 @@
     <xs:annotation>
       <xs:documentation>
         Is the cluster used for presentation scenes e.g. cutscenes?
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="boolean" />
-  </xs:simpleType>
-
-  <xs:simpleType name="priorityzone">
-    <xs:annotation>
-      <xs:documentation>
-        Is the zone the highest priority zone at its position?
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="boolean" />
-  </xs:simpleType>
-
-  <xs:simpleType name="tempzone">
-    <xs:annotation>
-      <xs:documentation>
-        Is the zone temporary?
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="boolean" />
@@ -744,6 +744,17 @@
           </xs:documentation>
         </xs:annotation>
       </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="selectionweight">
+    <xs:annotation>
+      <xs:documentation>
+        Weight which determines the chance of this node being selected
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0" />
     </xs:restriction>
   </xs:simpleType>
 
@@ -1576,13 +1587,6 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
-          <xs:enumeration value="class.controllable">
-            <xs:annotation>
-              <xs:documentation>
-                Controllable
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
           <xs:enumeration value="class.controlpanel">
             <xs:annotation>
               <xs:documentation>
@@ -1671,13 +1675,6 @@
             <xs:annotation>
               <xs:documentation>
                 Lock
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="class.lockbox">
-            <xs:annotation>
-              <xs:documentation>
-                Loxbox
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -1807,6 +1804,13 @@
             <xs:annotation>
               <xs:documentation>
                 Jump Beacon
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.lockbox">
+            <xs:annotation>
+              <xs:documentation>
+                Loxbox
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -2950,6 +2954,13 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="hastradesubscription" type="boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Player has subscribed to trade offer updates from this container?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="canhaveofferlocation" type="expression">
       <xs:annotation>
         <xs:documentation>
@@ -3064,8 +3075,27 @@
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findext_zone">
-    <xs:attribute name="priorityzone" type="priorityzone" />
-    <xs:attribute name="tempzone" type="tempzone" />
+    <xs:attribute name="priorityzone" type="boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Is the zone the highest priority zone at its position?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="tempzone" type="boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Is the zone temporary?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="mapzone" type="boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Can the zone be shown on a map?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findext_damaged">
@@ -3667,6 +3697,13 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="silent" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Should the flashing effect of the event monitor be suppressed?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="showhelp">
@@ -3688,6 +3725,91 @@
       <xs:annotation>
         <xs:documentation>
           Add help text to logbook? Default is false
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="dropcargo">
+    <xs:attribute name="groupname" type="lvalueexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Name of the group to which all spawned ware containers will be added (optional, group will be created if it does not exist yet)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="wares" type="lvalueexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Name of the value that will receive a list of all spawned ware types (optional)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="amounts" type="lvalueexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Name of the value that will receive a list of ware amounts, corresponding to the wares result list.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="unbundle" type="booleanexpression" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Should the ware be unbundled (turn ware into ammo/units) on transfer? (optional, defaults to false)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="rebundle" type="booleanexpression" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Do the wares to be dropped come from ammo/unit storage? (optional, defaults to false)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="resetobjectboost">
+    <xs:attribute name="object" type="object" use="required" />
+    <xs:attribute name="otherobject" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Object the boost is towards (takes preference over 'faction')
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="faction" type="factionlookup">
+      <xs:annotation>
+        <xs:documentation>
+          Faction the boost is towards ('otherobject' takes preference if provided)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="objectboost">
+    <xs:attributeGroup ref="resetobjectboost" />
+    <xs:attribute name="decay" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Decay rate
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="delay" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Decay delay
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="objectrelationboost">
+    <xs:attributeGroup ref="objectboost" />
+    <xs:attribute name="silent" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Is the relation boost silent, i.e. without player notification? See &lt;event_player_relation_changed&gt;
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -3854,7 +3976,37 @@
           </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="match_revealed_percentage" type="matchrange">
+      <xs:element name="match_attention">
+        <xs:annotation>
+          <xs:documentation>
+            Match attention level
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="min" type="attentionexprlookup">
+            <xs:annotation>
+              <xs:documentation>
+                Min attention level (not compared if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="max" type="attentionexprlookup">
+            <xs:annotation>
+              <xs:documentation>
+                Max attention level (not compared if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="exact" type="attentionexprlookup">
+            <xs:annotation>
+              <xs:documentation>
+                Exact attention level (not compared if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_revealed_percentage" type="matchrevealedpercentage">
         <xs:annotation>
           <xs:documentation>
             Match by reveal percentage filter
@@ -4545,6 +4697,19 @@
     <xs:attribute name="comment" type="comment" />
   </xs:complexType>
 
+  <xs:complexType name="matchrevealedpercentage">
+    <xs:attribute name="secrecylevel" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Secrecy level (omit for all)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="range" />
+    <xs:attribute name="negate" type="negatefilter" />
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
   <xs:complexType name="matchsummarisedcontent">
     <xs:attribute name="operational" type="booleanexpression">
       <xs:annotation>
@@ -5001,18 +5166,7 @@
           </xs:annotation>
           <xs:complexType>
             <xs:attributeGroup ref="range" />
-            <xs:attribute name="weight">
-              <xs:annotation>
-                <xs:documentation>
-                  Weight which determines the chance of this node being selected
-                </xs:documentation>
-              </xs:annotation>
-              <xs:simpleType>
-                <xs:restriction base="xs:integer">
-                  <xs:minInclusive value="0" />
-                </xs:restriction>
-              </xs:simpleType>
-            </xs:attribute>
+            <xs:attribute name="weight" type="selectionweight" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>
@@ -6879,6 +7033,19 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="event_player_owned_attacked">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when a player owned object is attacked (object = attacked object, param = attacker, param2 = kill method, param3 = attacked component)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="attacker" type="attacker" />
+          <xs:attribute name="method" type="killmethodlookup" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="event_player_owned_claimed_object">
         <xs:annotation>
           <xs:documentation>
@@ -7282,6 +7449,18 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="event_player_performed_attack_action">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the player interacts with an attack action in the interact menu (param = target component)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="target" type="targetcomponent" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="event_player_performed_trade_action">
         <xs:annotation>
           <xs:documentation>
@@ -7297,7 +7476,9 @@
       <xs:element name="event_player_relation_changed">
         <xs:annotation>
           <xs:documentation>
-            Event for when a faction or an object's control entity changes the relation towards the player (object = entity or null, param = faction, param2 = new relation, param3 = old relation)
+            Event for when a faction or an object's control entity changes the relation towards the player (object = entity or null, param = faction or null, param2 = new relation, param3 = old relation).
+            NOTE: On permanent faction changes, object is null. On relation boosts, object is non-null, and param is either null (silent boost) or faction.player (non-silent boost).
+            See &lt;set_relation_boost&gt; and &lt;add_relation_boost&gt;.
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7548,6 +7729,17 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="event_player_lost_volatile_wares">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when volatile wares in the player's inventory self-destruct (param = list of lost volatile wares, param2 = corresponding list of amounts)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="event_autopilot_target_set">
         <xs:annotation>
           <xs:documentation>
@@ -7610,7 +7802,7 @@
       <xs:element name="event_scan_aborted">
         <xs:annotation>
           <xs:documentation>
-            Event for when a scan is aborted (requires attribute scanner and/or scanned) (object = scanner if supplied, otherwise scanned, param = the other object)
+            Event for when a scan is aborted (requires attribute scanner and/or scanned) (object = scanner if supplied, otherwise scanned, param = the other object, param2 = true iff object is scanner)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7623,7 +7815,7 @@
       <xs:element name="event_scan_finished">
         <xs:annotation>
           <xs:documentation>
-            Event for when a scan is finished (requires attribute scanner and/or scanned) (object = scanner if supplied, otherwise scanned, param = the other object)
+            Event for when a scan is finished (requires attribute scanner and/or scanned) (object = scanner if supplied, otherwise scanned, param = the other object, param2 = true iff object is scanner)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7636,7 +7828,7 @@
       <xs:element name="event_scan_started">
         <xs:annotation>
           <xs:documentation>
-            Event for when a scan is started (requires attribute scanner and/or scanned) (object = scanner if supplied, otherwise scanned, param = the other object)
+            Event for when a scan is started (requires attribute scanner and/or scanned) (object = scanner if supplied, otherwise scanned, param = the other object, param2 = true iff object is scanner)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7649,7 +7841,7 @@
       <xs:element name="event_hack_aborted">
         <xs:annotation>
           <xs:documentation>
-            Event for when a hack is aborted (requires attribute hacker and/or hacked) (object = hacker if supplied, otherwise hacked, param = the other object)
+            Event for when a hack is aborted (requires attribute hacker and/or hacked) (object = hacker if supplied, otherwise hacked, param = the other object, param2 = true iff object is hacker)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7662,7 +7854,7 @@
       <xs:element name="event_hack_finished">
         <xs:annotation>
           <xs:documentation>
-            Event for when a hack is finished (requires attribute hacker and/or hacked) (object = hacker if supplied, otherwise hacked, param = the other object)
+            Event for when a hack is finished (requires attribute hacker and/or hacked) (object = hacker if supplied, otherwise hacked, param = the other object, param2 = true iff object is hacker, param3 = the score result of the minigame (0 if no minigame was played))
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7675,7 +7867,7 @@
       <xs:element name="event_hack_started">
         <xs:annotation>
           <xs:documentation>
-            Event for when a hack is started (requires attribute hacker and/or hacked) (object = hacker if supplied, otherwise hacked, param = the other object)
+            Event for when a hack is started (requires attribute hacker and/or hacked) (object = hacker if supplied, otherwise hacked, param = the other object, param2 = true iff object is hacker)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7688,7 +7880,7 @@
       <xs:element name="event_object_hacked">
         <xs:annotation>
           <xs:documentation>
-            Event for when an object is hacked (requires attribute hacker and/or hacked) (object = hacker if supplied, otherwise hacked, param = the other object)
+            Event for when an object is hacked (requires attribute hacker and/or hacked) (object = hacker if supplied, otherwise hacked, param = the other object, param2 = true iff object is hacker)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7701,7 +7893,7 @@
       <xs:element name="event_observation_started">
         <xs:annotation>
           <xs:documentation>
-            Event for when an object starts an observation (requires attribute observer and/or observed) (param = observer, param2 = observed, param3 = range length)
+            Event for when an object starts an observation (requires attribute observer and/or observed) (object = observer or observed, param = observer, param2 = observed, param3 = range length)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7714,13 +7906,39 @@
       <xs:element name="event_observation_stopped">
         <xs:annotation>
           <xs:documentation>
-            Event for when an object is hacked (requires attribute hacker and/or hacked) (param = observer, param2 = observed)
+            Event for when an observation is stopped (requires attribute observer and/or observed) (object = observer or observed, param = observer, param2 = observed)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
           <xs:attribute name="observed" type="observedrequired" />
           <xs:attribute name="observer" type="observerrequired" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_attack_started">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when an object signals it will attack a target (requires attribute attacker and/or target) (object = attacker or target, param = attacker, param2 = target)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="attacker" type="attackerrequired" />
+          <xs:attribute name="target" type="attackedrequired" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_attack_stopped">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when an object signals it will stop an attack (requires attribute attacker and/or target) (object = attacker or target, param = attacker, param2 = target)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="attacker" type="attackerrequired" />
+          <xs:attribute name="target" type="attackedrequired" />
         </xs:complexType>
       </xs:element>
 
@@ -7854,7 +8072,7 @@
       <xs:element name="event_inventory_added">
         <xs:annotation>
           <xs:documentation>
-            Inventory was added to entity (event.param = list of wares, event.param2 = amount list of wares)
+            Event for when inventory wares were added to entity (object = entity, param = list of wares, param2 = corresponding list of amounts)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7866,7 +8084,7 @@
       <xs:element name="event_inventory_removed">
         <xs:annotation>
           <xs:documentation>
-            Inventory was removed from entity (event.param = list of wares, event.param2 = amount list of wares)
+            Event for when inventory wares were removed from entity (object = entity, param = list of wares, param2 = corresponding list of amounts)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -9000,18 +9218,6 @@
         </xs:complexType>
       </xs:element>
 
-      <xs:element name="add_production_salesreps">
-        <xs:annotation>
-          <xs:documentation>
-            Add production salesreps to a station (e.g. shiptraders)
-          </xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-          <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object" use="required" />
-        </xs:complexType>
-      </xs:element>
-
       <xs:element name="add_watchdog_units_to_masstraffic">
         <xs:annotation>
           <xs:documentation>
@@ -9268,10 +9474,36 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="reveal_object">
+        <xs:annotation>
+          <xs:documentation>
+            Reveal information of a object by secrecy level (ommitted 'secrecylevel' includes all levels)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Component to set known/unknown
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="secrecylevel" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Secrecy level to reveal. Will default to include all if omitted
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attributeGroup ref="random" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="add_inventory">
         <xs:annotation>
           <xs:documentation>
-            Add inventory to an entity (defaults to player)
+            Add inventory to an entity (entity defaults to player, amount defaults to 1)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -9285,7 +9517,7 @@
       <xs:element name="remove_inventory">
         <xs:annotation>
           <xs:documentation>
-            Remove inventory from an entity (defaults to player)
+            Remove inventory from an entity (entity defaults to player, amount defaults to 1)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -9568,39 +9800,11 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="otherobject" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Object the boost is towards (takes preference over 'faction')
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="faction" type="factionlookup">
-            <xs:annotation>
-              <xs:documentation>
-                Faction the boost is towards ('otherobject' takes preference if provided)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="objectrelationboost" />
           <xs:attribute name="value" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
                 Relation boost value
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="decay" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Decay rate
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="delay" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Decay delay
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -9667,39 +9871,11 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="otherobject" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Object the boost is towards (takes preference over 'faction')
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="faction" type="factionlookup">
-            <xs:annotation>
-              <xs:documentation>
-                Faction the boost is towards ('otherobject' takes preference if provided)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="objectboost" />
           <xs:attribute name="value" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
-                Relation boost value
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="decay" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Decay rate
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="delay" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Decay delay
+                Tolerance boost value
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11616,13 +11792,7 @@
           <xs:attributeGroup ref="random" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="ware" type="ware" use="required" />
-          <xs:attribute name="groupname" type="groupname" >
-            <xs:annotation>
-              <xs:documentation>
-                Group contains all floating ware containers that were spawned (if any) optional
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="dropcargo" />
         </xs:complexType>
       </xs:element>
 
@@ -11642,20 +11812,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="groupname" type="groupname" >
-            <xs:annotation>
-              <xs:documentation>
-                Group contains all floating ware containers that were spawned (if any) optional
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="wares" type="lvaluename">
-            <xs:annotation>
-              <xs:documentation>
-                List of all ware types that were spawned (if any) optional
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="dropcargo" />
         </xs:complexType>
       </xs:element>
 
@@ -11675,13 +11832,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="groupname" type="groupname" >
-            <xs:annotation>
-              <xs:documentation>
-                Group contains all floating ware containers that were spawned (if any) optional
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="dropcargo" />
         </xs:complexType>
       </xs:element>
 
@@ -11696,13 +11847,7 @@
           <xs:attributeGroup ref="random" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="ware" type="ware" use="required" />
-          <xs:attribute name="groupname" type="groupname" >
-            <xs:annotation>
-              <xs:documentation>
-                Group contains all floating ware containers that were spawned (if any) optional
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="dropcargo" />
         </xs:complexType>
       </xs:element>
 
@@ -12197,6 +12342,44 @@
               <xs:attribute name="result" type="lvaluename" use="required"/>
             </xs:extension>
           </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="end_repair_mass_traffic">
+        <xs:annotation>
+          <xs:documentation>
+            Ends all repair mass traffic networks for an object
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="endtime" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                The time the network should end (defaults to 'as soon as possible' if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="find_active_repair_mass_traffic">
+        <xs:annotation>
+          <xs:documentation>
+            Find a repair mass traffic network for an object that doesn't have an end time set already
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="result" type="lvaluename" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The ID of the mass traffic network - IMPORTANT: this will become invalid if a savegame is loaded
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="object" type="object" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -13272,7 +13455,7 @@
           <xs:attribute name="result" type="lvaluename" use="required">
             <xs:annotation>
               <xs:documentation>
-                The newly created mass traffic network.
+                The ID of the newly created mass traffic network - IMPORTANT: this will become invalid if a savegame is loaded
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -13471,6 +13654,13 @@
             <xs:annotation>
               <xs:documentation>
                 Show cutscene in event monitor?
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="sound" type="namestring">
+            <xs:annotation>
+              <xs:documentation>
+                Sound ID name
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -13935,21 +14125,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="otherobject" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Object the boost is towards (takes preference over 'faction')
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="faction" type="factionlookup">
-            <xs:annotation>
-              <xs:documentation>
-                Faction the boost is towards ('otherobject' takes preference if provided)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="resetobjectboost" />
         </xs:complexType>
       </xs:element>
 
@@ -13961,21 +14137,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="otherobject" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Object the boost is towards (takes preference over 'faction')
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="faction" type="factionlookup">
-            <xs:annotation>
-              <xs:documentation>
-                Faction the boost is towards ('otherobject' takes preference if provided)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="resetobjectboost" />
         </xs:complexType>
       </xs:element>
 
@@ -14772,7 +14934,13 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="object" type="object" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                If this is a ship or station, all content in the given build stage is set as hacked. If this is a subcomponent, it and *all* content is set as hacked.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="duration" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
@@ -14783,14 +14951,14 @@
           <xs:attribute name="sequence" type="expression">
             <xs:annotation>
               <xs:documentation>
-                The build sequence on the object that was hacked
+                The build sequence on the object that was hacked (ignored if the object is a subcomponent)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
           <xs:attribute name="stage" type="expression">
             <xs:annotation>
               <xs:documentation>
-                The build stage on the object that was hacked
+                The build stage on the object that was hacked (ignored if the object is a subcomponent)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -15155,39 +15323,11 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="otherobject" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Object the boost is towards (takes preference over 'faction')
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="faction" type="factionlookup">
-            <xs:annotation>
-              <xs:documentation>
-                Faction the boost is towards ('otherobject' takes preference if provided)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="objectrelationboost" />
           <xs:attribute name="value" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
                 Relation boost value
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="decay" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Decay rate
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="delay" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Decay delay
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -15289,39 +15429,11 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="otherobject" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Object the boost is towards (takes preference over 'faction')
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="faction" type="factionlookup">
-            <xs:annotation>
-              <xs:documentation>
-                Faction the boost is towards ('otherobject' takes preference if provided)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="objectboost" />
           <xs:attribute name="value" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
-                Relation boost value
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="decay" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Decay rate
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="delay" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Decay delay
+                Tolerance boost value
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -15674,6 +15786,15 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="priority" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                The priority, an integer between 0 and 9 (default is 1).
+                Unqueued notifications can only be aborted and replaced by unqueued notifications of same or higher priority, or by cutscenes. The queue for queued notifications is also sorted by priority.
+                NOTE: Non-silent interactive events (notifications and cutscenes with flashing event monitor) are generally treated as having a higher priority than any non-interactive events.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="icon" type="namestring">
             <xs:annotation>
               <xs:documentation>
@@ -15692,13 +15813,6 @@
             <xs:annotation>
               <xs:documentation>
                 Should the notification display be queued and delayed if necessary? (Defaults to false if not supplied)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="silent" type="boolean">
-            <xs:annotation>
-              <xs:documentation>
-                Should the notification display flash? (Only affects notifications with &lt;interaction&gt; element)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -16361,6 +16475,33 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="get_object_value">
+        <xs:annotation>
+          <xs:documentation>
+            Get the credit value of an object
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="priceobject" type="object">
+            <xs:annotation>
+              <xs:documentation>
+                Object of which to base resource prices
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="sellprice" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Calculate the sell price of the object? Default is false
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="result" type="lvaluename" use="required" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="get_pilot_dockslot">
         <xs:annotation>
           <xs:documentation>
@@ -16388,12 +16529,12 @@
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:all>
             <xs:element name="position" type="position" minOccurs="0" maxOccurs="1" />
             <xs:element name="safepos" type="safepos" minOccurs="0" maxOccurs="1" />
             <xs:element name="rotation" type="rotation" minOccurs="0" maxOccurs="1" />
             <xs:element name="orientation" type="orientation" minOccurs="0" maxOccurs="1" />
-          </xs:choice>
+          </xs:all>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="zone" type="zone" use="required" />
@@ -16512,7 +16653,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object">
+          <xs:attribute name="object" type="object" use="required">
             <xs:annotation>
               <xs:documentation>
                 Object to act as the sound source.

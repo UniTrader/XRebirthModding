@@ -5,6 +5,7 @@
 <!ATTLIST state
 	name ID #REQUIRED
 	force CDATA #IMPLIED
+	random CDATA #IMPLIED
 >
 <!ELEMENT transition (select*)>
 <!ATTLIST transition

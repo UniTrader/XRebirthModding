@@ -61,6 +61,9 @@
     <xs:attribute name="loop" />
     <xs:attribute name="end" />
     <xs:attribute name="lipsync" />
+    <xs:attribute name="startduration" />
+    <xs:attribute name="loopduration" />
+    <xs:attribute name="endduration" />
   </xs:attributeGroup>
 
   <xs:complexType name="sample">
