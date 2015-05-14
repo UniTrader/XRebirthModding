@@ -124,6 +124,20 @@
     <xs:restriction base="xs:string" />
   </xs:simpleType>
 
+  <xs:simpleType name="mindifficulty">
+    <xs:annotation>
+      <xs:documentation>
+        Minimum difficulty level that is required for this stat to be changed. A stat change is only accepted if the game was started on at least this difficulty level
+        and it was never changed to an easier difficulty level. The default is the lowest difficulty level (stat change is always allowed).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="easy" />
+      <xs:enumeration value="medium" />
+      <xs:enumeration value="hard" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="copyto">
     <xs:annotation>
       <xs:documentation>
@@ -132,6 +146,15 @@
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string" />
+  </xs:simpleType>
+
+  <xs:simpleType name="copyto_div">
+    <xs:annotation>
+      <xs:documentation>
+        Optional divisor for the copyto stat. When a value is copied to the copyto stat, the stat value is divided by this number.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:positiveInteger" />
   </xs:simpleType>
 
   <!-- Achievement element -->
@@ -209,7 +232,9 @@
     <xs:attribute name="highest" type="highest" />
     <xs:attribute name="account" type="account" />
     <xs:attribute name="leaderboard" type="leaderboard" />
+    <xs:attribute name="mindifficulty" type="mindifficulty" />
     <xs:attribute name="copyto" type="copyto" />
+    <xs:attribute name="copyto_div" type="copyto_div" />
     <xs:attribute name="comment" type="comment" />
   </xs:complexType>
 

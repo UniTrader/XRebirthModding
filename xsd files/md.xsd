@@ -16,69 +16,6 @@
 
   <!-- ===== Enumeration simple types ===== -->
 
-  <xs:simpleType name="levellookup">
-    <xs:annotation>
-      <xs:documentation>
-        Difficulty level
-      </xs:documentation>
-    </xs:annotation>
-    <xs:union memberTypes="expression">
-      <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="level.trivial">
-            <xs:annotation>
-              <xs:documentation>
-                Trivial difficulty level
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="level.veryeasy">
-            <xs:annotation>
-              <xs:documentation>
-                Very easy difficulty level
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="level.easy">
-            <xs:annotation>
-              <xs:documentation>
-                Easy difficulty level
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="level.medium">
-            <xs:annotation>
-              <xs:documentation>
-                Medium difficulty level
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="level.hard">
-            <xs:annotation>
-              <xs:documentation>
-                Hard difficulty level
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="level.veryhard">
-            <xs:annotation>
-              <xs:documentation>
-                Very hard difficulty level
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="level.impossible">
-            <xs:annotation>
-              <xs:documentation>
-                Impossible difficulty level
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:union>
-  </xs:simpleType>
-
   <xs:simpleType name="missiontypelookup">
     <xs:annotation>
       <xs:documentation>
@@ -94,7 +31,7 @@
           <xs:enumeration value="missiontype.build" />
           <xs:enumeration value="missiontype.think" />
           <xs:enumeration value="missiontype.station" />
-          <xs:enumeration value="missiontype.other" />          
+          <xs:enumeration value="missiontype.other" />
           <xs:enumeration value="missiontype.board" />
           <xs:enumeration value="missiontype.build_ship" />
           <xs:enumeration value="missiontype.build_station" />
@@ -129,6 +66,9 @@
           <xs:enumeration value="missiontype.pharmaceuticals" />
           <xs:enumeration value="missiontype.police" />
           <xs:enumeration value="missiontype.protectedspecies" />
+          <xs:enumeration value="missiontype.upkeep_extend" />
+          <xs:enumeration value="missiontype.upkeep_hirenpc" />
+          <xs:enumeration value="missiontype.upkeep_credits" />
         </xs:restriction>
       </xs:simpleType>
     </xs:union>
@@ -1249,7 +1189,7 @@
         </xs:complexType>
       </xs:element>
 
-     <xs:element name="quit_to_startmenu">
+      <xs:element name="quit_to_startmenu">
         <xs:annotation>
           <xs:documentation>
             Quit to startmenu
@@ -1257,6 +1197,18 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="activate_mission">
+        <xs:annotation>
+          <xs:documentation>
+            Activate an existing mission associated with a cue
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="cue" type="cuename" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -1328,7 +1280,26 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="activate" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Should mission become active if there is already another mission? Default is true. (Setting to false also prevents the mission being activated automatically when another mission gets deactivated.)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attributeGroup ref="missiondetails" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="accept_offer">
+        <xs:annotation>
+          <xs:documentation>
+            Create the accept event for the mission offer cue
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="cue" type="cuename" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -1409,7 +1380,7 @@
           <xs:attribute name="sector" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
-                Sector where the faction representative should be created 
+                Sector where the faction representative should be created
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -1641,6 +1612,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
+          <xs:attribute name="name" type="lvaluename" use="required" />
           <xs:attribute name="rendertarget" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
@@ -1654,11 +1626,12 @@
       <xs:element name="remove_holomap">
         <xs:annotation>
           <xs:documentation>
-            Remove the current holomap
+            Remove a holomap
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
+          <xs:attribute name="holomap" type="holomap" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -1670,6 +1643,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
+          <xs:attribute name="holomap" type="holomap" use="required" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="zoomtime" type="expression">
             <xs:annotation>
@@ -1739,6 +1713,25 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="set_remote_commable">
+        <xs:annotation>
+          <xs:documentation>
+            Flag an actor as being remotely commable (or remove the flag) [default is true]
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="actor" type="actor" use="required" />
+          <xs:attribute name="remote" type="booleanexpression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                True if the actor flag should be set, false otherwise
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="set_objective">
         <xs:annotation>
           <xs:documentation>
@@ -1752,6 +1745,25 @@
           <xs:attributeGroup ref="action" />
           <xs:attributeGroup ref="objective" />
           <xs:attribute name="cue" type="cuename" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_presentation_cluster_persistence">
+        <xs:annotation>
+          <xs:documentation>
+            Set the persistence of dynamically created presentation clusters. Whether they should be exported to a savegame or not.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="cluster" type="object" use="required" />
+          <xs:attribute name="persistent" type="booleanexpression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Is the cluster persistent
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -2072,7 +2084,7 @@
     </xs:attribute>
     <xs:attribute name="comment" type="comment" />
   </xs:attributeGroup>
-  
+
   <xs:group name="cue">
     <xs:sequence>
       <xs:element name="conditions" minOccurs="0" maxOccurs="1">
@@ -2130,14 +2142,55 @@
         </xs:complexType>
       </xs:element>
 
-      <xs:element name="patch" minOccurs="0" maxOccurs="1">
+      <xs:element name="patch" minOccurs="0" maxOccurs="unbounded">
         <xs:annotation>
           <xs:documentation>
-            Cue patch actions
+            Actions for patching a cue of an older version (will be performed when loading the MD script from a save).
+            Patches are applied to waiting, active or complete cues (see state attribute).
+            This includes library users and instances, except for completed instances that have already been deleted.
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
           <xs:group ref="actions" />
+          <xs:attribute name="sinceversion" use="required" type="xs:positiveInteger">
+            <xs:annotation>
+              <xs:documentation>
+                Cue version at which this patch element was added (it will only be applied when loading a cue of an older version)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="state">
+            <xs:annotation>
+              <xs:documentation>
+                Required state that this cue must be in for this patch to be applied (default is complete)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="complete">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Apply patch only if this cue is complete (default)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="waiting">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Apply patch only if this cue is waiting (conditions are being checked)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="active">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Apply patch only if this cue is active (not complete yet because of a delay)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
           <xs:attribute name="comment" type="comment" />
         </xs:complexType>
       </xs:element>

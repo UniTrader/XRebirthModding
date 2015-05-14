@@ -156,6 +156,15 @@
     <xs:restriction base="expression" />
   </xs:simpleType>
 
+  <xs:simpleType name="holomap">
+    <xs:annotation>
+      <xs:documentation>
+        HoloMap
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="expression" />
+  </xs:simpleType>
+
   <xs:simpleType name="actor">
     <xs:annotation>
       <xs:documentation>
@@ -511,6 +520,15 @@
     <xs:annotation>
       <xs:documentation>
         Is the station connected to a mass traffic network?
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="boolean" />
+  </xs:simpleType>
+
+  <xs:simpleType name="presentation">
+    <xs:annotation>
+      <xs:documentation>
+        Is the cluster used for presentation scenes e.g. cutscenes?
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="boolean" />
@@ -1949,6 +1967,39 @@
     </xs:union>
   </xs:simpleType>
 
+  <xs:simpleType name="infolibrarytypelookup">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="shiptypes_xl" />
+      <xs:enumeration value="shiptypes_l" />
+      <xs:enumeration value="shiptypes_m" />
+      <xs:enumeration value="shiptypes_s" />
+      <xs:enumeration value="shiptypes_xs" />
+      <xs:enumeration value="stationtypes" />
+      <xs:enumeration value="moduletypes_production" />
+      <xs:enumeration value="moduletypes_build" />
+      <xs:enumeration value="moduletypes_storage" />
+      <xs:enumeration value="moduletypes_efficiency" />
+      <xs:enumeration value="moduletypes_defence" />
+      <xs:enumeration value="moduletypes_communication" />
+      <xs:enumeration value="moduletypes_dronedock" />
+      <xs:enumeration value="weapontypes_primary" />
+      <xs:enumeration value="weapontypes_secondary" />
+      <xs:enumeration value="turrettypes" />
+      <xs:enumeration value="shieldgentypes" />
+      <xs:enumeration value="enginetypes" />
+      <xs:enumeration value="scannertypes" />
+      <xs:enumeration value="marines" />
+      <xs:enumeration value="unique_npcs" />
+      <xs:enumeration value="wares" />
+      <xs:enumeration value="productionmethods" />
+      <xs:enumeration value="inventory_wares" />
+      <xs:enumeration value="races" />
+      <xs:enumeration value="factions" />
+      <xs:enumeration value="licences" />
+      <xs:enumeration value="entitytypes" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="dockpopulationtypelookup">
     <xs:restriction base="xs:string">
       <xs:enumeration value="build" />
@@ -2095,6 +2146,69 @@
     </xs:union>
   </xs:simpleType>
 
+  <xs:simpleType name="levellookup">
+    <xs:annotation>
+      <xs:documentation>
+        Difficulty level
+      </xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="expression">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="level.trivial">
+            <xs:annotation>
+              <xs:documentation>
+                Trivial difficulty level
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="level.veryeasy">
+            <xs:annotation>
+              <xs:documentation>
+                Very easy difficulty level
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="level.easy">
+            <xs:annotation>
+              <xs:documentation>
+                Easy difficulty level
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="level.medium">
+            <xs:annotation>
+              <xs:documentation>
+                Medium difficulty level
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="level.hard">
+            <xs:annotation>
+              <xs:documentation>
+                Hard difficulty level
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="level.veryhard">
+            <xs:annotation>
+              <xs:documentation>
+                Very hard difficulty level
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="level.impossible">
+            <xs:annotation>
+              <xs:documentation>
+                Impossible difficulty level
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
   <xs:simpleType name="logcategorylookup">
     <xs:annotation>
       <xs:documentation>
@@ -2217,7 +2331,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
-          <xs:enumeration value="formationshape.random">
+          <xs:enumeration value="formationshape.randomshape">
             <xs:annotation>
               <xs:documentation>
                 param = range (length or vector)
@@ -2227,7 +2341,7 @@
           <xs:enumeration value="formationshape.rotatingcircle">
             <xs:annotation>
               <xs:documentation>
-                param = radius, param2 = period
+                param = radius, param2 = period (default 10s)
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -2425,6 +2539,16 @@
     </xs:union>
   </xs:simpleType>
 
+  <xs:simpleType name="remotetransportlookup">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ammo" />
+      <xs:enumeration value="inventory" />
+      <xs:enumeration value="passenger" />
+      <xs:enumeration value="playerdrone" />
+      <xs:enumeration value="units" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <!-- ===== Attribute groups ==== -->
 
   <!-- Base attribute group for filters, does not contain class attribute and class-specific attributes. They are added in sub-groups where required. -->
@@ -2561,6 +2685,13 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="missionactor" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Is the actor a mission actor?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="representative" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
@@ -2575,6 +2706,10 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="findext_cluster">
+    <xs:attribute name="presentation" type="presentation" />
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findext_station">
@@ -2618,6 +2753,7 @@
 
   <xs:attributeGroup name="findarbitrary">
     <xs:attributeGroup ref="find" />
+    <xs:attributeGroup ref="findext_cluster" />
     <xs:attributeGroup ref="findext_damaged" />
     <xs:attributeGroup ref="findext_ship" />
     <xs:attributeGroup ref="findext_station" />
@@ -2636,6 +2772,11 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="findcluster">
+    <xs:attributeGroup ref="find" />
+    <xs:attributeGroup ref="findext_cluster" />
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findobject">
@@ -2726,6 +2867,13 @@
       <xs:annotation>
         <xs:documentation>
           Is the ship capturable? (default is based on class)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="sellable" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Is the ship sellable? (default is true)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -3025,6 +3173,34 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="angle" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Angle tolerance from the specified direction
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="direction" type="quadrantlookup">
+      <xs:annotation>
+        <xs:documentation>
+          Direction for safepos checks. Based on the orientation of the 'directionobject' if provided. Can be combined with 'direction2'
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="direction2" type="quadrantlookup">
+      <xs:annotation>
+        <xs:documentation>
+          Direction for safepos checks. Based on the orientation of the 'directionobject' if provided. Can be combined with 'direction'
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="directionobject" type="object">
+      <xs:annotation>
+        <xs:documentation>
+          Direction object for safepos checks. If direction is not specified, the direction is considered to be from the base position to this object
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attributeGroup ref="position" />
     <xs:attribute name="ignored" type="object" />
   </xs:attributeGroup>
@@ -3272,6 +3448,7 @@
       <xs:element name="match_content" type="matchcontent"/>
       <xs:element name="match_context" type="matchcontext"/>
       <xs:element name="match_distance" type="matchdistance"/>
+      <xs:element name="match_gate_distance" type="matchgatedistance"/>
       <xs:element name="match_hull" type="matchhull"/>
       <xs:element name="match_max_hull" type="matchmaxhull"/>
       <xs:element name="match_shield" type="matchshield"/>
@@ -3355,6 +3532,7 @@
       <xs:element name="match_content" type="matchcontent"/>
       <xs:element name="match_context" type="matchcontext"/>
       <xs:element name="match_distance" type="matchdistance"/>
+      <xs:element name="match_gate_distance" type="matchgatedistance"/>
       <xs:element name="match_hull" type="matchhull"/>
       <xs:element name="match_max_hull" type="matchmaxhull"/>
       <xs:element name="match_shield" type="matchshield"/>
@@ -3533,6 +3711,38 @@
       <xs:annotation>
         <xs:documentation>
           Maximal distance (max distance is not compared if not supplied)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <xs:complexType name="matchgatedistance">
+    <xs:annotation>
+      <xs:documentation>
+        Match by distance by jumpgates. Calculation based on the sectors of the objects. Checking distance of clusters will check between two random sectors within them.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="min" type="range" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Min distance by jumpgates
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="max" type="range" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Max distance by jumpgates
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="object" type="expression" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Origin object for the distance calculation. Passing cluster will base the check on a random sector.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -4505,6 +4715,28 @@
             <xs:choice minOccurs="0" maxOccurs="unbounded">
               <xs:element name="macro">
                 <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="fillpercent">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Fill percentage
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:attributeGroup ref="range" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="fillamount">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Fill amount
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:attributeGroup ref="range" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
                   <xs:attribute name="ref" type="macroname" />
                   <xs:attributeGroup ref="random" />
                 </xs:complexType>
@@ -5036,6 +5268,19 @@
         <xs:annotation>
           <xs:documentation>
             Event for when a builder platform finishes building (object = builder platform/ship, param = build module, param2 = buildplan)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="buildmodule" type="buildmodule" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_build_cancelled">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when a builder platform cancels building (object = builder platform/ship, param = build module, param2 = buildplan)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -5877,6 +6122,20 @@
           <xs:attributeGroup ref="eventcondition" />
           <xs:attributeGroup ref="objecteventsource" />
           <xs:attribute name="target" type="targetcomponent" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_money_updated">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the entities money gets updated (object = entity of the account, param = oldamount, param2 = newamount)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="oldamount" type="expression" />
+          <xs:attribute name="newamount" type="expression" />
         </xs:complexType>
       </xs:element>
 
@@ -6752,6 +7011,78 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="event_player_remote_transport_finished">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the player receives a remote transport drone and at least one item is transferred (param = transport type string, param2 = list of received wares, param3 = corresponding list of amounts)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="type">
+            <xs:annotation>
+              <xs:documentation>
+                Transport type string
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:union memberTypes="expression">
+                <xs:simpleType>
+                  <xs:restriction base="expression">
+                    <xs:enumeration value="'ammo'" />
+                    <xs:enumeration value="'inventory'" />
+                    <xs:enumeration value="'playerdrone'" />
+                    <xs:enumeration value="'unit'" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:union>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_player_remote_transport_aborted">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when a remote transport to the player ends and at least one item cannot be transferred to the player (param = transport type string, param2 = list of lost wares, param3 = corresponding list of amounts)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="type">
+            <xs:annotation>
+              <xs:documentation>
+                Transport type string
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:union memberTypes="expression">
+                <xs:simpleType>
+                  <xs:restriction base="expression">
+                    <xs:enumeration value="'ammo'" />
+                    <xs:enumeration value="'inventory'" />
+                    <xs:enumeration value="'playerdrone'" />
+                    <xs:enumeration value="'unit'" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:union>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_autopilot_target_set">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the player has engaged the autopilot (param = target, param2 = next target on the way to target which may be identical to target)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="target" type="object" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="event_scan_aborted">
         <xs:annotation>
           <xs:documentation>
@@ -7544,6 +7875,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="result" type="lvaluename">
+            <xs:annotation>
+              <xs:documentation>
+                Whether the actor was successfully added
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -7556,6 +7894,13 @@
         <xs:complexType>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="actor" type="actor" use="required" />
+          <xs:attribute name="result" type="lvaluename">
+            <xs:annotation>
+              <xs:documentation>
+                Whether the actor was successfully added
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -7612,6 +7957,13 @@
           <xs:attributeGroup ref="action" />
           <xs:attribute name="buildmodule" type="buildmodule" use="required" />
           <xs:attribute name="buildplan" type="expression" use="required" />
+          <xs:attribute name="updatebuild" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Update this build in low attention (required when waiting for build events)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -8323,6 +8675,53 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="transfer_remote_inventory_to">
+        <xs:annotation>
+          <xs:documentation>
+            Transfer and convert all inventory of entity to target entity. In case of the player, the target may receive &lt;event_player_remote_transport_finished&gt; and/or &lt;event_player_remote_transport_aborted&gt;.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="entity" type="entity" use="required" />
+          <xs:attribute name="target" type="entity" use="required" />
+          <xs:attribute name="type" type="remotetransportlookup">
+            <xs:annotation>
+              <xs:documentation>
+                Inventory type used for converting the inventory. Defaults to the internal value that the remote transport entity started with.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="result" type="lvalueexpression">
+            <xs:annotation>
+              <xs:documentation>
+                This value will be set to true if the transfer was at least partially successful, otherwise it is set to false
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="abort_remote_transport">
+        <xs:annotation>
+          <xs:documentation>
+            Abort the remote transport of inventory of entity to the target entity. In case of the player, the target may receive &lt;event_player_remote_transport_aborted&gt;.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="entity" type="entity" use="required" />
+          <xs:attribute name="target" type="entity" use="required" />
+          <xs:attribute name="type" type="remotetransportlookup">
+            <xs:annotation>
+              <xs:documentation>
+                Inventory type used for converting the inventory. Defaults to the internal value that the remote transport entity started with.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="add_licence">
         <xs:annotation>
           <xs:documentation>
@@ -8992,6 +9391,18 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="dismiss_pilot">
+        <xs:annotation>
+          <xs:documentation>
+            Remove the pilot control entity of the specified object
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="attach_object_to_target">
         <xs:annotation>
           <xs:documentation>
@@ -9076,6 +9487,34 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="change_relation_on_boarding">
+        <xs:annotation>
+          <xs:documentation>
+            Change relation of the boarded object towards the boarder
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="boarder" type="object" use="required" />
+          <xs:attribute name="boarded" type="object" use="required" />
+          <xs:attribute name="attempt" type="booleanexpression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Is this a boarding attempt or the end of a successful boarding operation?
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="result" type="lvalueexpression">
+            <xs:annotation>
+              <xs:documentation>
+                This value will be set to true if there was an effect on the relation (or at least the relation boost decay), otherwise it is set to false.
+                The action can fail in several cases, e.g. if attacker and victim are of the same faction.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="change_relation_on_kill">
         <xs:annotation>
           <xs:documentation>
@@ -9129,7 +9568,7 @@
       <xs:element name="check_is_area_obstructed">
         <xs:annotation>
           <xs:documentation>
-            Check if a ship is inside the designated area
+            Check if a ship is inside the designated area. Ignores mass traffic (as long as it's in the lane) and ships that have collision avoidance currently disabled (due to docking or parking).
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -9143,6 +9582,49 @@
           <xs:attribute name="macro" type="macro" use="required" />
           <xs:attribute name="excluded" type="ship" />
           <xs:attribute name="name" type="lvaluename" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="add_blocked_area">
+        <xs:annotation>
+          <xs:documentation>
+            Adds a blocked area to a zone. Stationary ships inside the zone will be moved outside it, and current move_to targets inside it are invalidated. Ships that are ignored in check_is_area_obstructed are ignored here as well. Always be sure to remove any blocked areas as soon as they are no longer needed.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="position" type="position" minOccurs="0" maxOccurs="1" />
+            <xs:element name="rotation" type="rotation" minOccurs="0" maxOccurs="1" />
+            <xs:element name="boundingbox" type="boundingbox" minOccurs="1" maxOccurs="1" />
+          </xs:sequence>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="zone" type="zone" use="required" />
+          <xs:attribute name="blocker" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Used to associate this area with the user
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="remove_blocked_area">
+        <xs:annotation>
+          <xs:documentation>
+            Removes a blocked area from a zone.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="zone" type="zone" use="required" />
+          <xs:attribute name="blocker" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Used to associate this area with the user
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -9829,10 +10311,17 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="playeronly" type="boolean" use="optional">
+          <xs:attribute name="playeronly" type="boolean" use="required">
             <xs:annotation>
               <xs:documentation>
                 Should this tradeoffer only be available to the player faction? (defaults to true, will allow *all* factions to trade if set to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="mission" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Is the trade for a mission (defaults to false)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -9994,6 +10483,13 @@
             <xs:annotation>
               <xs:documentation>
                 Either a Dockslot, DockingBay component or Container component to spawn in (takes precedence from zone)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="mission" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Is the ship for a mission (defaults to false)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -10340,6 +10836,18 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="disable_collision_response">
+        <xs:annotation>
+          <xs:documentation>
+            Does all collision checks but disables all reaction to the checks = no collision. Only works for objects in visible attention.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="dock">
         <xs:annotation>
           <xs:documentation>
@@ -10583,11 +11091,23 @@
         </xs:annotation>
         <xs:complexType>
           <xs:all>
-            <xs:element name="amount" minOccurs="0" >
+            <xs:element name="amount" type="rangefilter" minOccurs="0" >
+              <xs:annotation>
+                <xs:documentation>
+                  Filter by the amount in the trade, not including reservations
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="offeramount" minOccurs="0" >
               <xs:complexType>
+                <xs:annotation>
+                  <xs:documentation>
+                    Filter by the amount in the trade in addition to the amount resereved
+                  </xs:documentation>
+                </xs:annotation>
                 <xs:complexContent>
                   <xs:extension base="rangefilter">
-                    <xs:attribute name="entity" type="entity">
+                    <xs:attribute name="entity" type="entity" >
                       <xs:annotation>
                         <xs:documentation>
                           (optional) entity that will do the trading. If specified this MUST be the entity of the tradepartner object that does ware reservations.
@@ -10655,6 +11175,20 @@
             <xs:annotation>
               <xs:documentation>
                 (optional) does this trade require unbundling (convert ware -> ammo)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="excludemissions" type="boolean" >
+            <xs:annotation>
+              <xs:documentation>
+                (optional) exclude mission trade offers? (defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="usereservations" type="boolean" >
+            <xs:annotation>
+              <xs:documentation>
+                (optional) take reservations into account when checking if a trade is empty? (defaults to true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -10804,7 +11338,7 @@
           <xs:complexContent>
             <xs:extension base="matchbase">
               <xs:attributeGroup ref="action" />
-              <xs:attributeGroup ref="find" />
+              <xs:attributeGroup ref="findcluster" />
               <xs:attribute name="multiple" type="findmultiple" />
               <xs:attribute name="required" type="findrequired" />
               <xs:attribute name="name" type="lvaluename" />
@@ -11230,8 +11764,20 @@
         </xs:annotation>
         <xs:complexType>
           <xs:all>
-            <xs:element name="amount" minOccurs="0" >
+            <xs:element name="amount" type="rangefilter" minOccurs="0" >
+              <xs:annotation>
+                <xs:documentation>
+                  Filter by the amount in the trade, not including reservations
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="offeramount" minOccurs="0" >
               <xs:complexType>
+                <xs:annotation>
+                  <xs:documentation>
+                    Filter by the amount in the trade in addition to the amount resereved
+                  </xs:documentation>
+                </xs:annotation>
                 <xs:complexContent>
                   <xs:extension base="rangefilter">
                     <xs:attribute name="entity" type="entity" >
@@ -11302,6 +11848,20 @@
             <xs:annotation>
               <xs:documentation>
                 (optional) does this trade require unbundling (convert ware -> ammo)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="excludemissions" type="boolean" >
+            <xs:annotation>
+              <xs:documentation>
+                (optional) exclude mission trade offers? (defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="usereservations" type="boolean" >
+            <xs:annotation>
+              <xs:documentation>
+                (optional) take reservations into account when checking if a trade is empty? (defaults to true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11578,6 +12138,27 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="get_jump_cost">
+        <xs:annotation>
+          <xs:documentation>
+            Get fuel cost for jumping ship from start to end
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="start" type="sector" use="required" />
+          <xs:attribute name="end" type="sector" use="required" />
+          <xs:attribute name="ship" type="ship" use="required" />
+          <xs:attribute name="result" type="lvaluename" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Amount of fuelcells required to make the trip. Will be null if the ship has no jumpdrive.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="get_jump_path">
         <xs:annotation>
           <xs:documentation>
@@ -11793,6 +12374,53 @@
           <xs:attribute name="position" type="lvaluename" use="required" />
           <xs:attribute name="rotation" type="lvaluename" />
           <xs:attribute name="quadrant" type="lvaluename" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="get_ware_reservation">
+        <xs:annotation>
+          <xs:documentation>
+            Get reserved space for ware (optionally entity specific) on an object.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="container" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The container to query for reserved amounts of the specified ware.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="entity" type="entity">
+            <xs:annotation>
+              <xs:documentation>
+                Only count reservations for a specific entity. If 'mission' is true, the entity must be player owned and will return all player owned mission reservations (optional)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="mission" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Whether the reservation is for a mission trade (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="virtual" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                Whether to look at the "real" or the "virtual" dataset - virtual reservations are IGNORED for trades. (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="ware" type="ware" use="required" />
+          <xs:attribute name="result" type="lvaluename" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The amount that is reserved for this entity (or all entities).
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -12212,6 +12840,13 @@
             <xs:annotation>
               <xs:documentation>
                 Show cutscene in event monitor?
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="caption" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Optional caption text string. Requires eventmonitor=&quot;true&quot;.
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -12789,6 +13424,33 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="share_actor_account">
+        <xs:annotation>
+          <xs:documentation>
+            Tells this actor to use the account of otherobject. Optionally can transfer the money in the account to the entity supplied as transferto (may be the same as otherobject).
+            If otherobject and transferto are invalid / omitted this behaves like &lt;remove_actor_account /&gt;
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="actor" type="actor" use="required" />
+          <xs:attribute name="otherobject" type="actor">
+            <xs:annotation>
+              <xs:documentation>
+                (optional) The entity whose account to share, will default to faction account of transferto entity if omitted!
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="transferto" type="actor">
+            <xs:annotation>
+              <xs:documentation>
+                (optional) The entity to which any money in the actors account should be transferred. (money will be lost if omitted)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="set_actor_max_budget">
         <xs:annotation>
           <xs:documentation>
@@ -12824,6 +13486,19 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="start_actor_transport">
+        <xs:annotation>
+          <xs:documentation>
+            Sends an actor to the target (if any, otherwise the actor will be killed in a save distance)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="actor" type="actor" use="required" />
+          <xs:attribute name="target" type="expression" use="optional" />
         </xs:complexType>
       </xs:element>
 
@@ -12942,10 +13617,47 @@
           <xs:attribute name="capturable" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
-                Is the object capturable? (default is true)
+                Is the object capturable? (default is based on class)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_object_boarder">
+        <xs:annotation>
+          <xs:documentation>
+            Set the boarder of the object
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The object to be boarded
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="boarder" type="object" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The object performing the boarding operation
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="remove_object_boarder">
+        <xs:annotation>
+          <xs:documentation>
+            Remove the association between the object and its boarder
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required"/>
         </xs:complexType>
       </xs:element>
 
@@ -12962,6 +13674,25 @@
             <xs:annotation>
               <xs:documentation>
                 Is the object visible? (default is true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_object_sellable">
+        <xs:annotation>
+          <xs:documentation>
+            Set the object to be sellable
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="sellable" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Is the object sellable? (default is true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -13103,6 +13834,98 @@
           <xs:attribute name="object" type="object" use="required" />
           <xs:attributeGroup ref="random" />
           <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="clear_remote_transport_target">
+        <xs:annotation>
+          <xs:documentation>
+            Clears the current remote transport target.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The drone to clear the remote transport target for (MUST be of class Drone)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_remote_transport_target">
+        <xs:annotation>
+          <xs:documentation>
+            Set the target object for a remote transport drone. When the drone collides with this target, it will signal the drone with param 'remote_transport_arrived'. See also disable_collision_response.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The drone to set the remote transport target for (MUST be of class Drone)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="target" type="object" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="register_player_remote_transport">
+        <xs:annotation>
+          <xs:documentation>
+            Notify the player object that this drone is coming to deliver items or an NPC.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The drone to register for delivery to the player (MUST be of class Drone)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="unregister_player_remote_transport">
+        <xs:annotation>
+          <xs:documentation>
+            Notify the player object that this drone is no longer coming to deliver items or an NPC.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The drone to unregister (MUST be of class Drone)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="get_num_incoming_remote_transport_items">
+        <xs:annotation>
+          <xs:documentation>
+            Retrieve the number of remote transport items being delivered to the player.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="type" type="remotetransportlookup" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Remote transport inventory type
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="result" type="lvaluename" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -13481,6 +14304,8 @@
         <xs:complexType>
           <xs:sequence>
             <xs:element name="position" type="position" minOccurs="0" maxOccurs="1" />
+            <xs:element name="rotation" type="rotation" minOccurs="0" maxOccurs="1" />
+            <xs:element name="lookat" type="position" minOccurs="0" maxOccurs="1" />
           </xs:sequence>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="object" type="object" use="required" />
@@ -14081,6 +14906,7 @@
                 Notification detail text or table.
                 Either a single string, or a list of strings for multi-line details, or a list of row definitions for the tabular layout.
                 A table row is [ icon, text1, text2, text3, text4, text5 ], null values are allowed.
+                A valid text cell is either null, a string or [ string, r, g, b ], r/g/b being color values between 0 and 255.
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -14613,7 +15439,14 @@
           <xs:attribute name="amount" type="expression">
             <xs:annotation>
               <xs:documentation>
-                New amount for the trade (optional)
+                New amount for the trade (optional, should already be adjusted to be the amount we can afford)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="desiredamount" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                New desiredamount for the trade (optional, how much we *really* want, ignoring financial constraints)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -14764,6 +15597,7 @@
         <xs:complexType>
           <xs:attributeGroup ref="action"/>
           <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="buildmodule" type="expression" use="required" />
           <xs:attribute name="macro" type="macro" use="required" />
           <xs:attribute name="sequence" type="expression" use="required">
             <xs:annotation>
@@ -14848,7 +15682,6 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          
         </xs:complexType>
       </xs:element>
 
@@ -15020,6 +15853,54 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="add_trade_subscription">
+        <xs:annotation>
+          <xs:documentation>
+            Add permanent player subscription to trade offer updates of the specified object. This also immediately adds the current trade offers to the trade memory.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="add_encyclopedia_entry">
+        <xs:annotation>
+          <xs:documentation>
+            Add an entry of an item id into the library of type.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="type" type="infolibrarytypelookup" use="required" />
+          <xs:attribute name="item" type="expression" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="start_player_autopilot">
+        <xs:annotation>
+          <xs:documentation>
+            Start playership autopilot to the selected destination (follow for moving targets).
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="destination" type="object" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="stop_player_autopilot">
+        <xs:annotation>
+          <xs:documentation>
+            Stop playership autopilot.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
         </xs:complexType>
       </xs:element>
 

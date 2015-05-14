@@ -258,6 +258,23 @@
                   <xs:complexType>
                     <xs:attribute name="invincible" type="boolean" />
                     <xs:attribute name="rebuild" type="boolean" />
+                    <xs:attribute name="subordinate" type="boolean" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="time">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Minimum job processing interval with +/- 25% random variation
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:attribute name="interval" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:double">
+                          <xs:minExclusive value="0" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
                   </xs:complexType>
                 </xs:element>
                 <xs:element name="units">
@@ -277,6 +294,39 @@
                         </xs:complexType>
                       </xs:element>
                     </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="expirationtime">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Job expiration time (affects script property .jobexpired). Some time after destruction, the object will be re-created by job engine.
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:attribute name="min" use="required">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Minimum expiration time in seconds
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:double">
+                          <xs:minExclusive value="0" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="max">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Maximum expiration time in seconds
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="xs:double">
+                          <xs:minExclusive value="0" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
                   </xs:complexType>
                 </xs:element>
               </xs:choice>
@@ -306,6 +356,10 @@
                           <xs:complexType>
                             <xs:attribute name="job" use="required" />
                           </xs:complexType>
+                          <xs:keyref name="subordinate_job" refer="job_id">
+                            <xs:selector xpath="." />
+                            <xs:field xpath="@job" />
+                          </xs:keyref>
                         </xs:element>
                       </xs:sequence>
                     </xs:complexType>

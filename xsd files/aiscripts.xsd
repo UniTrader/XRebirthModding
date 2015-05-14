@@ -77,6 +77,10 @@
           <xs:enumeration value="flightbehaviour.loop" />
           <xs:enumeration value="flightbehaviour.dock" />
           <xs:enumeration value="flightbehaviour.pickupdrone" />
+          <xs:enumeration value="flightbehaviour.observe" />
+          <xs:enumeration value="flightbehaviour.mining" />
+          <xs:enumeration value="flightbehaviour.remotetransportdrone" />
+          <xs:enumeration value="flightbehaviour.dock_highspeed" />
         </xs:restriction>
       </xs:simpleType>
     </xs:union>
@@ -101,6 +105,8 @@
     </xs:union>
   </xs:simpleType>
 
+  <!-- ===== Commands ==== -->
+  
   <xs:simpleType name="commandlookup">
     <xs:annotation>
       <xs:documentation>
@@ -204,7 +210,14 @@
           <xs:enumeration value="command.move">
             <xs:annotation>
               <xs:documentation>
-                Move Command (param = the object/zone to fly to)
+                Move Command for object (param = the object to fly to)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="command.movetozone">
+            <xs:annotation>
+              <xs:documentation>
+                Move Command for zone (param = the zone to fly to)
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -257,10 +270,166 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
+		  <xs:enumeration value="command.searchresources">
+            <xs:annotation>
+              <xs:documentation>
+                Search for Resources Command
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+		  <xs:enumeration value="command.searchtrades">
+            <xs:annotation>
+              <xs:documentation>
+                Search for Trades Command
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="command.trade">
             <xs:annotation>
               <xs:documentation>
                 Trade Command (param = the object to trade with)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+		  <xs:enumeration value="command.wait">
+            <xs:annotation>
+              <xs:documentation>
+                Wait Command
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <!-- ===== Command Actions ==== -->
+
+  <xs:simpleType name="commandactionlookup">
+    <xs:annotation>
+      <xs:documentation>
+        Command action
+      </xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="expression">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="commandaction.standingby">
+            <xs:annotation>
+              <xs:documentation>
+                Stand By Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.calculating">
+            <xs:annotation>
+              <xs:documentation>
+                Calculating parameters action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.repairingto">
+            <xs:annotation>
+              <xs:documentation>
+                Reparing to component Command action (param = component to repair)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.repairchecking">
+            <xs:annotation>
+              <xs:documentation>
+                Stand By Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.scanningto">
+            <xs:annotation>
+              <xs:documentation>
+                Scanning to component Command action (param = component to scan)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.searchingresources">
+            <xs:annotation>
+              <xs:documentation>
+                Searching resources Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.executingtrade">
+            <xs:annotation>
+              <xs:documentation>
+                Executing Trade Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.docking">
+            <xs:annotation>
+              <xs:documentation>
+                Docking Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.undocking">
+            <xs:annotation>
+              <xs:documentation>
+                Undocking (also detach from masstraffic) Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.waitingtodock">
+            <xs:annotation>
+              <xs:documentation>
+                Waiting for a free dock Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.attacking">
+            <xs:annotation>
+              <xs:documentation>
+                Attacking Enemies Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.attackingto">
+            <xs:annotation>
+              <xs:documentation>
+                Attacking to Enemy Command action (param = enemy object)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.flying">
+            <xs:annotation>
+              <xs:documentation>
+                Flying Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.flyingto">
+            <xs:annotation>
+              <xs:documentation>
+                Flying to zone Command action (param = destination zone)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.jumping">
+            <xs:annotation>
+              <xs:documentation>
+                Jumping Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.searchingtrades">
+            <xs:annotation>
+              <xs:documentation>
+                Searching for trades Command action (no param)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="commandaction.waitingdrones">
+            <xs:annotation>
+              <xs:documentation>
+                Waiting for drones to dock (detach from masstraffic) Command action (no param)
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -479,10 +648,24 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="mission" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Whether the reservation is for a mission trade (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="replace" type="boolean">
             <xs:annotation>
               <xs:documentation>
                 Whether amount should be added to any existing reservation or replace it. (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="virtual" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                Whether to look at the "real" or the "virtual" dataset - virtual reservations are IGNORED for trades. (optional, defaults to false)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -532,6 +715,20 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="mission" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Whether the reservation is for a mission trade (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="virtual" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Whether to look at the "real" or the "virtual" dataset - virtual reservations are IGNORED for trades. (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -558,6 +755,13 @@
             <xs:annotation>
               <xs:documentation>
                 If docking process should happen immediately, the drone will be teleported to destination(optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -613,6 +817,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="result" type="lvaluename" />
         </xs:complexType>
       </xs:element>
@@ -652,7 +863,7 @@
           <xs:attribute name="custom" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
-                Is this using a trade(offer) that is not a Production or Mission TradeOffer? (e.g. taken from a Ships' shopping list). Note that you must specify an amount if ware reservations are involved!
+                Is this using a trade(offer) that is not a Production or Script TradeOffer? (e.g. taken from a Ships' shopping list). Note that you must specify an amount if ware reservations are involved!
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -660,6 +871,13 @@
             <xs:annotation>
               <xs:documentation>
                 Should the ware be unbundled on transfer? (turn ware into ammo for the recipient, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -710,6 +928,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -742,10 +967,24 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="flightbehaviour" type="fbehaviourlookup">
+            <xs:annotation>
+              <xs:documentation>
+                Flight behaviour overrride, defaults to flightbehaviour.dock
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="forcesteering" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
                 If this is true the ship will fly on steering flight control model (while in high attention), this is also implictely true if the ship is flying in a formation (defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -786,6 +1025,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -814,6 +1060,13 @@
             <xs:annotation>
               <xs:documentation>
                 If this is true the ship will fly on steering flight control model (while in high attention), this is also implictely true if the ship is flying in a formation (defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -866,6 +1119,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -906,6 +1166,13 @@
             <xs:annotation>
               <xs:documentation>
                 If this is true the ship will fly on steering flight control model (while in high attention), this is also implictely true if relativemovemt is true or the ship is flying in a formation (defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -966,6 +1233,13 @@
             <xs:annotation>
               <xs:documentation>
                 If this is true the ship will fly on steering flight control model (while in high attention), this is also implictely true if relativemovemt is true or the ship is flying in a formation (defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -1039,6 +1313,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -1085,6 +1366,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="result" type="lvaluename" />
         </xs:complexType>
       </xs:element>
@@ -1104,7 +1392,7 @@
         <xs:element name="resume">
         <xs:annotation>
           <xs:documentation>
-            Resume at specified label
+            Resume at specified label. This is only supported in &lt;actions&gt; and &lt;init&gt;. In global interrupts, use &lt;run_interrupt_script&gt; or &lt;abort_called_scripts&gt; instead.
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -1116,7 +1404,7 @@
       <xs:element name="return">
         <xs:annotation>
           <xs:documentation>
-            Return to caller
+            Return to caller. In interrupts and in any action sequences other than &lt;actions&gt;, this action does not return to the caller and just aborts the current sequence of actions.
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -1184,6 +1472,13 @@
           <xs:attributeGroup ref="blockingaction" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="wait" type="boolean" />
+          <xs:attribute name="commandaction" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If the current command action should be override with this action (optional, defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -1387,6 +1682,25 @@
             <xs:annotation>
               <xs:documentation>
                 Secondary command parameter (meaning depends on command)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+	  
+      <xs:element name="set_command_action">
+        <xs:annotation>
+          <xs:documentation>
+            Sets the current command action for the script's entity. The command action data will remain valid until either it's overwritten or this script ends. It becomes valid again automatically when a called script returns. The following blocking actions can override it: move_to actions, jump, ....
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="commandaction" type="commandactionlookup" use="required" />
+          <xs:attribute name="param" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Primary command action parameter (meaning depends on command action)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -1842,6 +2156,24 @@
           </xs:annotation>
           <xs:complexType>
             <xs:group ref="actions" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="patch" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              Non-blocking AI script actions for patching a script of an older version (will be performed when loading the script from a save)
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:group ref="actions" />
+            <xs:attribute name="sinceversion" use="required" type="xs:positiveInteger">
+              <xs:annotation>
+                <xs:documentation>
+                  Script version at which this patch element was added (it will only be applied when loading a script of an older version)
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>
