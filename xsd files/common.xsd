@@ -47,7 +47,7 @@
   <!-- Expressions - also checks string 'delimiters', strings may contain anything, even \' -->
   <xs:simpleType name="expression">
     <xs:restriction base="xs:string">
-      <!--               ([ a non-string character                    ]|(' any string  '))+ -->
+      <!--               ([ a non-string character                      ]|(' any string  '))+ -->
       <xs:pattern value="([A-Za-z0-9_$!?@=&lt;&gt;,\.\+\-\*/%\^(){}\[\] ]|('([^'\\]|\\.)*'))+" />
     </xs:restriction>
   </xs:simpleType>
@@ -453,6 +453,15 @@
     <xs:restriction base="expression" />
   </xs:simpleType>
 
+  <xs:simpleType name="table">
+    <xs:annotation>
+      <xs:documentation>
+        Table
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="expression" />
+  </xs:simpleType>
+
   <xs:simpleType name="findmultiple">
     <xs:annotation>
       <xs:documentation>
@@ -474,7 +483,17 @@
   <xs:simpleType name="findrecursive">
     <xs:annotation>
       <xs:documentation>
-        If true then the search does not stop at contained objects, but these objects are searched as well (default is false)
+        If true then the search does not stop at contained objects, but these objects and their sub-components are searched recursively as well (default is false)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="boolean" />
+  </xs:simpleType>
+
+  <xs:simpleType name="findincludeobjects">
+    <xs:annotation>
+      <xs:documentation>
+        If true then the search will include contained objects (of class object, e.g. docked ships). Sub-components of these objects are not included, unless the recursive attribute is set.
+        The recursive attribute takes precedence over includeobjects. Default is false.
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="boolean" />
@@ -659,6 +678,18 @@
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="expression" />
+  </xs:simpleType>
+
+  <xs:simpleType name="checkeventsource">
+    <xs:annotation>
+      <xs:documentation>
+        Produce an error message if the provided event object does not exist? Default is true.
+        NOTE: If the event object is a variable or a changeable property, changing it at a later time has no direct effect on this event condition,
+        i.e. it is not re-enabled automatically. It is only updated under certain conditions, e.g. when loading a savegame or when
+        the event condition is restarted explicitly (resetting MD cue or starting AI script).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="boolean" />
   </xs:simpleType>
 
   <!-- ===== Enumeration simple types ===== -->
@@ -1106,6 +1137,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
+          <xs:enumeration value="faction.criminal">
+            <xs:annotation>
+              <xs:documentation>
+                Criminal
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="faction.enemy">
             <xs:annotation>
               <xs:documentation>
@@ -1208,6 +1246,13 @@
             <xs:annotation>
               <xs:documentation>
                 Reivers
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="faction.smuggler">
+            <xs:annotation>
+              <xs:documentation>
+                Smuggler
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -2834,6 +2879,24 @@
     </xs:union>
   </xs:simpleType>
 
+  <xs:simpleType name="waretransportlookup">
+    <xs:union memberTypes="expression">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="waretransport.container" />
+          <xs:enumeration value="waretransport.bulk" />
+          <xs:enumeration value="waretransport.liquid" />
+          <xs:enumeration value="waretransport.passenger" />
+          <xs:enumeration value="waretransport.equipment" />
+          <xs:enumeration value="waretransport.inventory" />
+          <xs:enumeration value="waretransport.energy" />
+          <xs:enumeration value="waretransport.fuel" />
+          <xs:enumeration value="waretransport.ship" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
   <!-- ===== Attribute groups ==== -->
 
   <!-- Base attribute group for filters, does not contain class attribute and class-specific attributes. They are added in sub-groups where required. -->
@@ -3379,17 +3442,19 @@
     <xs:attribute name="object" type="expression">
       <xs:annotation>
         <xs:documentation>
-          Object (required if group attribute not supplied)
+          Event object (required if group attribute not supplied)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="group" type="expression">
       <xs:annotation>
         <xs:documentation>
-          Group of objects (required if object attribute not supplied)
+          Group of event objects (required if object attribute not supplied). The check attribute does not apply. The group is required to exist but may be empty.
+          Adding/removing group members is possible even after the event is set up.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="check" type="checkeventsource" />
   </xs:attributeGroup>
 
   <xs:attributeGroup name="condition">
@@ -3575,6 +3640,13 @@
     </xs:attribute>
     <xs:attributeGroup ref="position" />
     <xs:attribute name="ignored" type="object" />
+    <xs:attribute name="includefiringrange" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Avoid the firing range of turrets
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="createobjectsafepos">
@@ -3594,6 +3666,13 @@
     </xs:attribute>
     <xs:attributeGroup ref="position" />
     <xs:attribute name="ignored" type="object" />
+    <xs:attribute name="includefiringrange" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Avoid the firing range of turrets
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="orientation">
@@ -4791,7 +4870,14 @@
               <xs:attribute name="entity" type="entity">
                 <xs:annotation>
                   <xs:documentation>
-                    (optional) entity that will do the trading. If specified this MUST be the entity of the tradepartner object that does ware reservations.
+                    (optional) entity that will do the trading. If specified this MUST be the entity of the tradepartner object that does ware reservations. (defaults to tradenpc of tradepartner)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="tradepartner" type="container">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) tradepartner that will do the trading. If specified this MUST be the object controlled by the entity that does ware reservations. (defaults to controlled object of entity)
                   </xs:documentation>
                 </xs:annotation>
               </xs:attribute>
@@ -6044,7 +6130,7 @@
       <xs:element name="event_masstraffic_ship_removed">
         <xs:annotation>
           <xs:documentation>
-            Event for when a mass traffic ship is removed from a zone. if zone is provided (object = zone, param = mass traffic ship), else if object or group provided (object = mass traffic ship)
+            Event for when a mass traffic ship is removed from a zone. If zone is provided then it is the event object (object = zone, param = mass traffic ship), otherwise object or group must be provided (object = mass traffic ship)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -6477,6 +6563,25 @@
             </xs:annotation>
           </xs:attribute>
         </xs:complexType>
+      </xs:element>	  
+	  
+      <xs:element name="event_object_collided">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the specified object collides (object = colliding object, param =  other colliding object)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="otherobject" type="object" >
+            <xs:annotation>
+              <xs:documentation>
+                The other object involved in the collision
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
       </xs:element>
 
       <xs:element name="event_object_commander_set">
@@ -6487,6 +6592,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
+		  <xs:attributeGroup ref="objecteventsource" />
           <xs:attribute name="commander" type="object" />
           <xs:attribute name="previous" type="object">
             <xs:annotation>
@@ -6563,6 +6669,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="check" type="checkeventsource" />
         </xs:complexType>
       </xs:element>
 
@@ -6911,6 +7018,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="check" type="checkeventsource" />
         </xs:complexType>
       </xs:element>
 
@@ -8053,6 +8161,7 @@
           <xs:attributeGroup ref="eventcondition" />
           <xs:attribute name="zone" type="zone" use="required" />
           <xs:attribute name="network" type="masstraffic" />
+          <xs:attribute name="check" type="checkeventsource" />
         </xs:complexType>
       </xs:element>
 
@@ -8274,6 +8383,7 @@
               </xs:attribute>
               <xs:attribute name="multiple" type="findmultiple" />
               <xs:attribute name="recursive" type="findrecursive" />
+              <xs:attribute name="includeobjects" type="findincludeobjects" />
               <xs:attributeGroup ref="range">
                 <xs:annotation>
                   <xs:documentation>
@@ -10677,6 +10787,18 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="clear_table">
+        <xs:annotation>
+          <xs:documentation>
+            Clear a table, i.e. remove all keys and values from it
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="table" type="table" use="required" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="close_dockingbay_doors">
         <xs:annotation>
           <xs:documentation>
@@ -10733,6 +10855,55 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="claim_build_location">
+        <xs:annotation>
+          <xs:documentation>
+            Claim a build location so that no other architect can try to build here
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="buildlocation" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Build Location ComponentMacroSlot
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="remove_build_location_claim">
+        <xs:annotation>
+          <xs:documentation>
+            Remove a claim on a build location
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="buildlocation" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Build Location ComponentMacroSlot
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="disconnect_from_build_location">
+        <xs:annotation>
+          <xs:documentation>
+            Disconnect a ship from a build location
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="object" type="object" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -11611,6 +11782,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="recursive" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Recursivly repair contained components (default = false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -12001,6 +12179,13 @@
                   </xs:documentation>
                 </xs:annotation>
               </xs:attribute>
+              <xs:attribute name="excludeempty" type="boolean">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) exclude empty trade offers (amount = 0, desired amount > 0)? (defaults to true)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
               <xs:attribute name="excludemissions" type="boolean">
                 <xs:annotation>
                   <xs:documentation>
@@ -12273,6 +12458,7 @@
               <xs:attribute name="multiple" type="findmultiple" />
               <xs:attribute name="required" type="findrequired" />
               <xs:attribute name="recursive" type="findrecursive" />
+              <xs:attribute name="includeobjects" type="findincludeobjects" />
               <xs:attribute name="name" type="lvaluename" />
               <xs:attribute name="groupname" type="groupname" />
             </xs:extension>
@@ -12645,6 +12831,13 @@
                   </xs:documentation>
                 </xs:annotation>
               </xs:attribute>
+              <xs:attribute name="excludeempty" type="boolean">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) exclude empty trade offers (amount = 0, desired amount > 0)? (defaults to true)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
               <xs:attribute name="excludemissions" type="boolean">
                 <xs:annotation>
                   <xs:documentation>
@@ -12797,6 +12990,13 @@
           <xs:attributeGroup ref="action"/>
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="target" type="object" use="required" />
+          <xs:attribute name="usedrones" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Include damage of defence drones (defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="result" type="lvaluename" use="required" />
         </xs:complexType>
       </xs:element>
@@ -13696,6 +13896,31 @@
             <xs:annotation>
               <xs:documentation>
                 Name of the value that will receive the cutscene ID as result. This can be used as cutscene argument in &lt;stop_cutscene&gt;. If &lt;play_cutscene&gt; fails the result may be null in some cases.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="raise_lua_event">
+        <xs:annotation>
+          <xs:documentation>
+            Raise an event to a registered callback in a lua script.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="name" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Name of the event
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="param" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Optional parameter. Has to be a string, number or component.
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -16602,6 +16827,9 @@
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
+          <xs:sequence>
+            <xs:element name="position" type="position" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="object" type="object">
             <xs:annotation>

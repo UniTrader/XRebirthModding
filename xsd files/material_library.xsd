@@ -66,6 +66,7 @@
                                   <xs:restriction base="xs:string">
                                     <xs:enumeration value="Float" />
                                     <xs:enumeration value="BitMap" />
+                                    <xs:enumeration value="Int" />
                                     <xs:enumeration value="Color" />
                                   </xs:restriction>
                                 </xs:simpleType>

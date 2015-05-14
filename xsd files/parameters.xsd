@@ -215,8 +215,8 @@
       <xs:element name="platform" minOccurs="0" maxOccurs="1" >
         <xs:complexType>
           <xs:sequence>
-          <xs:element name="target" type="highlightdef" minOccurs="0" maxOccurs="1" />
-          <xs:element name="environmentobject" type="highlightdef" minOccurs="0" maxOccurs="1" />
+            <xs:element name="target" type="highlightdef" minOccurs="0" maxOccurs="1" />
+            <xs:element name="environmentobject" type="highlightdef" minOccurs="0" maxOccurs="1" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -247,6 +247,308 @@
         </xs:complexType>
       </xs:element>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:attributeGroup name="vector3">
+    <xs:attribute name="x" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          X coordinate
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="y" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          Y coordinate
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="z" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          Z coordinate
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:complexType name="masstrafficparams">
+    <xs:sequence>
+      <xs:element name="objects" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Parameters related to mass traffic objects
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="deviation" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  Parameters defining how a ship will deviate from the exact mass traffic position over time
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="amplitude" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                      <xs:documentation>
+                        The maximum distance a mass traffic object can deviate in each direction
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:attributeGroup ref="vector3" />
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="period" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Parameters for the period at which a mass traffic object oscillates in each coordinate. The result will be a random value between the minimum and the maximum period.
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="min" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:attributeGroup ref="vector3" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="max" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:attributeGroup ref="vector3" />
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="phase" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Parameters for the phase shift of oscillation. The result will be a random value between the minimum and the maximum phase.
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="min" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:attributeGroup ref="vector3" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="max" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:attributeGroup ref="vector3" />
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="factor" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                      <xs:documentation>
+                        The factor in x/y deviation for roads that start or end at a local or super highway, for example
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:attribute name="localhighway" type="xs:float" />
+                      <xs:attribute name="superhighway" type="xs:float" />
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="speed" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  Defines the speeds at which mass traffic objects move
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="tag" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:attribute name="id" type="xs:string">
+                        <xs:annotation>
+                          <xs:documentation>
+                            The tag ID for this speed setting
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                      <xs:attribute name="speed" type="xs:float">
+                        <xs:annotation>
+                          <xs:documentation>
+                            The speed (in m/s) to be used on roads with this tag
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="default" type="xs:float">
+                  <xs:annotation>
+                    <xs:documentation>
+                      The default speed (in m/s) to be used when no matching tag is defined
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="lowattentioncombatparams">
+    <xs:sequence>
+      <xs:element name="attack" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Parameters related to attack damage
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="firingarea" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Effective area for turrets to fire from, limiting damage from very large obects
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="primaryweaponfactor" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Multiplier for primary weapon damage
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="secondaryweaponfactor" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Multiplier for secondary weapon damage
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="turretfactor" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Multiplier for turret damage
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="droneprimaryfactor" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Multiplier for defence drone (not attack) primary damage
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="dronesecondaryfactor" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Multiplier for defence drone (not attack) primary damage
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="minspeed" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                The minimum speed of the attacker, used for evasion calculations. Slower or immobile objects will use this value
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="defence" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Parameters related to the defender, negating damage
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="maneouverfactor" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Factor of how much of a difference the speed between the attacker and defender affects the hit chance
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="minspeed" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                The minimum speed of the defender, used for evasion calculations. Slower or immobile objects will use this value
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="maxsize" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                The minimum size of the defender, used for hit chance calculations. Very large objects will use this value
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="sizefactor" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Factor of how much of a difference the object size and 'maxsize' affects the hit chance
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="capshipfactor" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Factor of how much turret damage against a defending capitalship is negated. Simulating the high attention wandering of capships which slows the battle
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="dronedistractionfactor" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Factor of how much damage a single defence drone will negate by distracting the attacker. Total result clamped between 0.5 and 1.0
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="dronedamageamount" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Amount of damage needed to be dealt to destroy one defence drone
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="lootmagnetparams">
+    <xs:attribute name="range" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          The maximum range at which a collectable will be pulled
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="force" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          How strongly the collectable will be pulled (note that the force at a certain range also increases when the range is increased)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="maxspeed" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          The collectable's maximum speed
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="sound" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          The sound ID to be played while the magnet is active
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="anycontent">
@@ -290,6 +592,9 @@
         <xs:element name="economy" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="hazardwarning" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="scriptparams" type="scriptparams" minOccurs="0" maxOccurs="1" />
+        <xs:element name="masstraffic" type="masstrafficparams" minOccurs="0" maxOccurs="1" />
+        <xs:element name="lowattentioncombat" type="lowattentioncombatparams" minOccurs="0" maxOccurs="1" />
+        <xs:element name="lootmagnet" type="lootmagnetparams" minOccurs="0" maxOccurs="1" />
       </xs:all>
     </xs:complexType>
   </xs:element>
