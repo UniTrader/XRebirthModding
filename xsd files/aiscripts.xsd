@@ -159,6 +159,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
+		  <xs:enumeration value="command.dockat">
+            <xs:annotation>
+              <xs:documentation>
+                Dock at Command (param = the object to dock at)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="command.freemining">
             <xs:annotation>
               <xs:documentation>
@@ -219,6 +226,13 @@
             <xs:annotation>
               <xs:documentation>
                 Protect Command (param = the object to protect)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+		  <xs:enumeration value="command.refuel">
+            <xs:annotation>
+              <xs:documentation>
+                Refuel Command (param = amount of fuel)
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -632,6 +646,13 @@
             <xs:annotation>
               <xs:documentation>
                 Amount of goods to transfer, can not exceed amount in offer (0=default=all in offer)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="custom" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Is this using a trade(offer) that is not a Production or Mission TradeOffer? (e.g. taken from a Ships' shopping list). Note that you must specify an amount if ware reservations are involved!
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>

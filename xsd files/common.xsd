@@ -1838,6 +1838,15 @@
     </xs:union>
   </xs:simpleType>
 
+  <xs:simpleType name="componentstatelookup">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="construction" />
+      <xs:enumeration value="operational" />
+      <xs:enumeration value="upgrade" />
+      <xs:enumeration value="wreck" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="entityskilllookup">
     <xs:restriction base="xs:string">
       <xs:enumeration value="boarding" />
@@ -2084,6 +2093,38 @@
         </xs:restriction>
       </xs:simpleType>
     </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="logcategorylookup">
+    <xs:annotation>
+      <xs:documentation>
+        Logbook category
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="general" />
+      <xs:enumeration value="missions" />
+      <xs:enumeration value="squad" />
+      <xs:enumeration value="upkeep" />
+      <xs:enumeration value="tips" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="loginteractionlookup">
+    <xs:annotation>
+      <xs:documentation>
+        Logbook interaction type (not supported yet)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="guidance">
+        <xs:annotation>
+          <xs:documentation>
+            (Not supported yet)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
   </xs:simpleType>
 
   <xs:simpleType name="controlslottag">
@@ -3110,6 +3151,30 @@
     </xs:attribute>
   </xs:attributeGroup>
 
+  <xs:attributeGroup name="showhelp">
+    <xs:attribute name="position" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Position of help text (defined in parameters.xml) - defaults to 0
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="duration" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Duration of help text display. If not provided, a suitable duration will be calculated.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="log" type="boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Add help text to logbook? Default is false
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
   <!-- ===== Complex types ==== -->
 
   <xs:complexType name="filedoc">
@@ -3207,6 +3272,9 @@
       <xs:element name="match_content" type="matchcontent"/>
       <xs:element name="match_context" type="matchcontext"/>
       <xs:element name="match_distance" type="matchdistance"/>
+      <xs:element name="match_hull" type="matchhull"/>
+      <xs:element name="match_max_hull" type="matchmaxhull"/>
+      <xs:element name="match_shield" type="matchshield"/>
       <xs:element name="match_size" type="matchsize"/>
       <xs:element name="match_parent" type="matchparent"/>
       <xs:element name="match_is_in_view_of" type="matchview"/>
@@ -3287,6 +3355,9 @@
       <xs:element name="match_content" type="matchcontent"/>
       <xs:element name="match_context" type="matchcontext"/>
       <xs:element name="match_distance" type="matchdistance"/>
+      <xs:element name="match_hull" type="matchhull"/>
+      <xs:element name="match_max_hull" type="matchmaxhull"/>
+      <xs:element name="match_shield" type="matchshield"/>
       <xs:element name="match_size" type="matchsize"/>
       <xs:element name="match_parent" type="matchparent"/>
       <xs:element name="match_is_in_view_of" type="matchview"/>
@@ -3963,6 +4034,36 @@
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="macro" type="macro" />
+    <xs:attributeGroup ref="range" />
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <xs:complexType name="matchhull">
+    <xs:annotation>
+      <xs:documentation>
+        Match by hull percentage
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="range" />
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <xs:complexType name="matchmaxhull">
+    <xs:annotation>
+      <xs:documentation>
+        Match by max hull percentage
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="range" />
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <xs:complexType name="matchshield">
+    <xs:annotation>
+      <xs:documentation>
+        Match by shield percentage
+      </xs:documentation>
+    </xs:annotation>
     <xs:attributeGroup ref="range" />
     <xs:attribute name="comment" type="comment" />
   </xs:complexType>
@@ -9375,6 +9476,13 @@
           </xs:attribute>
           <xs:attribute name="macro" type="macro" use="required" />
           <xs:attribute name="buildplan" type="expression" use="required" />
+          <xs:attribute name="updatebuild" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Update this build in low attention (required when waiting for build events)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -9416,6 +9524,13 @@
           </xs:attribute>
           <xs:attribute name="macro" type="macro" use="required" />
           <xs:attribute name="buildplan" type="expression" use="required" />
+          <xs:attribute name="updatebuild" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Update this build in low attention (required when waiting for build events)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -10167,6 +10282,13 @@
             <xs:annotation>
               <xs:documentation>
                 Limit upgrading to the buildstep (default = true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="updatebuild" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Update this build in low attention (required when waiting for build events)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -12614,6 +12736,33 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="save_ai_action_state">
+        <xs:annotation>
+          <xs:documentation>
+            Save the state of the current AI script blocking action on the blackboard of an entity that is going to take over control when restarting a script (can be the same entity).
+            The AI script actions &lt;wait_for_prev_script&gt; and &lt;finalize_prev_script&gt; will process the information to make sure that the current AI action (e.g. trade) ends in a clean way.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="entity" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Entity that will receive the AI action state information. To be used when a new script is supposed to start on the entity, aborting the previous entity's script.
+                The new script should perform &lt;wait_for_prev_script&gt; and &lt;finalize_prev_script&gt;.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="previous" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Entity from which the AI action state information is retrieved, basically immediately before the entity's script is aborted.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="set_actor_account">
         <xs:annotation>
           <xs:documentation>
@@ -12952,6 +13101,139 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attribute name="object" type="object" use="required" />
+          <xs:attributeGroup ref="random" />
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_summarised_adsign_state">
+        <xs:annotation>
+          <xs:documentation>
+            Set adsign summaries to a certain state (amount defined may not match the actual amount of adsigns affected)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Object which contains the summary data
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="state" type="componentstatelookup" use="required"/>
+          <xs:attribute name="parentstate" type="componentstatelookup" />
+          <xs:attribute name="previous" type="componentstatelookup" />
+          <xs:attribute name="macro" type="macro" />
+          <xs:attributeGroup ref="random" />
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_summarised_efficiencyupgrade_state">
+        <xs:annotation>
+          <xs:documentation>
+            Set efficiencyupgrade summaries to a certain state (amount defined may not match the actual amount of efficiencyupgrades affected)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Object which contains the summary data
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="state" type="componentstatelookup" use="required"/>
+          <xs:attribute name="parentstate" type="componentstatelookup" />
+          <xs:attribute name="previous" type="componentstatelookup" />
+          <xs:attributeGroup ref="random" />
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_summarised_flakcontroller_state">
+        <xs:annotation>
+          <xs:documentation>
+            Set flakcontroller summaries to a certain state (amount defined may not match the actual amount of flakcontrollers affected)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Object which contains the summary data
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="state" type="componentstatelookup" use="required"/>
+          <xs:attribute name="parentstate" type="componentstatelookup" />
+          <xs:attribute name="previous" type="componentstatelookup" />
+          <xs:attributeGroup ref="random" />
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_summarised_shield_state">
+        <xs:annotation>
+          <xs:documentation>
+            Set shield summaries to a certain state (amount defined may not match the actual amount of shields affected)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Object which contains the summary data
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="state" type="componentstatelookup" use="required"/>
+          <xs:attribute name="parentstate" type="componentstatelookup" />
+          <xs:attribute name="previous" type="componentstatelookup" />
+          <xs:attributeGroup ref="random" />
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_summarised_surfacedestructible_state">
+        <xs:annotation>
+          <xs:documentation>
+            Set shield surfacedestructible to a certain state (amount defined may not match the actual amount of surfacedestructibles affected)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Object which contains the summary data
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="state" type="componentstatelookup" use="required"/>
+          <xs:attribute name="parentstate" type="componentstatelookup" />
+          <xs:attribute name="previous" type="componentstatelookup" />
+          <xs:attributeGroup ref="random" />
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_summarised_turret_state">
+        <xs:annotation>
+          <xs:documentation>
+            Set shield turret to a certain state (amount defined may not match the actual amount of turrets affected)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Object which contains the summary data
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="state" type="componentstatelookup" use="required"/>
+          <xs:attribute name="parentstate" type="componentstatelookup" />
+          <xs:attribute name="previous" type="componentstatelookup" />
           <xs:attributeGroup ref="random" />
           <xs:attributeGroup ref="action" />
         </xs:complexType>
@@ -13718,20 +14000,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="position" type="helppositionlookup">
-            <xs:annotation>
-              <xs:documentation>
-                Position of help text (defined in parameters.xml) - defaults to 0
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="duration" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Duration of help text display. If not provided, a suitable duration will be calculated.
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="showhelp" />
         </xs:complexType>
       </xs:element>
 
@@ -13760,33 +14029,6 @@
         </xs:complexType>
       </xs:element>
 
-      <xs:element name="save_ai_action_state">
-        <xs:annotation>
-          <xs:documentation>
-            Save the state of the current AI script blocking action on the blackboard of an entity that is going to take over control when restarting a script (can be the same entity).
-            The AI script actions &lt;wait_for_prev_script&gt; and &lt;finalize_prev_script&gt; will process the information to make sure that the current AI action (e.g. trade) ends in a clean way.
-          </xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-          <xs:attributeGroup ref="action" />
-          <xs:attribute name="entity" type="expression" use="required">
-            <xs:annotation>
-              <xs:documentation>
-                Entity that will receive the AI action state information. To be used when a new script is supposed to start on the entity, aborting the previous entity's script.
-                The new script should perform &lt;wait_for_prev_script&gt; and &lt;finalize_prev_script&gt;.
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="previous" type="expression" use="required">
-            <xs:annotation>
-              <xs:documentation>
-                Entity from which the AI action state information is retrieved, basically immediately before the entity's script is aborted.
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-        </xs:complexType>
-      </xs:element>
-
       <xs:element name="show_input_help">
         <xs:annotation>
           <xs:documentation>
@@ -13802,20 +14044,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="position" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Position of help text (defined in parameters.xml) - defaults to 0
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="duration" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Duration of help text display. If not provided, a suitable duration will be calculated.
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attributeGroup ref="showhelp" />
         </xs:complexType>
       </xs:element>
 
@@ -14483,6 +14712,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="updatebuild" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Update this build in low attention (required when waiting for build events)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -14509,6 +14745,13 @@
             </xs:annotation>
           </xs:attribute>
           <xs:attribute name="buildplan" type="expression" use="required" />
+          <xs:attribute name="updatebuild" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Update this build in low attention (required when waiting for build events)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -14598,6 +14841,14 @@
           </xs:attribute>
           <xs:attribute name="sorter" type="tradesorterlookup" use="required" />
           <xs:attribute name="min" type="boolean" use="optional" />
+          <xs:attribute name="refobject" type="object" use="optional" >
+            <xs:annotation>
+              <xs:documentation>
+                Reference object to sort trades by distances (use with sorter="distance")
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          
         </xs:complexType>
       </xs:element>
 
@@ -14739,6 +14990,33 @@
             <xs:annotation>
               <xs:documentation>
                 True to prevent automatic re-enabling of music, false (default) to allow re-enabling and to disable any existing lock
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="write_to_logbook">
+        <xs:annotation>
+          <xs:documentation>
+            Write an entry into the logbook
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="category" type="logcategorylookup" use="required" />
+          <xs:attribute name="text" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Logbook entry text
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="interaction" type="loginteractionlookup" />
+          <xs:attribute name="object" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Interaction object, depending on the interaction type
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>

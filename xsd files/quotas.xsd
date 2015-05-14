@@ -421,7 +421,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element name="offers" type="quota_offers" minOccurs="1" maxOccurs="1" />
-        <xs:element name="actors" type="quota_actors_root" minOccurs="1" maxOccurs="1" />
+        <xs:element name="actors" type="quota_actors_root" minOccurs="0" maxOccurs="1" />
         <xs:element name="crates" type="quota_crates" minOccurs="1" maxOccurs="1" />
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="cluster" type="quota_cluster" />
