@@ -2151,7 +2151,7 @@
         <xs:element name="init" minOccurs="0" maxOccurs="1">
           <xs:annotation>
             <xs:documentation>
-              Non-blocking AI script actions for initialization (will be performed right before the attention-specific actions)
+              Non-blocking AI script actions for initialization (will be performed immediately when the script is started, before setting up global interrupt events)
             </xs:documentation>
           </xs:annotation>
           <xs:complexType>
@@ -2171,6 +2171,16 @@
               <xs:annotation>
                 <xs:documentation>
                   Script version at which this patch element was added (it will only be applied when loading a script of an older version)
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="early" type="boolean">
+              <xs:annotation>
+                <xs:documentation>
+                  If true, the patch actions will be performed as early as possible while importing the script, before setting up global interrupt events.
+                  If false or omitted, the patch actions will be performed only when the savegame is fully loaded.
+                  With early=&quot;true&quot; accessing and manipulating other objects is not safe, because at that point the game is not fully loaded yet.
+                  However, this is useful for setting up variables that are required for global interrupt events.
                 </xs:documentation>
               </xs:annotation>
             </xs:attribute>

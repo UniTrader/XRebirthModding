@@ -379,7 +379,9 @@
         <xs:element name="hintpositions" minOccurs="0" maxOccurs="1" />
         <xs:element name="physics" minOccurs="0" maxOccurs="1" />
         <xs:element name="bonuscontent" minOccurs="0" maxOccurs="1" />
-        <xs:element name="damagestate" minOccurs="0" maxOccurs="1" />        
+        <xs:element name="damagestate" minOccurs="0" maxOccurs="1" />
+        <xs:element name="engine" minOccurs="0" maxOccurs="1" />
+        <xs:element name="controlpanel" minOccurs="0" maxOccurs="1" />
       </xs:all>
     </xs:complexType>
   </xs:element>

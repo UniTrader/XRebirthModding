@@ -47,6 +47,7 @@
           <xs:enumeration value="missiontype.find" />
           <xs:enumeration value="missiontype.flyto" />
           <xs:enumeration value="missiontype.follow" />
+          <xs:enumeration value="missiontype.guidance" />
           <xs:enumeration value="missiontype.hack" />
           <xs:enumeration value="missiontype.kill" />
           <xs:enumeration value="missiontype.patrol" />
@@ -1200,6 +1201,47 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="capture_movie_start">
+        <xs:annotation>
+          <xs:documentation>
+            Start capturing a movie (to stop capture, see capture_movie_stop)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+    <xs:element name="capture_movie_stop">
+        <xs:annotation>
+          <xs:documentation>
+            Stop capturing a movie
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="capture_screen">
+        <xs:annotation>
+          <xs:documentation>
+            Make a screenshot (optional in a subdirectory)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="directory" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Sub-folder of the personal screenshot folder where the screenshot will be stored (optional)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+
       <xs:element name="activate_mission">
         <xs:annotation>
           <xs:documentation>
@@ -1428,6 +1470,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="type" type="targetpointtypelookup" />
         </xs:complexType>
       </xs:element>
 

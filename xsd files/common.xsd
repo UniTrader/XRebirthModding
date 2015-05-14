@@ -606,6 +606,15 @@
     <xs:restriction base="boolean" />
   </xs:simpleType>
 
+  <xs:simpleType name="negatefilter">
+    <xs:annotation>
+      <xs:documentation>
+        Negate filter outcome? The negation applies to the whole element, e.g. &lt;match_content negate=&quot;true&quot;&gt; matches objects which do NOT have the specified content.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="boolean" />
+  </xs:simpleType>
+
   <xs:simpleType name="colour">
     <xs:annotation>
       <xs:documentation>
@@ -1299,7 +1308,7 @@
       <xs:enumeration value="repair">
         <xs:annotation>
           <xs:documentation>
-            Reapir weapons
+            Repair weapons
           </xs:documentation>
         </xs:annotation>
       </xs:enumeration>
@@ -1494,9 +1503,16 @@
   </xs:simpleType>
 
   <xs:simpleType name="destructibleclasslookup">
-    <xs:union memberTypes="objectclasslookup expression">
+    <xs:union memberTypes="objectclasslookup entityclasslookup expression">
       <xs:simpleType>
         <xs:restriction base="xs:string">
+          <xs:enumeration value="class.adsign">
+            <xs:annotation>
+              <xs:documentation>
+                Ad Sign
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="class.buildmodule">
             <xs:annotation>
               <xs:documentation>
@@ -1529,6 +1545,13 @@
             <xs:annotation>
               <xs:documentation>
                 Controllable
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.controlpanel">
+            <xs:annotation>
+              <xs:documentation>
+                Control Panel
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -1567,10 +1590,45 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
+          <xs:enumeration value="class.flaklauncher">
+            <xs:annotation>
+              <xs:documentation>
+                Flak Launcher
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.hackerprobe">
+            <xs:annotation>
+              <xs:documentation>
+                Hacker Probe
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.interior">
+            <xs:annotation>
+              <xs:documentation>
+                Interior
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="class.jumpdrive">
             <xs:annotation>
               <xs:documentation>
                 JumpDrive
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.launcher">
+            <xs:annotation>
+              <xs:documentation>
+                Launcher
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.launchpad">
+            <xs:annotation>
+              <xs:documentation>
+                Launch Pad
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -1581,10 +1639,31 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
+          <xs:enumeration value="class.radar">
+            <xs:annotation>
+              <xs:documentation>
+                Radar
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.scanner">
+            <xs:annotation>
+              <xs:documentation>
+                Scanner
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="class.shieldgenerator">
             <xs:annotation>
               <xs:documentation>
                 Shield Generator
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.storage">
+            <xs:annotation>
+              <xs:documentation>
+                Storage Module
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -1612,6 +1691,13 @@
     <xs:union memberTypes="shipclasslookup stationclasslookup expression">
       <xs:simpleType>
         <xs:restriction base="xs:string">
+          <xs:enumeration value="class.adsignobject">
+            <xs:annotation>
+              <xs:documentation>
+                Ad Sign Object
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="class.asteroid">
             <xs:annotation>
               <xs:documentation>
@@ -1640,6 +1726,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
+          <xs:enumeration value="class.drop">
+            <xs:annotation>
+              <xs:documentation>
+                Drop
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="class.gate">
             <xs:annotation>
               <xs:documentation>
@@ -1665,6 +1758,13 @@
             <xs:annotation>
               <xs:documentation>
                 Jump Beacon
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.mine">
+            <xs:annotation>
+              <xs:documentation>
+                Mine
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -1828,6 +1928,50 @@
     </xs:union>
   </xs:simpleType>
 
+  <xs:simpleType name="entityclasslookup">
+    <xs:union memberTypes="expression">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="class.entity">
+            <xs:annotation>
+              <xs:documentation>
+                Entity
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.player">
+            <xs:annotation>
+              <xs:documentation>
+                Player
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.nonplayer">
+            <xs:annotation>
+              <xs:documentation>
+                Non-player
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.computer">
+            <xs:annotation>
+              <xs:documentation>
+                Computer
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.npc">
+            <xs:annotation>
+              <xs:documentation>
+                NPC
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
   <xs:simpleType name="attentionlookup">
     <xs:restriction base="xs:string">
       <xs:enumeration value="unknown" />
@@ -1889,6 +2033,7 @@
       <xs:enumeration value="defencecontrol" />
       <xs:enumeration value="upgradetrader" />
       <xs:enumeration value="shiptrader" />
+      <xs:enumeration value="smallshiptrader" />
       <xs:enumeration value="miningsupplier" />
       <xs:enumeration value="junkdealer" />
       <xs:enumeration value="spacefarmer" />
@@ -1936,6 +2081,7 @@
           <xs:enumeration value="entitytype.defencecontrol" />
           <xs:enumeration value="entitytype.upgradetrader" />
           <xs:enumeration value="entitytype.shiptrader" />
+          <xs:enumeration value="entitytype.smallshiptrader" />
           <xs:enumeration value="entitytype.miningsupplier" />
           <xs:enumeration value="entitytype.junkdealer" />
           <xs:enumeration value="entitytype.spacefarmer" />
@@ -1997,6 +2143,19 @@
       <xs:enumeration value="factions" />
       <xs:enumeration value="licences" />
       <xs:enumeration value="entitytypes" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="waresizelookup">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="tiny" />
+      <xs:enumeration value="small" />
+      <xs:enumeration value="medium" />
+      <xs:enumeration value="large" />
+      <xs:enumeration value="extralarge" />
+      <xs:enumeration value="part" />
+      <xs:enumeration value="ship" />
+      <xs:enumeration value="station" />
     </xs:restriction>
   </xs:simpleType>
 
@@ -2501,6 +2660,7 @@
       <xs:enumeration value="enemy" />
       <xs:enumeration value="friend" />
       <xs:enumeration value="kill" />
+      <xs:enumeration value="killmilitary" />
       <xs:enumeration value="member" />
       <xs:enumeration value="nemesis" />
       <xs:enumeration value="neutral" />
@@ -2515,6 +2675,7 @@
       <xs:enumeration value="name" />
       <xs:enumeration value="price" />
       <xs:enumeration value="relativeprice" />
+      <xs:enumeration value="stocklevel" />
       <xs:enumeration value="totalprice" />
       <xs:enumeration value="totalvolume" />
       <xs:enumeration value="volume" />
@@ -2549,6 +2710,33 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="objectpurposelookup">
+    <xs:union memberTypes="expression">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="objectpurpose.trade" />
+          <xs:enumeration value="objectpurpose.fight" />
+          <xs:enumeration value="objectpurpose.build" />
+          <xs:enumeration value="objectpurpose.mine" />
+          <xs:enumeration value="objectpurpose.hack" />
+          <xs:enumeration value="objectpurpose.scan" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="targetpointtypelookup">
+    <xs:annotation>
+      <xs:documentation>
+        Implicitly defines the interactions and the icon this target point should have
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="scan" />
+      <xs:enumeration value="hack" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <!-- ===== Attribute groups ==== -->
 
   <!-- Base attribute group for filters, does not contain class attribute and class-specific attributes. They are added in sub-groups where required. -->
@@ -2557,7 +2745,6 @@
     <xs:attribute name="owner" type="owners" />
     <xs:attribute name="trueowner" type="owners" />
     <xs:attribute name="coverowner" type="owners" />
-    <xs:attribute name="race" type="race" />
     <xs:attribute name="tag" type="expression">
       <xs:annotation>
         <xs:documentation>
@@ -2582,21 +2769,28 @@
     <xs:attribute name="invulnerable" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
-          Is invulnerable? (either hull or shield)
+          Is either hull or shield invulnerable, i.e it cannot take damage? Note: An object can be vulnerable but still indestructible.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="hullinvulnerable" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
-          Is hull invulnerable?
+          Is hull invulnerable, i.e it cannot take take damage?
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="shieldinvulnerable" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
-          Is shield invulnerable?
+          Is shield invulnerable, i.e it cannot take damage?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="indestructible" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Can the object not be destroyed through damage?
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -2666,7 +2860,7 @@
     <xs:attribute name="canhaveofferlocation" type="expression">
       <xs:annotation>
         <xs:documentation>
-          Offer tag or list of offer tags
+          Offer tag
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -2677,6 +2871,55 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="numfreeactorslots" type="numfreeactorslots" />
+    <xs:attribute name="freemissionactorslot" type="freemissionactorslot" />
+    <xs:attribute name="masstraffic" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Is object from mass traffic?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="dockpopulationtype" type="dockpopulationtypeexprlookup" />
+    <xs:attribute name="productsize" type="waresizelookup">
+      <xs:annotation>
+        <xs:documentation>
+          Does object have products of the given size?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="weapontype" type="weapontypelookup">
+      <xs:annotation>
+        <xs:documentation>
+          Weapon type
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="primarypurpose" type="objectpurposelookup">
+      <xs:annotation>
+        <xs:documentation>
+          Primary purpose
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="mayattack" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Does objects relation allow it to attack provided object or faction. True if relation is 'kill' or if relation is 'killmilitary' and provided object has primarypurpose.fight
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="maybeattackedby" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          May object be attacked by provided object or faction, based on their relations. True if relation is 'kill' or if relation is 'killmilitary' and object has primarypurpose.fight
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="findext_entity">
+    <xs:attribute name="race" type="race" />
     <xs:attribute name="entitytype" type="entitytypeexprlookup" />
     <xs:attribute name="controlentity" type="booleanexpression">
       <xs:annotation>
@@ -2699,13 +2942,6 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="masstraffic" type="booleanexpression">
-      <xs:annotation>
-        <xs:documentation>
-          Is object from mass traffic?
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findext_cluster">
@@ -2714,8 +2950,6 @@
 
   <xs:attributeGroup name="findext_station">
     <xs:attribute name="hasmasstraffic" type="hasmasstraffic" />
-    <xs:attribute name="numfreeactorslots" type="numfreeactorslots" />
-    <xs:attribute name="freemissionactorslot" type="freemissionactorslot" />
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findext_ship">
@@ -2753,6 +2987,7 @@
 
   <xs:attributeGroup name="findarbitrary">
     <xs:attributeGroup ref="find" />
+    <xs:attributeGroup ref="findext_entity" />
     <xs:attributeGroup ref="findext_cluster" />
     <xs:attributeGroup ref="findext_damaged" />
     <xs:attributeGroup ref="findext_ship" />
@@ -2761,14 +2996,33 @@
     <xs:attribute name="class" type="classlookup">
       <xs:annotation>
         <xs:documentation>
-          Class (do not use with 'exactclass')
+          Class or list of classes (do not use in conjunction with 'exactclass' attribute)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="exactclass" type="classlookup">
       <xs:annotation>
         <xs:documentation>
-          Exact class, not taking subclasses into account (do not use with 'class')
+          Exact class or list of exact classes, not taking subclasses into account (do not use in conjunction with 'class' attribute)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="findentity">
+    <xs:attributeGroup ref="find" />
+    <xs:attributeGroup ref="findext_entity" />
+    <xs:attribute name="class" type="entityclasslookup">
+      <xs:annotation>
+        <xs:documentation>
+          Entity class or list of classes (do not use with 'exactclass')
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="exactclass" type="entityclasslookup">
+      <xs:annotation>
+        <xs:documentation>
+          Entity's exact class (or list of classes), not taking subclasses into account (do not use with 'class')
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -2833,18 +3087,6 @@
   <xs:attributeGroup name="findzone">
     <xs:attributeGroup ref="find" />
     <xs:attributeGroup ref="findext_zone" />
-  </xs:attributeGroup>
-
-  <!-- May only be used in match* complex types -->
-  <xs:attributeGroup name="match">
-    <xs:attributeGroup ref="findarbitrary"/>
-    <xs:attribute name="negate" type="boolean">
-      <xs:annotation>
-        <xs:documentation>
-          Negate filter outcome?
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="createship">
@@ -3442,30 +3684,556 @@
   <!-- If the class of result components is already determined and is neither ship nor station, you can just use attributeGroup "find". -->
   <xs:complexType name="matchbase">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="match" type="match"/>
-      <xs:element name="match_any" type="match"/>
-      <xs:element name="match_child" type="matchchild"/>
-      <xs:element name="match_macro_children" type="matchmacrochildren"/>
-      <xs:element name="match_content" type="matchcontent"/>
-      <xs:element name="match_context" type="matchcontext"/>
-      <xs:element name="match_distance" type="matchdistance"/>
-      <xs:element name="match_gate_distance" type="matchgatedistance"/>
-      <xs:element name="match_hull" type="matchhull"/>
-      <xs:element name="match_max_hull" type="matchmaxhull"/>
-      <xs:element name="match_shield" type="matchshield"/>
-      <xs:element name="match_size" type="matchsize"/>
-      <xs:element name="match_parent" type="matchparent"/>
-      <xs:element name="match_is_in_view_of" type="matchview"/>
-      <xs:element name="match_infopoint_location" type="matchinfopointlocation" />
-      <xs:element name="match_tradeoffer_location" type="matchtradeofferlocation" />
-      <xs:element name="match_can_host_trade_offer" type="matchcanhosttradeoffer" />
-      <xs:element name="match_buyoffer" type="matchbuyoffer" />
-      <xs:element name="match_selloffer" type="matchselloffer" />
-      <xs:element name="match_products" type="matchresources" />
-      <xs:element name="match_resources" type="matchproducts" />
-      <xs:element name="match_relation" type="matchrelation"/>
-      <xs:element name="match_revealed_percentage" type="matchrevealedpercentage"/>
-      <xs:element name="match_dock" type="matchdock"/>
+      <xs:element name="match" type="matchsubfilter">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_any" type="matchsubfilter">
+        <xs:annotation>
+          <xs:documentation>
+            Match any of the specified filters (attributes and sub-elements)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_parent" type="matchsubfilter">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for the parent of the object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_context" type="matchsubfilter">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for the context of the object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_child" type="matchsubfilterrange">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for the children of the objects
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_content" type="matchsubfilterrange">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for the contained objects of the objects
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_macro_children" type="matchrange">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for amount of children defined in the macro of the objects (this will include potentially collapsed children)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_hull" type="matchrange">
+        <xs:annotation>
+          <xs:documentation>
+            Match hull percentage
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_max_hull" type="matchrange">
+        <xs:annotation>
+          <xs:documentation>
+            Match max hull percentage
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_shield" type="matchrange">
+        <xs:annotation>
+          <xs:documentation>
+            Match shield percentage
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_revealed_percentage" type="matchrange">
+        <xs:annotation>
+          <xs:documentation>
+            Match by reveal percentage filter
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_pilot">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for the ship's pilot
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="matchbase">
+              <xs:attributeGroup ref="findentity" />
+              <xs:attribute name="negate" type="negatefilter" />
+              <xs:attribute name="comment" type="comment" />
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_distance">
+        <xs:annotation>
+          <xs:documentation>
+            Match by distance filter. Distance can be checked either to an object or to a position. The reference space, if supplied, must contain the searched objects. min and/or max must be set.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="x" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                X coordinate
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="y" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Y coordinate
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="z" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Z coordinate
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="value" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Position value, used in preference to coordinates if supplied
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="object" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Object, used in preference to coordinates if supplied. If no space context is supplied, the object's sector is used, so the searched objects are required to be in the same sector.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="space" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Reference space which has to contain both the reference (object or position) and the searched objects.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="min" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Minimal distance (min distance is not compared if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="max" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Maximal distance (max distance is not compared if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_gate_distance">
+        <xs:annotation>
+          <xs:documentation>
+            Match by distance by jumpgates. Calculation based on the sectors of the objects. Checking distance of clusters will check between two random sectors within them.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="min" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Min distance by jumpgates (not compared if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="max" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Max distance by jumpgates (not compared if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Origin object for the distance calculation. Passing cluster will base the check on a random sector.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_size">
+        <xs:annotation>
+          <xs:documentation>
+            Match by size filter. Size is based on diameter of the bounding box. min and/or max must be set.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="min" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Minimal size of the bounding box (min size is not compared if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="max" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Maximal size (max size is not compared if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_is_in_view_of">
+        <xs:annotation>
+          <xs:documentation>
+            Match by view angle filter. Can be checked either to an object or to a position AND rotation. The reference space, if supplied, must contain the searched objects.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="x" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                X coordinate
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="y" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Y coordinate
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="z" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Z coordinate
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="pitch" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Pitch (rotation around x axis)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="yaw" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Yaw (rotation around y axis)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="roll" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Roll (rotation around Z axis)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="object" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Object, used in preference to coordinates if supplied. If no space context is supplied, the object's sector is used, so the searched objects are required to be in the same sector.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="space" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Reference space which has to contain both the reference (object or position/rotation) and the searched objects.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="vertical" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The vertical viewing angle (full range from top to bottom)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="horizontal" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The horizontal viewing angle (full range from left to right)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_infopoint_location">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for an infopoint location
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="distance" type="expression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Max distance from player ship (defaults to 0, ignoring distance)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="viewangle" type="expression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                View angle from playership, total angle from left to right (defaults to 0, ignoring angle)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_tradeoffer_location">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for a tradeoffer location
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="distance" type="expression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Max distance from player ship (defaults to 0, ignoring distance)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="viewangle" type="expression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                View angle from playership, total angle from left to right (defaults to 0, ignoring angle)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="wares" type="expression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Ware or list of wares the trade location must be holding
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="any" type="booleanexpression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Match any ware or all wares?
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_can_host_trade_offer">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for whether a container can host a trade offer for a ware
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="wares" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Ware or list of wares the trade location must be capable of holding
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="any" type="booleanexpression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Match any ware or all wares?
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="buyer" type="booleanexpression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Is the container the buyer or seller
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_buildsource">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for build source
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="sequence" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Build source sequence ("" for base station)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="stage" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Build source stage (0 for base station)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_buyoffer" type="matchtradeoffer">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for available buy offers
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_selloffer" type="matchtradeoffer">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for available sell offers
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_products" type="matchwarelist">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for products. The match is valid if the object produces any of the supplied wares, even if there are no current sell offers.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_resources" type="matchwarelist">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for resources. The match is valid if the object consumes any of the supplied wares, even if there are no current buy offers.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_relation">
+        <xs:annotation>
+          <xs:documentation>
+            Match by relation filter. Relation can be checked against a faction or component.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="object" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Object to reference (takes preference over 'faction')
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="faction" type="factionlookup">
+            <xs:annotation>
+              <xs:documentation>
+                Faction to reference ('object' takes preference if provided)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="relation" type="relationlookup" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Relation range
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="comparison">
+            <xs:simpleType>
+              <xs:annotation>
+                <xs:documentation>
+                  Behaviour to compare the relation range
+                </xs:documentation>
+              </xs:annotation>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="exact">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Relation is in range (default)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="ge">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Relation is greater than or equal
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="gt">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Relation is greater than
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="le">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Relation is less than or equal
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="lt">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Relation is less than
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="not">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Relation is not in range
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match_dock">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for a dock
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="size" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Dock compatibility size
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
       <xs:element name="match_summarised_adsign" type="matchsummarisedcontent">
         <xs:annotation>
           <xs:documentation>
@@ -3505,6 +4273,27 @@
         <xs:annotation>
           <xs:documentation>
             Match filter for summarised Turrets on a Defensible object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_units_stored" type="matchunits">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for stored units on a Defensible object (including both available and unavailable)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_units_available" type="matchunits">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for available units on a Defensible object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_units_unavailable" type="matchunits">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for unavailable units on a Defensible object
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -3525,494 +4314,37 @@
     </xs:choice>
   </xs:complexType>
 
-  <xs:complexType name="matchbasewithpilot">
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="match" type="match"/>
-      <xs:element name="match_any" type="match"/>
-      <xs:element name="match_child" type="matchchild"/>
-      <xs:element name="match_macro_children" type="matchmacrochildren"/>
-      <xs:element name="match_content" type="matchcontent"/>
-      <xs:element name="match_context" type="matchcontext"/>
-      <xs:element name="match_distance" type="matchdistance"/>
-      <xs:element name="match_gate_distance" type="matchgatedistance"/>
-      <xs:element name="match_hull" type="matchhull"/>
-      <xs:element name="match_max_hull" type="matchmaxhull"/>
-      <xs:element name="match_shield" type="matchshield"/>
-      <xs:element name="match_size" type="matchsize"/>
-      <xs:element name="match_parent" type="matchparent"/>
-      <xs:element name="match_is_in_view_of" type="matchview"/>
-      <xs:element name="match_infopoint_location" type="matchinfopointlocation" />
-      <xs:element name="match_tradeoffer_location" type="matchtradeofferlocation" />
-      <xs:element name="match_can_host_trade_offer" type="matchcanhosttradeoffer" />
-      <xs:element name="match_buyoffer" type="matchbuyoffer" />
-      <xs:element name="match_selloffer" type="matchselloffer" />
-      <xs:element name="match_products" type="matchresources" />
-      <xs:element name="match_resources" type="matchproducts" />
-      <xs:element name="match_relation" type="matchrelation"/>
-      <xs:element name="match_pilot" type="matchpilot" />
-      <xs:element name="match_dock" type="matchdock"/>
-      <xs:element name="match_summarised_adsign" type="matchsummarisedcontent">
-        <xs:annotation>
-          <xs:documentation>
-            Match filter for summarised Ad Signs on a Defensible object
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="match_summarised_efficiencyupgrade" type="matchsummarisedcontent">
-        <xs:annotation>
-          <xs:documentation>
-            Match filter for summarised Efficiency Upgrades on a Defensible object
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="match_summarised_flakcontroller" type="matchsummarisedcontent">
-        <xs:annotation>
-          <xs:documentation>
-            Match filter for summarised Flak Controllers on a Defensible object
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="match_summarised_shield" type="matchsummarisedcontent">
-        <xs:annotation>
-          <xs:documentation>
-            Match filter for summarised Shields on a Defensible object
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="match_summarised_surfacedestructible" type="matchsummarisedcontent">
-        <xs:annotation>
-          <xs:documentation>
-            Match filter for summarised Surface Destructibles on a Defensible object
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="match_summarised_turret" type="matchsummarisedcontent">
-        <xs:annotation>
-          <xs:documentation>
-            Match filter for summarised Turrets on a Defensible object
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="match">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexContent>
-      <xs:extension base="matchbasewithpilot">
-        <xs:attributeGroup ref="match" />
-        <xs:attribute name="comment" type="comment" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="matchchild">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for the children of the objects
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexContent>
-      <xs:extension base="matchbasewithpilot">
-        <xs:attributeGroup ref="match" />
-        <xs:attributeGroup ref="range" />
-        <xs:attribute name="comment" type="comment" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="matchmacrochildren">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for amount of children defined in the macro of the objects (this will include potentially collapsed children)
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attributeGroup ref="range" />
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchcontent">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for the contained objects of the objects
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexContent>
-      <xs:extension base="matchbasewithpilot">
-        <xs:attributeGroup ref="match" />
-        <xs:attributeGroup ref="range" />
-        <xs:attribute name="comment" type="comment" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="matchcontext">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for the context of the object
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexContent>
-      <xs:extension base="matchbasewithpilot">
-        <xs:attributeGroup ref="match" />
-        <xs:attribute name="comment" type="comment" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="matchdistance">
-    <xs:annotation>
-      <xs:documentation>
-        Match by distance filter. Distance can be checked either to an object or to a position. The reference space, if supplied, must contain the searched objects. min and/or max must be set.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="x" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          X coordinate
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="y" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Y coordinate
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="z" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Z coordinate
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="value" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Position value, used in preference to coordinates if supplied
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="object" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Object, used in preference to coordinates if supplied. If no space context is supplied, the object's sector is used, so the searched objects are required to be in the same sector.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="space" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Reference space which has to contain both the reference (object or position) and the searched objects.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="min" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Minimal distance (min distance is not compared if not supplied)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="max" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Maximal distance (max distance is not compared if not supplied)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchgatedistance">
-    <xs:annotation>
-      <xs:documentation>
-        Match by distance by jumpgates. Calculation based on the sectors of the objects. Checking distance of clusters will check between two random sectors within them.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:sequence>
-      <xs:element name="min" type="range" minOccurs="0" maxOccurs="1">
-        <xs:annotation>
-          <xs:documentation>
-            Min distance by jumpgates
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element name="max" type="range" minOccurs="0" maxOccurs="1">
-        <xs:annotation>
-          <xs:documentation>
-            Max distance by jumpgates
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
-    <xs:attribute name="object" type="expression" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          Origin object for the distance calculation. Passing cluster will base the check on a random sector.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchsize">
-    <xs:annotation>
-      <xs:documentation>
-        Match by size filter. Size is based on diameter of the bounding box. min and/or max must be set.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="min" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Minimal size of the bounding box (min size is not compared if not supplied)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="max" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Maximal size (max size is not compared if not supplied)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchparent">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for the parent of the object
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexContent>
-      <xs:extension base="matchbasewithpilot">
-        <xs:attributeGroup ref="match" />
-        <xs:attribute name="comment" type="comment" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="matchview">
-    <xs:annotation>
-      <xs:documentation>
-        Match by view angle filter. Can be checked either to an object or to a position AND rotation. The reference space, if supplied, must contain the searched objects.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="x" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          X coordinate
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="y" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Y coordinate
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="z" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Z coordinate
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="pitch" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Pitch (rotation around x axis)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="yaw" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Yaw (rotation around y axis)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="roll" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Roll (rotation around Z axis)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="object" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Object, used in preference to coordinates if supplied. If no space context is supplied, the object's sector is used, so the searched objects are required to be in the same sector.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="space" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Reference space which has to contain both the reference (object or position/rotation) and the searched objects.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="vertical" type="expression" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          The vertical viewing angle (full range from top to bottom)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="horizontal" type="expression" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          The horizontal viewing angle (full range from left to right)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchpilot">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for the ship's pilot
-      </xs:documentation>
-    </xs:annotation>
+  <xs:complexType name="matchsubfilter">
     <xs:complexContent>
       <xs:extension base="matchbase">
-        <xs:attributeGroup ref="match" />
+        <xs:attributeGroup ref="findarbitrary" />
+        <xs:attribute name="negate" type="negatefilter" />
         <xs:attribute name="comment" type="comment" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="matchinfopointlocation">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for an infopoint location
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="distance" type="expression" use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          Max distance from player ship (defaults to 0, ignoring distance)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="viewangle" type="expression" use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          View angle from playership, total angle from left to right (defaults to 0, ignoring angle)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
+  <xs:complexType name="matchsubfilterrange">
+    <xs:complexContent>
+      <xs:extension base="matchbase">
+        <xs:attributeGroup ref="findarbitrary"/>
+        <xs:attributeGroup ref="range" />
+        <xs:attribute name="negate" type="negatefilter" />
+        <xs:attribute name="comment" type="comment" />
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="matchtradeofferlocation">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for a tradeoffer location
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="distance" type="expression" use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          Max distance from player ship (defaults to 0, ignoring distance)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="viewangle" type="expression" use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          View angle from playership, total angle from left to right (defaults to 0, ignoring angle)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="wares" type="expression" use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          Ware or list of wares the trade location must be holding
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="any" type="booleanexpression" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          Match any ware or all wares?
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
+  <xs:complexType name="matchtradeoffer">
+    <xs:complexContent>
+      <xs:extension base="matchtrade">
+        <xs:attribute name="negate" type="negatefilter" />
+        <xs:attribute name="comment" type="comment" />
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="matchcanhosttradeoffer">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for whether a container can host a trade offer for a ware
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="wares" type="expression" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          Ware or list of wares the trade location must be capable of holding
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="any" type="booleanexpression" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          Match any ware or all wares?
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="buyer" type="booleanexpression" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          Is the container the buyer or seller
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchbuyoffer">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for available buyoffers
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="wares" type="expression" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          List of wares, if there is a buyoffer for any of the supplied wares, the match is valid
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchselloffer">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for available selloffers
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="wares" type="expression" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          List of wares, if there is a selloffer for any of the supplied wares, the match is valid
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
+  <!-- Trade filter -->
   <xs:complexType name="matchbuyer">
     <xs:annotation>
       <xs:documentation>
@@ -4021,12 +4353,13 @@
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="matchbase">
-        <xs:attributeGroup ref="match" />
+        <xs:attributeGroup ref="findarbitrary" />
         <xs:attribute name="comment" type="comment" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
+  <!-- Trade filter -->
   <xs:complexType name="matchseller">
     <xs:annotation>
       <xs:documentation>
@@ -4035,41 +4368,87 @@
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="matchbase">
-        <xs:attributeGroup ref="match" />
+        <xs:attributeGroup ref="findarbitrary" />
         <xs:attribute name="comment" type="comment" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="matchproducts">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for products
-      </xs:documentation>
-    </xs:annotation>
+  <xs:complexType name="matchwarelist">
     <xs:attribute name="wares" type="expression" use="required">
       <xs:annotation>
         <xs:documentation>
-          List of wares, if the object produces any of the supplied wares the match is valid (even if there are no current selloffers)
+          List of wares
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="negate" type="negatefilter" />
     <xs:attribute name="comment" type="comment" />
   </xs:complexType>
 
-  <xs:complexType name="matchresources">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for resources
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="wares" type="expression" use="required">
+  <xs:complexType name="matchwaresorcargo">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="ware">
+        <xs:complexType>
+          <xs:attribute name="ware" type="ware" use="required" />
+          <xs:attribute name="exact" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Exact number (takes priority over min/max)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="min" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Minimum number (ignored if exact is set)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="max" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Maximum number (ignored if exact is set)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="matchrange">
+    <xs:attributeGroup ref="range" />
+    <xs:attribute name="negate" type="negatefilter" />
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <xs:complexType name="matchsummarisedcontent">
+    <xs:attribute name="operational" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
-          List of wares, if the object consumes any of the supplied wares the match is valid (even if there are no current buyoffers)
+          Is operational?
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="macro" type="macro" />
+    <xs:attributeGroup ref="range" />
+    <xs:attribute name="negate" type="negatefilter" />
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <xs:complexType name="matchunits">
+    <xs:attribute name="category" type="unitcategorylookup" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Unit Category to match
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="range" />
+    <xs:attribute name="negate" type="negatefilter" />
     <xs:attribute name="comment" type="comment" />
   </xs:complexType>
 
@@ -4106,188 +4485,65 @@
     </xs:choice>
   </xs:complexType>
 
-  <xs:complexType name="matchwaresorcargo">
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="ware">
-        <xs:complexType>
-          <xs:attribute name="ware" type="ware" />
-          <xs:attribute name="exact" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Exact number (takes priority over min/max)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="min" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Minimum number (ignored if exact is set)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="max" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Maximum number (ignored if exact is set)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="comment" type="comment" />
-        </xs:complexType>
-      </xs:element>
-    </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="matchrelation">
-    <xs:annotation>
-      <xs:documentation>
-        Match by relation filter. Relation can be checked against a faction or component.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="object" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Object to reference (takes preference over 'faction')
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="faction" type="factionlookup">
-      <xs:annotation>
-        <xs:documentation>
-          Faction to reference ('object' takes preference if provided)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="relation" type="relationlookup" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          Relation range
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="comparison">
-      <xs:simpleType>
+  <xs:complexType name="matchtrade">
+    <xs:all>
+      <xs:element name="amount" type="rangefilter" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
-            Behaviour to compare the relation range
+            Filter by the amount in the trade, not including reservations
           </xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="exact">
-            <xs:annotation>
-              <xs:documentation>
-                Relation is in range (default)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="ge">
-            <xs:annotation>
-              <xs:documentation>
-                Relation is greater than or equal
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="gt">
-            <xs:annotation>
-              <xs:documentation>
-                Relation is greater than
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="le">
-            <xs:annotation>
-              <xs:documentation>
-                Relation is less than or equal
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="lt">
-            <xs:annotation>
-              <xs:documentation>
-                Relation is less than
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-          <xs:enumeration value="not">
-            <xs:annotation>
-              <xs:documentation>
-                Relation is not in range
-              </xs:documentation>
-            </xs:annotation>
-          </xs:enumeration>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchrevealedpercentage">
-    <xs:annotation>
-      <xs:documentation>
-        Match by reveal percentage filter
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attributeGroup ref="range" />
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchdock">
-    <xs:annotation>
-      <xs:documentation>
-        Match filter for a dock
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="size" type="expression" use="required">
+      </xs:element>
+      <xs:element name="offeramount" minOccurs="0">
+        <xs:complexType>
+          <xs:annotation>
+            <xs:documentation>
+              Filter by the amount in the trade in addition to the amount resereved
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexContent>
+            <xs:extension base="rangefilter">
+              <xs:attribute name="entity" type="entity">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) entity that will do the trading. If specified this MUST be the entity of the tradepartner object that does ware reservations.
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="price" type="rangefilter" minOccurs="0" />
+      <xs:element name="relativeprice" type="rangefilter" minOccurs="0" />
+      <xs:element name="stocklevel" type="rangefilter" minOccurs="0" />
+      <xs:element name="totalprice" type="rangefilter" minOccurs="0" />
+      <xs:element name="volume" type="rangefilter" minOccurs="0" />
+      <xs:element name="totalvolume" type="rangefilter" minOccurs="0" />
+      <xs:element name="match_buyer" type="matchbuyer" minOccurs="0" />
+      <xs:element name="match_seller" type="matchseller" minOccurs="0" />
+    </xs:all>
+    <xs:attribute name="wares" type="ware">
       <xs:annotation>
         <xs:documentation>
-          Dock compatibility size
+          (optional) single ware or list of wares to filter offers for
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchsummarisedcontent">
-    <xs:attribute name="operational" type="booleanexpression">
+    <xs:attribute name="knowntoplayer" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
-          Is operational?
+          (optional) is trade known to the player?
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="macro" type="macro" />
-    <xs:attributeGroup ref="range" />
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchhull">
-    <xs:annotation>
-      <xs:documentation>
-        Match by hull percentage
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attributeGroup ref="range" />
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchmaxhull">
-    <xs:annotation>
-      <xs:documentation>
-        Match by max hull percentage
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attributeGroup ref="range" />
-    <xs:attribute name="comment" type="comment" />
-  </xs:complexType>
-
-  <xs:complexType name="matchshield">
-    <xs:annotation>
-      <xs:documentation>
-        Match by shield percentage
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attributeGroup ref="range" />
-    <xs:attribute name="comment" type="comment" />
+    <xs:attribute name="unbundle" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          (optional) does this trade require unbundling (convert ware -> ammo)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="range">
@@ -5898,7 +6154,7 @@
       <xs:element name="event_object_collected_resource">
         <xs:annotation>
           <xs:documentation>
-            Event for the specified object collecting a resource (object = collecting object, param = ware, param2 = amount, param3 = region)
+            Event for the specified object collecting a resource (object = collecting object, param = ware, param2 = amount)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -5912,7 +6168,6 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="region" type="object" />
         </xs:complexType>
       </xs:element>
 
@@ -6002,6 +6257,24 @@
           <xs:attributeGroup ref="objecteventsource" />
           <xs:attribute name="dock" type="container" />
           <xs:attribute name="zone" type="zone" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_docked_at">
+        <xs:annotation>
+          <xs:documentation>
+            Event for an object docking at the specified container (object = container object, param = docking object, param2 = new context, param3 = old context)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="container" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Container object (station or ship)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -6306,6 +6579,24 @@
           <xs:attributeGroup ref="objecteventsource" />
           <xs:attribute name="dock" type="container" />
           <xs:attribute name="zone" type="zone" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_undocked_from">
+        <xs:annotation>
+          <xs:documentation>
+            Event for an object undocking from the specified container (object = container object, param = undocking object, param2 = new context, param3 = old context)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="container" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Container object (station or ship)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -6689,7 +6980,11 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
-          <xs:attribute name="object" type="object" />
+          <xs:attribute name="object" type="expression">
+            <xs:annotation>
+              <xs:documentation>Object. Can be null if it was destroyed before the event is dispatched!</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="level" type="xs:integer" />
           <xs:attribute name="first" type="xs:boolean" />
         </xs:complexType>
@@ -6711,7 +7006,7 @@
       <xs:element name="event_player_owned_collected_resource">
         <xs:annotation>
           <xs:documentation>
-            Event for when a player owned object has collected a resource (object = collecting object, param = ware, param2 = amount, param3 = region)
+            Event for when a player owned object has collected a resource (object = collecting object, param = ware, param2 = amount)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -6724,7 +7019,6 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="region" type="object" />
         </xs:complexType>
       </xs:element>
 
@@ -7428,7 +7722,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:complexContent>
-            <xs:extension base="matchbasewithpilot">
+            <xs:extension base="matchbase">
               <xs:attributeGroup ref="noneventcondition" />
               <xs:attributeGroup ref="findobject" />
               <xs:attribute name="object" type="expression" use="required">
@@ -7573,7 +7867,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:complexContent>
-            <xs:extension base="matchbasewithpilot">
+            <xs:extension base="matchbase">
               <xs:attributeGroup ref="noneventcondition" />
               <xs:attributeGroup ref="findship" />
               <xs:attribute name="space" type="space" use="required" />
@@ -7906,6 +8200,33 @@
         <xs:complexType>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="actor" type="actor" use="required" />
+          <xs:attribute name="result" type="lvaluename">
+            <xs:annotation>
+              <xs:documentation>
+                Whether the actor was successfully added
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="add_actor_to_room">
+        <xs:annotation>
+          <xs:documentation>
+            Add NPC actor to a room. This action fails if the actor could not be connected to that room.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="actor" type="actor" use="required" />
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="room" type="room">
+            <xs:annotation>
+              <xs:documentation>
+                (optional) The room to put the actor in. If not specified the default controlroom is used.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="result" type="lvaluename">
             <xs:annotation>
               <xs:documentation>
@@ -9028,6 +9349,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="check" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                Produce an error message if an inserted object or list element is not an existing object? (default is true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -9449,7 +9777,7 @@
       <xs:element name="break_formation">
         <xs:annotation>
           <xs:documentation>
-            Break formation
+            Break formation as a formation leader. No effect if the object is not a formation leader
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -9861,14 +10189,15 @@
       <xs:element name="get_building_position">
         <xs:annotation>
           <xs:documentation>
-            Get buildership position outside of the macro's boundingbox, if placed in the buildlocation
+            Get buildership position outside of the stations boundaries, requires using the 'buildlocation' and 'macro' OR an already placed 'construction'
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action"/>
           <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="macro" type="macro" use="required" />
-          <xs:attribute name="buildlocation" type="expression" use="required">
+          <xs:attribute name="construction" type="object" />
+          <xs:attribute name="macro" type="macro" />
+          <xs:attribute name="buildlocation" type="expression">
             <xs:annotation>
               <xs:documentation>
                 Build Location ComponentMacroSlot
@@ -10136,7 +10465,7 @@
       <xs:element name="create_formation">
         <xs:annotation>
           <xs:documentation>
-            Create formation
+            Create formation on a object. If that object has already a formation, it only changes the shape. Nested formations supported.
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -10651,7 +10980,6 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="region" type="object" use="required" />
           <xs:attribute name="zone" type="object" use="required" />
           <xs:attribute name="container" type="object">
             <xs:annotation>
@@ -10679,7 +11007,6 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="region" type="object" use="required" />
           <xs:attribute name="zone" type="object" use="required" />
           <xs:attribute name="ware" type="object" use="required" />
           <xs:attribute name="refobject" type="object" use="required" />
@@ -10829,6 +11156,32 @@
             <xs:annotation>
               <xs:documentation>
                 Target hull fraction
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="restart_build">
+        <xs:annotation>
+          <xs:documentation>
+            Connect a build module to an existing station and restart any builds
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="buildmodule" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Build module to be used
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="updatebuild" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Update this build in low attention (required when waiting for build events)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11031,10 +11384,10 @@
         </xs:complexType>
       </xs:element>
 
-      <xs:element name="find_asteroid_in_region">
+      <xs:element name="find_asteroid_in_cluster">
         <xs:annotation>
           <xs:documentation>
-            Find asteroid in region near specified position
+            Find asteroid in cluster near specified position
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -11042,17 +11395,17 @@
             <xs:element name="position" type="position" minOccurs="0" maxOccurs="1" />
           </xs:sequence>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="region" type="expression" use="required">
+          <xs:attribute name="cluster" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
-                Region
+                Cluster
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
           <xs:attribute name="refobject" type="expression">
             <xs:annotation>
               <xs:documentation>
-                Reference object or space (defaults to region if not supplied)
+                Reference object or space (defaults to cluster if not supplied)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11102,108 +11455,55 @@
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-          <xs:all>
-            <xs:element name="amount" type="rangefilter" minOccurs="0" >
-              <xs:annotation>
-                <xs:documentation>
-                  Filter by the amount in the trade, not including reservations
-                </xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="offeramount" minOccurs="0" >
-              <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="matchtrade">
+              <xs:attributeGroup ref="action" />
+              <xs:attribute name="result" type="lvaluename" use="required" />
+              <xs:attribute name="multiple" type="findmultiple" />
+              <xs:attribute name="tradepartner" type="container">
                 <xs:annotation>
                   <xs:documentation>
-                    Filter by the amount in the trade in addition to the amount resereved
+                    object that will do the trading (usually a trade ship)
                   </xs:documentation>
                 </xs:annotation>
-                <xs:complexContent>
-                  <xs:extension base="rangefilter">
-                    <xs:attribute name="entity" type="entity" >
-                      <xs:annotation>
-                        <xs:documentation>
-                          (optional) entity that will do the trading. If specified this MUST be the entity of the tradepartner object that does ware reservations.
-                        </xs:documentation>
-                      </xs:annotation>
-                    </xs:attribute>
-                  </xs:extension>
-                </xs:complexContent>
-              </xs:complexType>
-            </xs:element>
-            <xs:element name="price" type="rangefilter" minOccurs="0" />
-            <xs:element name="relativeprice" type="rangefilter" minOccurs="0" />
-            <xs:element name="totalprice" type="rangefilter" minOccurs="0" />
-            <xs:element name="volume" type="rangefilter" minOccurs="0" />
-            <xs:element name="totalvolume" type="rangefilter" minOccurs="0" />
-            <xs:element name="match_buyer" type="matchbuyer" minOccurs="0" />
-            <xs:element name="match_seller" type="matchseller" minOccurs="0" />
-          </xs:all>
-          <xs:attributeGroup ref="action" />
-          <xs:attribute name="result" type="lvaluename" use="required" />
-          <xs:attribute name="multiple" type="findmultiple" />
-          <xs:attribute name="tradepartner" type="container">
-            <xs:annotation>
-              <xs:documentation>
-                object that will do the trading (usually a trade ship)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="buyer" type="container" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) only find buy offers on this buyer
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="seller" type="container">
-            <xs:annotation>
-              <xs:documentation>
-                (optional) filter for wares that the seller produces (and does not need itself)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="space" type="space" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) zone or sector in which to look for offers, defaults to zone of tradepartner
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="wares" type="ware" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) single ware or list of wares to filter offers for
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="knowntoplayer" type="booleanexpression" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) is trade known to the player?
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="unbundle" type="booleanexpression" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) does this trade require unbundling (convert ware -> ammo)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="excludemissions" type="boolean" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) exclude mission trade offers? (defaults to true)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="usereservations" type="boolean" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) take reservations into account when checking if a trade is empty? (defaults to true)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+              </xs:attribute>
+              <xs:attribute name="buyer" type="container">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) only find buy offers on this buyer
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="seller" type="container">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) filter for wares that the seller produces (and does not need itself)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="space" type="space">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) zone or sector in which to look for offers, defaults to zone of tradepartner
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="excludemissions" type="boolean">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) exclude mission trade offers? (defaults to true)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="usereservations" type="boolean">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) take reservations into account when checking if a trade is empty? (defaults to true)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
         </xs:complexType>
       </xs:element>
 
@@ -11273,7 +11573,7 @@
           <xs:attribute name="ware" type="expression" >
             <xs:annotation>
               <xs:documentation>
-                a single ware that needs to be available as a resource in the region
+                a single ware or list of wares that needs to be available as a resource in the region
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11295,13 +11595,6 @@
             <xs:annotation>
               <xs:documentation>
                 (optional, resultvalue) list of all the resources that can be gathered in the found zone
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="region" type="expression" use="required">
-            <xs:annotation>
-              <xs:documentation>
-                (resultvalue) the region that provides the requested resource
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11413,7 +11706,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:complexContent>
-            <xs:extension base="matchbasewithpilot">
+            <xs:extension base="matchbase">
               <xs:attributeGroup ref="action" />
               <xs:attributeGroup ref="findobject" />
               <xs:attribute name="object" type="expression" use="required">
@@ -11485,7 +11778,7 @@
           <xs:attribute name="ware" type="expression" >
             <xs:annotation>
               <xs:documentation>
-                a single ware that needs to be available as a resource in the region
+                a single ware or list of wares that needs to be available as a resource in the region
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11499,7 +11792,7 @@
           <xs:attribute name="refobject" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
-                Reference object for distance check
+                Reference object for distance check or a cluster for all contained regions
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11507,13 +11800,6 @@
             <xs:annotation>
               <xs:documentation>
                 (optional, resultvalue) list of all the resources that can be gathered in the found zone
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="region" type="expression" use="required">
-            <xs:annotation>
-              <xs:documentation>
-                (resultvalue) the region that provides the requested resource
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11775,108 +12061,55 @@
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-          <xs:all>
-            <xs:element name="amount" type="rangefilter" minOccurs="0" >
-              <xs:annotation>
-                <xs:documentation>
-                  Filter by the amount in the trade, not including reservations
-                </xs:documentation>
-              </xs:annotation>
-            </xs:element>
-            <xs:element name="offeramount" minOccurs="0" >
-              <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="matchtrade">
+              <xs:attributeGroup ref="action" />
+              <xs:attribute name="result" type="lvaluename" use="required" />
+              <xs:attribute name="multiple" type="findmultiple" />
+              <xs:attribute name="tradepartner" type="container">
                 <xs:annotation>
                   <xs:documentation>
-                    Filter by the amount in the trade in addition to the amount resereved
+                    object that will do the trading (usually a trade ship)
                   </xs:documentation>
                 </xs:annotation>
-                <xs:complexContent>
-                  <xs:extension base="rangefilter">
-                    <xs:attribute name="entity" type="entity" >
-                      <xs:annotation>
-                        <xs:documentation>
-                          (optional) entity that will do the trading. If specified this MUST be the entity of the tradepartner object that does ware reservations.
-                        </xs:documentation>
-                      </xs:annotation>
-                    </xs:attribute>
-                  </xs:extension>
-                </xs:complexContent>
-              </xs:complexType>
-            </xs:element>
-            <xs:element name="price" type="rangefilter" minOccurs="0" />
-            <xs:element name="relativeprice" type="rangefilter" minOccurs="0" />
-            <xs:element name="totalprice" type="rangefilter" minOccurs="0" />
-            <xs:element name="volume" type="rangefilter" minOccurs="0" />
-            <xs:element name="totalvolume" type="rangefilter" minOccurs="0" />
-            <xs:element name="match_buyer" type="matchbuyer" minOccurs="0" />
-            <xs:element name="match_seller" type="matchseller" minOccurs="0" />
-          </xs:all>
-          <xs:attributeGroup ref="action" />
-          <xs:attribute name="result" type="lvaluename" use="required" />
-          <xs:attribute name="multiple" type="findmultiple" />
-          <xs:attribute name="tradepartner" type="container">
-            <xs:annotation>
-              <xs:documentation>
-                object that will do the trading (usually a trade ship)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="buyer" type="container" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) filter for wares that the buyer can use(and does not produce itself)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="seller" type="container">
-            <xs:annotation>
-              <xs:documentation>
-                (optional) only find sell offers on this seller
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="space" type="space" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) zone or sector in which to look for offers, defaults to zone of tradepartner
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="wares" type="ware" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) single ware or list of wares to filter offers for
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="knowntoplayer" type="booleanexpression" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) is trade known to the player?
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="unbundle" type="booleanexpression" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) does this trade require unbundling (convert ware -> ammo)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="excludemissions" type="boolean" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) exclude mission trade offers? (defaults to true)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="usereservations" type="boolean" >
-            <xs:annotation>
-              <xs:documentation>
-                (optional) take reservations into account when checking if a trade is empty? (defaults to true)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+              </xs:attribute>
+              <xs:attribute name="buyer" type="container">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) filter for wares that the buyer can use(and does not produce itself)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="seller" type="container">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) only find sell offers on this seller
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="space" type="space">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) zone or sector in which to look for offers, defaults to zone of tradepartner
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="excludemissions" type="boolean">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) exclude mission trade offers? (defaults to true)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="usereservations" type="boolean">
+                <xs:annotation>
+                  <xs:documentation>
+                    (optional) take reservations into account when checking if a trade is empty? (defaults to true)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
         </xs:complexType>
       </xs:element>
 
@@ -11888,7 +12121,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:complexContent>
-            <xs:extension base="matchbasewithpilot">
+            <xs:extension base="matchbase">
               <xs:attributeGroup ref="action" />
               <xs:attributeGroup ref="findship" />
               <xs:attribute name="space" type="space" use="required" />
@@ -12521,7 +12754,7 @@
       <xs:element name="join_formation">
         <xs:annotation>
           <xs:documentation>
-            Join formation
+            Join formation. No effect if there is no formation in the object.
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -12709,7 +12942,7 @@
       <xs:element name="leave_formation">
         <xs:annotation>
           <xs:documentation>
-            Leave formation
+            Leave formation as a formation WingMan. No effect if the object is not a formation WingMan
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -12751,6 +12984,24 @@
             <xs:annotation>
               <xs:documentation>
                 Determines if the Menu will be interactive (default = true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="open_options_menu">
+        <xs:annotation>
+          <xs:documentation>
+            Open the options menu
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="param" type="expression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Optional parameter ("save", "load", "quit")
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -12852,6 +13103,13 @@
             <xs:annotation>
               <xs:documentation>
                 Show cutscene in event monitor?
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="queued" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                Should the event-monitor cutscene display be queued and delayed if necessary? (Defaults to false if not supplied) Requires eventmonitor=&quot;true&quot;.
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -13419,20 +13677,6 @@
         <xs:complexType>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="actor" type="actor" use="required" />
-          <xs:attribute name="min" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Minimal amount of Credits in account
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="max" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Maximal amount of Credits in account
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -13798,6 +14042,25 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="set_object_name">
+        <xs:annotation>
+          <xs:documentation>
+            Set an objects name
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="name" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                New object name
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="set_object_relation_behaviour">
         <xs:annotation>
           <xs:documentation>
@@ -14116,10 +14379,10 @@
         <xs:complexType>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="hackerprobe" type="expression" use="required">
+          <xs:attribute name="duration" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
-                The hackerprobe to get the level from (also required for events)
+                Duration of the hack
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -14134,6 +14397,20 @@
             <xs:annotation>
               <xs:documentation>
                 The build stage on the object that was hacked
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="result" type="lvalueexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Name of the value that will receive the list of hacked components
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="dropresult" type="lvalueexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Name of the value that will receive the list of ejected drops
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -14217,6 +14494,19 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="collect_drop">
+        <xs:annotation>
+          <xs:documentation>
+            Have a drop be instantly collected by an object
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="drop" type="object" use="required"/>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="set_entity_type">
         <xs:annotation>
           <xs:documentation>
@@ -14244,6 +14534,38 @@
             <xs:annotation>
               <xs:documentation>
                 Relation boost value
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="reset_faction_relation">
+        <xs:annotation>
+          <xs:documentation>
+            Reset faction relation to base value in factions.xml
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="faction" type="faction" use="required" />
+          <xs:attribute name="otherfaction" type="faction" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_faction_relation_locked">
+        <xs:annotation>
+          <xs:documentation>
+            Set faction relations to be locked
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="faction" type="faction" use="required" />
+          <xs:attribute name="locked" type="booleanexpression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Should the factions relations towards others not change
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -14371,6 +14693,13 @@
             <xs:annotation>
               <xs:documentation>
                 (No owner is set if null or not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="overridenpc" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Set the owner faction of the control entities (defaults to false)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -15813,10 +16142,17 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="lock" type="boolean">
+          <xs:attribute name="lockscenemusic" type="boolean">
             <xs:annotation>
               <xs:documentation>
-                True to prevent automatic music change, false (default) to allow automatic change and to disable any existing lock
+                True to prevent automatic scene music change, false (default) to allow automatic change and to disable any existing lock
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="lockfightmusic" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                True to prevent automatic fight music change, false (default) to allow automatic change and to disable any existing lock
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -15831,10 +16167,17 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="lock" type="boolean">
+          <xs:attribute name="lockscenemusic" type="boolean">
             <xs:annotation>
               <xs:documentation>
-                True to prevent automatic re-enabling of music, false (default) to allow re-enabling and to disable any existing lock
+                True to prevent automatic re-enabling of scene music, false (default) to allow re-enabling and to disable any existing lock
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="lockfightmusic" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                True to prevent automatic re-enabling of fight music, false (default) to allow re-enabling and to disable any existing lock
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>

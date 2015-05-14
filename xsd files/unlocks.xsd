@@ -536,6 +536,24 @@
           <xs:attributeGroup ref="memory" />
         </xs:complexType>
       </xs:element>
+      <xs:element name="adjustment" minOccurs="0" maxOccurs="1" >
+        <xs:complexType>
+          <xs:attribute name="discount" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>
+                Name for offsetting a discount (appears as a "negative commission")
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="commission" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>
+                Name for offsetting a commission (appears as a "negative discount")
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
     </xs:sequence>
     <xs:attribute name="maxdistance" type="unitvalue">
       <xs:annotation>
