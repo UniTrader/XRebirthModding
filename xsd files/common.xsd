@@ -3445,6 +3445,7 @@
       <xs:element name="match" type="match"/>
       <xs:element name="match_any" type="match"/>
       <xs:element name="match_child" type="matchchild"/>
+      <xs:element name="match_macro_children" type="matchmacrochildren"/>
       <xs:element name="match_content" type="matchcontent"/>
       <xs:element name="match_context" type="matchcontext"/>
       <xs:element name="match_distance" type="matchdistance"/>
@@ -3529,6 +3530,7 @@
       <xs:element name="match" type="match"/>
       <xs:element name="match_any" type="match"/>
       <xs:element name="match_child" type="matchchild"/>
+      <xs:element name="match_macro_children" type="matchmacrochildren"/>
       <xs:element name="match_content" type="matchcontent"/>
       <xs:element name="match_context" type="matchcontext"/>
       <xs:element name="match_distance" type="matchdistance"/>
@@ -3621,6 +3623,16 @@
         <xs:attribute name="comment" type="comment" />
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="matchmacrochildren">
+    <xs:annotation>
+      <xs:documentation>
+        Match filter for amount of children defined in the macro of the objects (this will include potentially collapsed children)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="range" />
+    <xs:attribute name="comment" type="comment" />
   </xs:complexType>
 
   <xs:complexType name="matchcontent">

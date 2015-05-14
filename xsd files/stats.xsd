@@ -141,8 +141,8 @@
   <xs:simpleType name="copyto">
     <xs:annotation>
       <xs:documentation>
-        Name of another stat. Whenever a new value is assigned to this one, it is also assigned to the other stat
-        (usually this stat is savegame-based, while the copyto stat is account-based and has highest=&quot;true&quot;)
+        Comma-separated list of other stat names. Whenever a new value is assigned to this one, it is also assigned to the other stats
+        (usually this stat is savegame-based, while the copyto stats are account-based and have highest=&quot;true&quot;)
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string" />
@@ -260,10 +260,6 @@
       <xs:selector xpath="stat" />
       <xs:field xpath="@id" />
     </xs:key>
-    <xs:keyref name="copyto" refer="stat_id">
-      <xs:selector xpath="stat" />
-      <xs:field xpath="@copyto" />
-    </xs:keyref>
     <xs:unique name="stat_leaderboard">
       <xs:selector xpath="stat" />
       <xs:field xpath="@leaderboard" />
