@@ -73,6 +73,13 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="distancefactor" type="NonNegativeFloat">
+      <xs:annotation>
+        <xs:documentation>
+          The fraction of each object's bounding sphere to be used for obstruction checks during population. Defaults to 1 for fields with physical objects, like asteroids, and 0 for others.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="rotation" type="NonNegativeFloat">
       <xs:annotation>
         <xs:documentation>
@@ -158,7 +165,7 @@
   <xs:element name="boundary">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" maxOccurs="1" name="size">
+        <xs:element minOccurs="1" maxOccurs="1" name="size">
           <xs:complexType>
             <xs:attribute name="r" type="NonNegativeFloat">
               <xs:annotation>
@@ -253,7 +260,7 @@
         <xs:element minOccurs="0" maxOccurs="1" name="lateral">
           <xs:complexType>
             <xs:sequence>
-              <xs:element minOccurs="0" maxOccurs="unbounded" ref="step" />
+              <xs:element minOccurs="2" maxOccurs="unbounded" ref="step" />
             </xs:sequence>
             <xs:attribute name="default" type="xs:float" use="optional" />
           </xs:complexType>
@@ -261,12 +268,59 @@
         <xs:element minOccurs="0" maxOccurs="1" name="radial">
           <xs:complexType>
             <xs:sequence>
-              <xs:element minOccurs="0" maxOccurs="unbounded" ref="step" />
+              <xs:element minOccurs="2" maxOccurs="unbounded" ref="step" />
             </xs:sequence>
             <xs:attribute name="default" type="xs:float" use="optional" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="damage">
+    <xs:complexType>
+      <xs:attribute name="value" type="NonNegativeFloat" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            The damage value applied to shields first and then hull.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="shield" type="NonNegativeFloat" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            The damage value applied only to shields.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="hull" type="NonNegativeFloat" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            The damage value applied only to hull, bypassing shields.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="noshield" type="NonNegativeFloat" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            The damage value applied to hull only if shields are down.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="speedcurve">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>
+          The steps define damage multipliers at certain speeds.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element minOccurs="2" maxOccurs="unbounded" ref="step" />
+      </xs:sequence>
+      <xs:attribute name="default" type="xs:float" use="optional" />
     </xs:complexType>
   </xs:element>
 
@@ -294,6 +348,13 @@
         </xs:annotation>
       </xs:attribute>
       <xs:attributeGroup ref="perlinnoise" />
+      <xs:attribute name="persistencetime" type="xs:float">
+        <xs:annotation>
+          <xs:documentation>
+            If defined, any spawned region objects will stay for as long as the player is in the same cluster, and for the given time when in a different cluster before being removed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
@@ -302,6 +363,7 @@
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element ref="asteroid" />
+        <xs:element ref="damagefield" />
         <xs:element ref="debris" />
         <xs:element ref="effect" />
         <xs:element ref="nebula" />
@@ -319,7 +381,55 @@
       <xs:attributeGroup ref="resourceobjectfield" />
     </xs:complexType>
   </xs:element>
-  
+
+  <!-- regions/region/fields/damagefield -->
+  <xs:element name="damagefield">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="1">
+        <xs:element ref="damage" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="speedcurve" minOccurs="0" maxOccurs="1" />
+        <xs:element name="effects" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>
+                These effects, if defined, will be created in the player's cockpit when the ship is damaged
+              </xs:documentation>
+            </xs:annotation>
+            <xs:attribute name="hull" type="xs:string" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  The "hull damaged" effect definition, see libraries/effects.xml
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="shield" type="xs:string" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  The "shield damaged" effect definition, see libraries/effects.xml
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="mindelay" type="xs:float" use="required">
+              <xs:annotation>
+                <xs:documentation>
+                  The minimum delay between effects
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="maxdelay" type="xs:float" use="required">
+              <xs:annotation>
+                <xs:documentation>
+                  The maximum delay between effects
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attributeGroup ref="field" />
+    </xs:complexType>
+  </xs:element>
+
   <!-- regions/region/fields/debris -->
   <xs:element name="debris">
     <xs:complexType>
@@ -331,7 +441,38 @@
   <!-- regions/region/fields/effect -->
   <xs:element name="effect">
     <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="1">
+        <xs:element ref="damage" />
+      </xs:sequence>
       <xs:attributeGroup ref="field" />
+      <xs:attribute name="ref" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            The effect definition. (See effects.xml)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="delay" type="xs:float" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            The base delay between 2 effects being created (in seconds).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="delayvariation" type="xs:float" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            The variation applied to the base delay between 2 effects being created (in seconds). Defaults to 0.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="maxdistance" type="xs:float" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            The maximum distance to the player at which effects will be created (in m). Defaults to 10000.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   

@@ -25,7 +25,8 @@
 <!ELEMENT rotation EMPTY>
 <!ELEMENT quaternion EMPTY>
 <!ELEMENT sound EMPTY>
-<!ELEMENT areadamage EMPTY>
+<!ELEMENT areadamage (damagedeffects*)>
+<!ELEMENT damagedeffects EMPTY>
 <!ATTLIST reference
   effect NMTOKEN #REQUIRED
   delay CDATA #IMPLIED
@@ -144,4 +145,8 @@
   falloff CDATA #IMPLIED
   duration CDATA #IMPLIED
   delay CDATA #IMPLIED
+  >
+<!ATTLIST damagedeffects
+  hull CDATA #IMPLIED
+  shield CDATA #IMPLIED
   >

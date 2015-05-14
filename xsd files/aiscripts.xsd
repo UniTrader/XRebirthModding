@@ -817,6 +817,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="usecommandermoney" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                Use money from the commanders' account to pay for this trade. Defaults to player account for player-owned ships without commander (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>          
           <xs:attribute name="commandaction" type="boolean">
             <xs:annotation>
               <xs:documentation>

@@ -356,10 +356,12 @@
                           <xs:complexType>
                             <xs:attribute name="job" use="required" />
                           </xs:complexType>
+<!-- 
                           <xs:keyref name="subordinate_job" refer="job_id">
                             <xs:selector xpath="." />
                             <xs:field xpath="@job" />
                           </xs:keyref>
+ -->
                         </xs:element>
                       </xs:sequence>
                     </xs:complexType>
@@ -411,6 +413,13 @@
               <xs:annotation>
                 <xs:documentation>
                   Allow including ship type and variation in ship name? Defaults to false
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="ignorecommanderwares" type="boolean">
+              <xs:annotation>
+                <xs:documentation>
+                  Skip checks which enforce the basket wares match with the commanders production wares (defaults to false)
                 </xs:documentation>
               </xs:annotation>
             </xs:attribute>

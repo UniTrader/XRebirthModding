@@ -363,6 +363,24 @@
     <xs:restriction base="expression" />
   </xs:simpleType>
 
+  <xs:simpleType name="observerrequired">
+    <xs:annotation>
+      <xs:documentation>
+        Object which performs the observation, or group of objects (attribute must be present if observed not supplied)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="expression" />
+  </xs:simpleType>
+
+  <xs:simpleType name="observedrequired">
+    <xs:annotation>
+      <xs:documentation>
+        Object which is observed, or group of objects (attribute must be present if observer not supplied)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="expression" />
+  </xs:simpleType>
+
   <xs:simpleType name="claimedrequired">
     <xs:annotation>
       <xs:documentation>
@@ -633,6 +651,16 @@
     <xs:restriction base="expression" />
   </xs:simpleType>
 
+  <xs:simpleType name="pricemodifieramount">
+    <xs:annotation>
+      <xs:documentation>
+        Discount/commission amount as percentage of the ware's price variation range, valid range from 1 to 100.
+        NOTE: This is not the actual discount/commission percentage, which depends on the ware that the price modifier is applied to.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="expression" />
+  </xs:simpleType>
+
   <!-- ===== Enumeration simple types ===== -->
 
   <xs:simpleType name="versionstatus">
@@ -829,6 +857,13 @@
             <xs:annotation>
               <xs:documentation>
                 Hit by missile
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="killmethod.lowattentionattack">
+            <xs:annotation>
+              <xs:documentation>
+                Attacked in low attention
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -1632,6 +1667,20 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
+          <xs:enumeration value="class.lock">
+            <xs:annotation>
+              <xs:documentation>
+                Lock
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.lockbox">
+            <xs:annotation>
+              <xs:documentation>
+                Loxbox
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="class.production">
             <xs:annotation>
               <xs:documentation>
@@ -2009,19 +2058,6 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="entityskilllookup">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="boarding" />
-      <xs:enumeration value="combat" />
-      <xs:enumeration value="engineering" />
-      <xs:enumeration value="leadership" />
-      <xs:enumeration value="management" />
-      <xs:enumeration value="morale" />
-      <xs:enumeration value="navigation" />
-      <xs:enumeration value="science" />
-    </xs:restriction>
-  </xs:simpleType>
-
   <xs:simpleType name="entitytypelookup">
     <xs:restriction base="xs:string">
       <xs:enumeration value="pilot" />
@@ -2108,6 +2144,41 @@
           <xs:enumeration value="entitytype.specialistsurfacesystems" />
           <xs:enumeration value="entitytype.specialistpowersupply" />
           <xs:enumeration value="entitytype.specialistaquatics" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="skilltypelookup">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="boarding" />
+      <xs:enumeration value="combat" />
+      <xs:enumeration value="engineering" />
+      <xs:enumeration value="leadership" />
+      <xs:enumeration value="management" />
+      <xs:enumeration value="morale" />
+      <xs:enumeration value="navigation" />
+      <xs:enumeration value="science" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="skilltypeexprlookup">
+    <xs:annotation>
+      <xs:documentation>
+        Skill type
+      </xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="expression">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="skilltype.boarding" />
+          <xs:enumeration value="skilltype.combat" />
+          <xs:enumeration value="skilltype.engineering" />
+          <xs:enumeration value="skilltype.leadership" />
+          <xs:enumeration value="skilltype.management" />
+          <xs:enumeration value="skilltype.morale" />
+          <xs:enumeration value="skilltype.navigation" />
+          <xs:enumeration value="skilltype.science" />
         </xs:restriction>
       </xs:simpleType>
     </xs:union>
@@ -2737,6 +2808,28 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="controlpaneltypelookup">
+    <xs:union memberTypes="expression">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="controlpaneltype.hack_all_turrets" />
+          <xs:enumeration value="controlpaneltype.hack_buildmodules" />
+          <xs:enumeration value="controlpaneltype.hack_discount" />
+          <xs:enumeration value="controlpaneltype.hack_dronelaunchpads" />
+          <xs:enumeration value="controlpaneltype.hack_flakcontrollers" />
+          <xs:enumeration value="controlpaneltype.hack_longrange_turrets" />
+          <xs:enumeration value="controlpaneltype.hack_midrange_turrets" />
+          <xs:enumeration value="controlpaneltype.hack_missile_turrets" />
+          <xs:enumeration value="controlpaneltype.hack_production" />
+          <xs:enumeration value="controlpaneltype.hack_shieldgenerators" />
+          <xs:enumeration value="controlpaneltype.hack_short_range_turrets" />
+          <xs:enumeration value="controlpaneltype.hack_storage" />
+          <xs:enumeration value="controlpaneltype.hack_watchdogs" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
   <!-- ===== Attribute groups ==== -->
 
   <!-- Base attribute group for filters, does not contain class attribute and class-specific attributes. They are added in sub-groups where required. -->
@@ -2916,6 +3009,13 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="canbepickedup" type="booleanexpression">
+      <xs:annotation>
+        <xs:documentation>
+          Can object be picked up by another object?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findext_entity">
@@ -2954,6 +3054,13 @@
 
   <xs:attributeGroup name="findext_ship">
     <xs:attribute name="docked" type="docked" />
+    <xs:attribute name="job" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Job identification string
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findext_zone">
@@ -3072,13 +3179,6 @@
       <xs:annotation>
         <xs:documentation>
           Ship class
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="job" type="expression">
-      <xs:annotation>
-        <xs:documentation>
-          Job identification string
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -4131,6 +4231,20 @@
           </xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="match_any_cargo" type="matchwarelist">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for the non-cargo wares of an object (e.g. Collectable Ware Drops, Asteroids)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_any_wares" type="matchwarelist">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for the non-cargo wares of an object (e.g. Collectable Ware Drops, Asteroids)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="match_relation">
         <xs:annotation>
           <xs:documentation>
@@ -4390,7 +4504,13 @@
     <xs:sequence minOccurs="0" maxOccurs="unbounded">
       <xs:element name="ware">
         <xs:complexType>
-          <xs:attribute name="ware" type="ware" use="required" />
+          <xs:attribute name="ware" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Ware or list of wares
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="exact" type="expression">
             <xs:annotation>
               <xs:documentation>
@@ -4537,10 +4657,17 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="unbundle" type="booleanexpression">
+    <xs:attribute name="unbundle" type="booleanexpression" use="optional">
       <xs:annotation>
         <xs:documentation>
-          (optional) does this trade require unbundling (convert ware -> ammo)
+          Should the ware be unbundled (turn ware into ammo/units) on transfer? (optional, defaults to false)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="rebundle" type="booleanexpression" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Should the ware be rebundled (convert ammo/unit -> ware) on transfer? (optional, defaults to false)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -5079,6 +5206,13 @@
                       </xs:documentation>
                     </xs:annotation>
                   </xs:attribute>
+                  <xs:attribute name="onjobrespawn" type="xs:boolean" >
+                    <xs:annotation>
+                      <xs:documentation>
+                        By default cargo nodes are skipped for ships that are RE-spawned by the Job Engine. If this is set to true, this node will be processed every time this ship is spawned for a job. Wares nodes are always processed for non-job related ship creation.
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
                 </xs:complexType>
               </xs:element>
             </xs:choice>
@@ -5265,7 +5399,7 @@
                 </xs:annotation>
                 <xs:complexType>
                   <xs:attributeGroup ref="random" />
-                  <xs:attribute name="type" type="entityskilllookup">
+                  <xs:attribute name="type" type="skilltypelookup">
                     <xs:annotation>
                       <xs:documentation>
                         Skill type
@@ -6424,6 +6558,32 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="event_object_picked_up">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the specified object is picked up by another object (object = pickup, param = collector)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="collector" type="object" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_picked_up_object">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the specified object picks up another object (object = collector, param = pickup)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="pickup" type="object" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="event_object_shoppinglist_trade_added">
         <xs:annotation>
           <xs:documentation>
@@ -6874,6 +7034,17 @@
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
           <xs:attribute name="object" type="object" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_player_hacked_object">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when an object is hacked by the player (param = hacked, param2 = hacker)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
         </xs:complexType>
       </xs:element>
 
@@ -7389,6 +7560,53 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="event_game_loaded">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the has completed loading a savegame (param = gameversion, param2 = build number, param3 = originl gameversion of savegame)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="version">
+            <xs:annotation>
+              <xs:documentation>
+                Game version number of the loaded save, multiplied by 100. e.g. 251 for version 2.51
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:integer">
+                <xs:minInclusive value="1" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="build">
+            <xs:annotation>
+              <xs:documentation>
+                Build number of the loaded save, e.g. 187332
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:integer">
+                <xs:minInclusive value="1" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="originalversion">
+            <xs:annotation>
+              <xs:documentation>
+                Game version number this save was started with, multiplied by 100. e.g. 125 for version 1.25
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:integer">
+                <xs:minInclusive value="1" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="event_scan_aborted">
         <xs:annotation>
           <xs:documentation>
@@ -7464,6 +7682,45 @@
           <xs:attributeGroup ref="eventcondition" />
           <xs:attribute name="hacked" type="hackedrequired" />
           <xs:attribute name="hacker" type="hackerrequired" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_hacked">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when an object is hacked (requires attribute hacker and/or hacked) (object = hacker if supplied, otherwise hacked, param = the other object)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="hacked" type="hackedrequired" />
+          <xs:attribute name="hacker" type="hackerrequired" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_observation_started">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when an object starts an observation (requires attribute observer and/or observed) (param = observer, param2 = observed, param3 = range length)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="observed" type="observedrequired" />
+          <xs:attribute name="observer" type="observerrequired" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_observation_stopped">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when an object is hacked (requires attribute hacker and/or hacked) (param = observer, param2 = observed)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="observed" type="observedrequired" />
+          <xs:attribute name="observer" type="observerrequired" />
         </xs:complexType>
       </xs:element>
 
@@ -7592,6 +7849,32 @@
           <xs:attributeGroup ref="objecteventsource" />
         </xs:complexType>
       </xs:element>
+
+
+      <xs:element name="event_inventory_added">
+        <xs:annotation>
+          <xs:documentation>
+            Inventory was added to entity (event.param = list of wares, event.param2 = amount list of wares)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_inventory_removed">
+        <xs:annotation>
+          <xs:documentation>
+            Inventory was removed from entity (event.param = list of wares, event.param2 = amount list of wares)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+        </xs:complexType>
+      </xs:element>
+
 
     </xs:choice>
   </xs:group>
@@ -8446,13 +8729,7 @@
           <xs:attribute name="faction" type="faction" />
           <xs:attribute name="entity" type="entity" />
           <xs:attribute name="target" type="faction" use="required" />
-          <xs:attribute name="amount" type="expression" use="required" >
-            <xs:annotation>
-              <xs:documentation>
-                Commission value as full percent, valid range from 1 to 100
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attribute name="amount" type="pricemodifieramount" use="required" />
           <xs:attribute name="name" type="expression">
             <xs:annotation>
               <xs:documentation>
@@ -8480,13 +8757,7 @@
         <xs:complexType>
           <xs:attribute name="faction" type="faction" />
           <xs:attribute name="entity" type="entity" />
-          <xs:attribute name="amount" type="expression" use="required" >
-            <xs:annotation>
-              <xs:documentation>
-                Commission value as full percent, valid range from 1 to 100
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attribute name="amount" type="pricemodifieramount" use="required" />
           <xs:attribute name="id" type="expression" >
             <xs:annotation>
               <xs:documentation>
@@ -8581,13 +8852,7 @@
         <xs:complexType>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="entity" type="entity" use="required" />
-          <xs:attribute name="type" type="entityskilllookup" use="required">
-            <xs:annotation>
-              <xs:documentation>
-                Skill type
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attribute name="type" type="skilltypeexprlookup" use="required" />
           <xs:attributeGroup ref="range" />
         </xs:complexType>
       </xs:element>
@@ -8601,6 +8866,27 @@
         <xs:complexType>
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="ware" type="ware" use="required" />
+          <xs:attribute name="allowbuy" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Allow buying this tradeware (optional, defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="allowsell" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Allow selling this tradeware (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="lockprice" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Lock price to average price of ware, otherwise price is calculated based on storage amounts (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -8626,13 +8912,7 @@
           <xs:attribute name="faction" type="faction" />
           <xs:attribute name="entity" type="entity" />
           <xs:attribute name="target" type="faction" use="required" />
-          <xs:attribute name="amount" type="expression" use="required" >
-            <xs:annotation>
-              <xs:documentation>
-                Discount value as full percent, valid range from 1 to 100
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attribute name="amount" type="pricemodifieramount" use="required" />
           <xs:attribute name="name" type="expression">
             <xs:annotation>
               <xs:documentation>
@@ -8660,13 +8940,7 @@
         <xs:complexType>
           <xs:attribute name="faction" type="faction" />
           <xs:attribute name="entity" type="entity" />
-          <xs:attribute name="amount" type="expression" use="required">
-            <xs:annotation>
-              <xs:documentation>
-                Discount value as full percent, valid range from 1 to 100
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attribute name="amount" type="pricemodifieramount" use="required" />
           <xs:attribute name="id" type="expression" >
             <xs:annotation>
               <xs:documentation>
@@ -8805,7 +9079,14 @@
           <xs:attribute name="unbundle" type="booleanexpression" use="optional">
             <xs:annotation>
               <xs:documentation>
-                Should the ware be unbundled on transfer to recipient? (turn ware into ammo, defaults to false)
+                Should the ware be unbundled (turn ware into ammo/units) on transfer? (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="rebundle" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Should the ware be rebundled (convert ammo/unit -> ware) on transfer? (optional, defaults to false)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -8827,7 +9108,14 @@
           <xs:attribute name="unbundle" type="booleanexpression" use="optional">
             <xs:annotation>
               <xs:documentation>
-                Should the ware be unbundled on transfer to recipient? (turn ware into ammo, defaults to false)
+                Should the ware be unbundled (turn ware into ammo/units) on transfer? (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="rebundle" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Should the ware be rebundled (convert ammo/unit -> ware) on transfer? (optional, defaults to false)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -10132,6 +10420,51 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="clamp_trade_amount">
+        <xs:annotation>
+          <xs:documentation>
+            Clamp trade amount value based on buyer/seller storage situation (rebundle/unbundle states are taken into account and the appropriate storages - cargo, ammo or units - are checked)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="trade" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The trade to check
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="amount" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Initial amount to clamp based on buyer/seller storage limits (optional, defaults to 2147483647)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="buyer" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                The buyer to look at for free storage limitations (optional, either buyer or seller must be specified)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="seller" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                The seller to look at for stored item limitations (optional, either buyer or seller must be specified)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="result" type="lvaluename" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Amount clamped so it both matches what seller has and what buyer can store.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="clear_collision_filter">
         <xs:annotation>
           <xs:documentation>
@@ -10515,6 +10848,27 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="create_lockbox">
+        <xs:annotation>
+          <xs:documentation>
+            Create a Lockbox (wrapped inside its own object)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="position" type="position" minOccurs="0" maxOccurs="1" />
+            <xs:element name="safepos" type="createobjectsafepos" minOccurs="0" maxOccurs="1" />
+            <xs:element name="rotation" type="rotation" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="name" type="lvaluename" />
+          <xs:attribute name="groupname" type="groupname" />
+          <xs:attribute name="macro" type="macro" use="required"/>
+          <xs:attribute name="zone" type="zone" use="required" />
+          <xs:attribute name="owner" type="faction" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="create_object">
         <xs:annotation>
           <xs:documentation>
@@ -10645,10 +10999,17 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="unbundle" type="boolean" use="optional">
+          <xs:attribute name="unbundle" type="booleanexpression" use="optional">
             <xs:annotation>
               <xs:documentation>
-                Should the ware be unbundled on transfer? (turn ware into ammo, defaults to false)
+                Should the ware be unbundled (turn ware into ammo/units) on transfer? (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="rebundle" type="booleanexpression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Should the ware be rebundled (convert ammo/unit -> ware) on transfer? (optional, defaults to false)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11285,6 +11646,13 @@
             <xs:annotation>
               <xs:documentation>
                 Group contains all floating ware containers that were spawned (if any) optional
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="wares" type="lvaluename">
+            <xs:annotation>
+              <xs:documentation>
+                List of all ware types that were spawned (if any) optional
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -13409,6 +13777,32 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="get_units_in_mass_traffic">
+        <xs:annotation>
+          <xs:documentation>
+            Get all units of a category currently active in a mass traffic network
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="masstraffic" type="masstraffic" use="required" />
+          <xs:attribute name="category" type="unitcategorylookup" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The category of units to get
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="amounts" type="lvaluename" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                (A list with the index being the 'mk' of the unit)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="request_mass_traffic_ship">
         <xs:annotation>
           <xs:documentation>
@@ -14400,6 +14794,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="hacker" type="object">
+            <xs:annotation>
+              <xs:documentation>
+                The object performing the hacking
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="result" type="lvalueexpression">
             <xs:annotation>
               <xs:documentation>
@@ -14855,13 +15256,7 @@
         <xs:complexType>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="entity" type="entity" use="required" />
-          <xs:attribute name="type" type="entityskilllookup" use="required">
-            <xs:annotation>
-              <xs:documentation>
-                Skill type
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
+          <xs:attribute name="type" type="skilltypeexprlookup" use="required" />
           <xs:attributeGroup ref="range" />
         </xs:complexType>
       </xs:element>
@@ -15297,6 +15692,13 @@
             <xs:annotation>
               <xs:documentation>
                 Should the notification display be queued and delayed if necessary? (Defaults to false if not supplied)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="silent" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                Should the notification display flash? (Only affects notifications with &lt;interaction&gt; element)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -16223,10 +16625,34 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="remove_trade_subscription">
+        <xs:annotation>
+          <xs:documentation>
+            Remove permanent player subscription to trade offer updates of the specified object. Already stored offers remain in memory as long as they are valid.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="store_trade_offer_snapshot">
+        <xs:annotation>
+          <xs:documentation>
+            Store a snapshot of the current trade offers on the specified object in the player trade memory.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="add_encyclopedia_entry">
         <xs:annotation>
           <xs:documentation>
-            Add an entry of an item id into the library of type.
+            Add an entry of an item id into the library of type
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -16239,7 +16665,7 @@
       <xs:element name="start_player_autopilot">
         <xs:annotation>
           <xs:documentation>
-            Start playership autopilot to the selected destination (follow for moving targets).
+            Start playership autopilot to the selected destination (follow for moving targets)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -16251,11 +16677,47 @@
       <xs:element name="stop_player_autopilot">
         <xs:annotation>
           <xs:documentation>
-            Stop playership autopilot.
+            Stop playership autopilot
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="patch_macro">
+        <xs:annotation>
+          <xs:documentation>
+            Patch an object based on its macro, to add components that may be missing when loading a savegame. This action is only required by extensions and should normally only be used when loading a savegame
+            in which the extension was not active yet. The script is responsible for finding the objects, usually ships or stations, that need patching.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="patch_macros">
+        <xs:annotation>
+          <xs:documentation>
+            Finds objects with given filter criteria and patches them based on their macro (see &lt;patch_macro&gt;)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="matchbase">
+              <xs:attributeGroup ref="action" />
+              <xs:attributeGroup ref="findobject" />
+              <xs:attribute name="space" type="expression">
+                <xs:annotation>
+                  <xs:documentation>
+                    Space in which to find objects to be patched. The galaxy is used if no space is supplied.
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
         </xs:complexType>
       </xs:element>
 

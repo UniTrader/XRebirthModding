@@ -163,12 +163,18 @@
     <xs:attribute name="amount" type="xs:nonNegativeInteger" />
     <xs:attribute name="min" type="xs:nonNegativeInteger" />
     <xs:attribute name="max" type="xs:nonNegativeInteger" />
-    <xs:attribute name="chance" type="xs:float">
+    <xs:attribute name="chance">
       <xs:annotation>
         <xs:documentation>
-          Percentage chance of this item being part of the content, if evaluated amount is nonzero (defaults to 100)
+          Chance percentage of this item being part of the content, if evaluated amount is nonzero (defaults to 100)
         </xs:documentation>
       </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:float">
+          <xs:minInclusive value="0" />
+          <xs:maxInclusive value="100" />
+        </xs:restriction>
+      </xs:simpleType>
     </xs:attribute>
   </xs:attributeGroup>
 
@@ -362,6 +368,72 @@
     <xs:attribute name="docklimit" type="quota_limit" />
   </xs:complexType>
 
+  <!-- ===== Crafting ==== -->
+
+  <xs:complexType name="quota_crafting">
+    <xs:annotation>
+      <xs:documentation>
+        Crafting crate quota definition
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ware" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Crafting ware definition
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="crate" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  Crate candidate for a crafting resource
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:attribute name="weight" type="xs:nonNegativeInteger" use="required" />
+                <xs:attribute name="type" type="quota_cratetype" use="required"/>
+                <xs:attribute name="tags">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Crate connection tag restrictions for this crate
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:simpleType>
+                    <xs:list itemType="quota_cratetag" />
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="ware" type="xs:string">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Crafting resource ware (optional - if present, only crate definitions with this ware will be considered for placing the resource)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="ware" type="xs:string" use="required" />
+          <xs:attribute name="weight" type="xs:nonNegativeInteger" use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="chance">
+      <xs:annotation>
+        <xs:documentation>
+          Chance percentage of crates with crafting items being spawned for a station (defaults to 100)
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:float">
+          <xs:minInclusive value="0" />
+          <xs:maxInclusive value="100" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
   <!-- ===== Spaces ==== -->
 
   <xs:complexType name="quota_zone">
@@ -373,6 +445,8 @@
     <xs:sequence>
       <xs:element name="offers" type="quota_offers" minOccurs="0" maxOccurs="1" />
       <xs:element name="actors" type="quota_actors" minOccurs="0" maxOccurs="1" />
+      <xs:element name="crates" type="quota_crates" minOccurs="0" maxOccurs="1" />
+      <xs:element name="crafting" type="quota_crafting" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
     <xs:attribute name="macro" type="quota_macro" use="required" />
   </xs:complexType>
@@ -386,6 +460,8 @@
     <xs:sequence>
       <xs:element name="offers" type="quota_offers" minOccurs="0" maxOccurs="1" />
       <xs:element name="actors" type="quota_actors" minOccurs="0" maxOccurs="1" />
+      <xs:element name="crates" type="quota_crates" minOccurs="0" maxOccurs="1" />
+      <xs:element name="crafting" type="quota_crafting" minOccurs="0" maxOccurs="1" />
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="zone" type="quota_zone" />
       </xs:choice>
@@ -402,6 +478,8 @@
     <xs:sequence>
       <xs:element name="offers" type="quota_offers" minOccurs="0" maxOccurs="1" />
       <xs:element name="actors" type="quota_actors" minOccurs="0" maxOccurs="1" />
+      <xs:element name="crates" type="quota_crates" minOccurs="0" maxOccurs="1" />
+      <xs:element name="crafting" type="quota_crafting" minOccurs="0" maxOccurs="1" />
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="sector" type="quota_sector" />
         <xs:element name="zone" type="quota_zone" />
@@ -420,9 +498,10 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="offers" type="quota_offers" minOccurs="1" maxOccurs="1" />
+        <xs:element name="offers" type="quota_offers" minOccurs="0" maxOccurs="1" />
         <xs:element name="actors" type="quota_actors_root" minOccurs="0" maxOccurs="1" />
-        <xs:element name="crates" type="quota_crates" minOccurs="1" maxOccurs="1" />
+        <xs:element name="crates" type="quota_crates" minOccurs="0" maxOccurs="1" />
+        <xs:element name="crafting" type="quota_crafting" minOccurs="0" maxOccurs="1" />
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="cluster" type="quota_cluster" />
           <xs:element name="sector" type="quota_sector" />

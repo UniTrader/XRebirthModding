@@ -31,6 +31,7 @@
           <xs:enumeration value="missiontype.build" />
           <xs:enumeration value="missiontype.think" />
           <xs:enumeration value="missiontype.station" />
+          <xs:enumeration value="missiontype.chain" />
           <xs:enumeration value="missiontype.other" />
           <xs:enumeration value="missiontype.board" />
           <xs:enumeration value="missiontype.build_ship" />
@@ -266,6 +267,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
+          <xs:enumeration value="objective.sabotage">
+            <xs:annotation>
+              <xs:documentation>
+                Sabotage an object
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="objective.scan">
             <xs:annotation>
               <xs:documentation>
@@ -277,6 +285,13 @@
             <xs:annotation>
               <xs:documentation>
                 Sell ware
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="objective.smuggle">
+            <xs:annotation>
+              <xs:documentation>
+                Smuggle an item
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -298,6 +313,13 @@
             <xs:annotation>
               <xs:documentation>
                 Return to your ship and undock
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="objective.unlock">
+            <xs:annotation>
+              <xs:documentation>
+                Unlock an object or location
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -472,7 +494,7 @@
     <xs:attribute name="slot" type="expression">
       <xs:annotation>
         <xs:documentation>
-          Component slot of list of component slots as objective targets (cannot be used in combination with any of the attributes object or group)
+          Component slot or list of component slots as objective targets (cannot be used in combination with any of the attributes object or group)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -584,6 +606,13 @@
       <xs:annotation>
         <xs:documentation>
           Money reward
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="rewardtext" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Arbitrary reward text (takes precedence if both money and text rewards are specified)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -779,6 +808,13 @@
           <xs:sequence>
             <xs:element name="objective" type="objective" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
+          <xs:attribute name="replace" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                Replace briefing steps, i.e. discard all existing steps? This is supported for &lt;update_offer&gt;, &gt;create_mission&gt; (with attribute offercue) and &lt;update_mission&gt;. Default is false.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="comment" type="comment" />
         </xs:complexType>
         <xs:key name="briefing_objective_step">

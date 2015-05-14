@@ -382,6 +382,8 @@
         <xs:element name="damagestate" minOccurs="0" maxOccurs="1" />
         <xs:element name="engine" minOccurs="0" maxOccurs="1" />
         <xs:element name="controlpanel" minOccurs="0" maxOccurs="1" />
+        <xs:element name="materials" minOccurs="0" maxOccurs="1" />
+        <xs:element name="hazardwarning" minOccurs="0" maxOccurs="1" />
       </xs:all>
     </xs:complexType>
   </xs:element>
