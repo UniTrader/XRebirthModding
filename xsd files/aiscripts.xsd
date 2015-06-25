@@ -1819,7 +1819,7 @@
           <xs:attribute name="additional_targets" type="expression" use="optional">
             <xs:annotation>
               <xs:documentation>
-                Optional list of additional targets that may be fired upon if opportunity arises (not supported together with largetarget=true)
+                Optional list of additional targets that may be fired upon if opportunity arises (not supported together with largetarget=true). The object specified by the target attribute must not be in this list (will be ignored and an error will be logged otherwise)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
