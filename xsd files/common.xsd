@@ -680,16 +680,6 @@
     <xs:restriction base="expression" />
   </xs:simpleType>
 
-  <xs:simpleType name="groupeventsource">
-    <xs:annotation>
-      <xs:documentation>
-        Group of event objects (can be supplied instead of a single event object). The check attribute does not apply. The group is required to exist but may be empty.
-        Adding/removing group members is possible even after the event is set up.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="expression" />
-  </xs:simpleType>
-
   <xs:simpleType name="checkeventsource">
     <xs:annotation>
       <xs:documentation>
@@ -1372,6 +1362,7 @@
       <xs:enumeration value="drone_attack" />
       <xs:enumeration value="drone_defence" />
       <xs:enumeration value="drone_repair" />
+      <xs:enumeration value="flak" />
       <xs:enumeration value="laser" />
       <xs:enumeration value="missile" />
       <xs:enumeration value="torpedo" />
@@ -1673,6 +1664,20 @@
             <xs:annotation>
               <xs:documentation>
                 Engine Booster
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.flakcontroller">
+            <xs:annotation>
+              <xs:documentation>
+                Flak Controller
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="class.flaklauncher">
+            <xs:annotation>
+              <xs:documentation>
+                Flak Launcher
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -2860,6 +2865,7 @@
           <xs:enumeration value="controlpaneltype.hack_buildmodules" />
           <xs:enumeration value="controlpaneltype.hack_discount" />
           <xs:enumeration value="controlpaneltype.hack_dronelaunchpads" />
+          <xs:enumeration value="controlpaneltype.hack_flakcontrollers" />
           <xs:enumeration value="controlpaneltype.hack_longrange_turrets" />
           <xs:enumeration value="controlpaneltype.hack_midrange_turrets" />
           <xs:enumeration value="controlpaneltype.hack_missile_turrets" />
@@ -3440,7 +3446,14 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="group" type="groupeventsource" />
+    <xs:attribute name="group" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Group of event objects (required if object attribute not supplied). The check attribute does not apply. The group is required to exist but may be empty.
+          Adding/removing group members is possible even after the event is set up.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="check" type="checkeventsource" />
   </xs:attributeGroup>
 
@@ -4452,7 +4465,7 @@
       <xs:element name="match_any_cargo" type="matchwarelist">
         <xs:annotation>
           <xs:documentation>
-            Match filter for the cargo wares of a container class object (e.g. Ships, Stations)
+            Match filter for the non-cargo wares of an object (e.g. Collectable Ware Drops, Asteroids)
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -4577,6 +4590,13 @@
         <xs:annotation>
           <xs:documentation>
             Match filter for summarised Efficiency Upgrades on a Defensible object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="match_summarised_flakcontroller" type="matchsummarisedcontent">
+        <xs:annotation>
+          <xs:documentation>
+            Match filter for summarised Flak Controllers on a Defensible object
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -6642,14 +6662,13 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
-          <xs:attribute name="container" type="expression">
+          <xs:attribute name="container" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
-                Container object (station or ship, required if group attribute not supplied)
+                Container object (station or ship)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="group" type="groupeventsource" />
           <xs:attribute name="check" type="checkeventsource" />
         </xs:complexType>
       </xs:element>
@@ -6992,14 +7011,13 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
-          <xs:attribute name="container" type="expression">
+          <xs:attribute name="container" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
-                Container object (station or ship, required if group attribute not supplied)
+                Container object (station or ship)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="group" type="groupeventsource" />
           <xs:attribute name="check" type="checkeventsource" />
         </xs:complexType>
       </xs:element>
@@ -8729,6 +8747,18 @@
           <xs:attributeGroup ref="action" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="state" type="battlestatelookup" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="activate_flaks">
+        <xs:annotation>
+          <xs:documentation>
+            Activate flaks
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -12627,6 +12657,29 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="find_summarised_flakcontroller">
+        <xs:annotation>
+          <xs:documentation>
+            Find flakcontroller components from the objects summary data (nothing will be found if the object is collapsed)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Object which contains the summary data
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="operational" type="booleanexpression" />
+          <xs:attribute name="macro" type="macro" />
+          <xs:attribute name="multiple" type="findmultiple" />
+          <xs:attribute name="name" type="lvaluename" />
+          <xs:attribute name="groupname" type="groupname" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="find_summarised_shield">
         <xs:annotation>
           <xs:documentation>
@@ -14959,6 +15012,28 @@
         <xs:annotation>
           <xs:documentation>
             Set efficiencyupgrade summaries to a certain state (amount defined may not match the actual amount of efficiencyupgrades affected)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="object" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Object which contains the summary data
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="state" type="componentstatelookup" use="required"/>
+          <xs:attribute name="parentstate" type="componentstatelookup" />
+          <xs:attribute name="previous" type="componentstatelookup" />
+          <xs:attributeGroup ref="random" />
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_summarised_flakcontroller_state">
+        <xs:annotation>
+          <xs:documentation>
+            Set flakcontroller summaries to a certain state (amount defined may not match the actual amount of flakcontrollers affected)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
