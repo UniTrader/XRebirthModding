@@ -175,7 +175,7 @@
           </xs:annotation>
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="drop" minOccurs="1" maxOccurs="unbounded" type="drop" />
+              <xs:element name="drop" minOccurs="0" maxOccurs="unbounded" type="drop" />
             </xs:sequence>
             <xs:attribute name="id" type="idname" use="required">
               <xs:annotation>

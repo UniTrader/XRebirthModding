@@ -106,7 +106,7 @@
   </xs:simpleType>
 
   <!-- ===== Commands ==== -->
-  
+
   <xs:simpleType name="commandlookup">
     <xs:annotation>
       <xs:documentation>
@@ -165,7 +165,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
-		  <xs:enumeration value="command.dockat">
+          <xs:enumeration value="command.dockat">
             <xs:annotation>
               <xs:documentation>
                 Dock at Command (param = the object to dock at)
@@ -242,7 +242,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
-		  <xs:enumeration value="command.refuel">
+          <xs:enumeration value="command.refuel">
             <xs:annotation>
               <xs:documentation>
                 Refuel Command (param = amount of fuel)
@@ -270,14 +270,14 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
-		  <xs:enumeration value="command.searchresources">
+          <xs:enumeration value="command.searchresources">
             <xs:annotation>
               <xs:documentation>
                 Search for Resources Command
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
-		  <xs:enumeration value="command.searchtrades">
+          <xs:enumeration value="command.searchtrades">
             <xs:annotation>
               <xs:documentation>
                 Search for Trades Command
@@ -291,21 +291,21 @@
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
-		  <xs:enumeration value="command.wait">
+          <xs:enumeration value="command.wait">
             <xs:annotation>
               <xs:documentation>
                 Wait Command
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
-		  <xs:enumeration value="command.explore">
+          <xs:enumeration value="command.explore">
             <xs:annotation>
               <xs:documentation>
                 Explore Command
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
-		  <xs:enumeration value="command.withdrawbattle">
+          <xs:enumeration value="command.withdrawbattle">
             <xs:annotation>
               <xs:documentation>
                 Withdraw from Battle Command
@@ -676,7 +676,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="virtual" type="boolean">
+          <xs:attribute name="virtual" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
                 Whether to look at the "real" or the "virtual" dataset - virtual reservations are IGNORED for trades. (optional, defaults to false)
@@ -837,7 +837,7 @@
                 Use money from the commanders' account to pay for this trade. Defaults to player account for player-owned ships without commander (optional, defaults to false)
               </xs:documentation>
             </xs:annotation>
-          </xs:attribute>          
+          </xs:attribute>
           <xs:attribute name="commandaction" type="boolean">
             <xs:annotation>
               <xs:documentation>
@@ -1024,7 +1024,7 @@
           </xs:sequence>
           <xs:attributeGroup ref="blockingaction" />
           <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="finishonapproach" type="booleanexpression" />          
+          <xs:attribute name="finishonapproach" type="booleanexpression" />
           <xs:attribute name="dock" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
@@ -1092,7 +1092,7 @@
             </xs:annotation>
           </xs:attribute>
         </xs:complexType>
-      </xs:element>      
+      </xs:element>
 
       <xs:element name="move_navmesh">
         <xs:annotation>
@@ -1147,6 +1147,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="radius" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Radius of the target. Can be used by some flight behaviours (default, -1)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -1194,6 +1201,13 @@
             <xs:annotation>
               <xs:documentation>
                 If the current command action should be override with this action (optional, defaults to true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="radius" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Radius of the target. Can be used by some flight behaviours (default, -1)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -1347,6 +1361,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="radius" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Radius of the target. Can be used by some flight behaviours (default, -1)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -1416,7 +1437,7 @@
         </xs:complexType>
       </xs:element>
 
-        <xs:element name="resume">
+      <xs:element name="resume">
         <xs:annotation>
           <xs:documentation>
             Resume at specified label. This is only supported in &lt;actions&gt; and &lt;init&gt;. In global interrupts, use &lt;run_interrupt_script&gt; or &lt;abort_called_scripts&gt; instead.
@@ -1714,7 +1735,7 @@
           </xs:attribute>
         </xs:complexType>
       </xs:element>
-	  
+
       <xs:element name="set_command_action">
         <xs:annotation>
           <xs:documentation>

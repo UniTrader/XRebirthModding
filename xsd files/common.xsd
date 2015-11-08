@@ -2420,6 +2420,20 @@
     </xs:union>
   </xs:simpleType>
 
+  <xs:simpleType name="gamedifficulty">
+    <xs:annotation>
+      <xs:documentation>
+        Game difficulty level
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="easy" />
+      <xs:enumeration value="medium" />
+      <xs:enumeration value="hard" />
+      <xs:enumeration value="extreme" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="levellookup">
     <xs:annotation>
       <xs:documentation>
@@ -4070,6 +4084,8 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="negate" type="negatefilter" />
+          <xs:attribute name="comment" type="comment" />
         </xs:complexType>
       </xs:element>
       <xs:element name="match_revealed_percentage" type="matchrevealedpercentage">
@@ -4625,7 +4641,7 @@
       <xs:element name="match_cargo" type="matchwaresorcargo">
         <xs:annotation>
           <xs:documentation>
-            Match filter for the cargo of a container class object (e.g. Ships, Stations)
+            Match filter for the cargo of a storage module or container class objects (e.g. Ships, Stations)
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -4891,14 +4907,14 @@
     <xs:attribute name="unbundle" type="booleanexpression" use="optional">
       <xs:annotation>
         <xs:documentation>
-          Should the ware be unbundled (turn ware into ammo/units) on transfer? (optional, defaults to false)
+          Should the ware be unbundled (turn ware into ammo/units) on transfer?
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="rebundle" type="booleanexpression" use="optional">
       <xs:annotation>
         <xs:documentation>
-          Should the ware be rebundled (convert ammo/unit -> ware) on transfer? (optional, defaults to false)
+          Should the ware be rebundled (convert ammo/unit -> ware) on transfer?
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -6207,30 +6223,6 @@
         </xs:complexType>
       </xs:element>
 
-      <xs:element name="event_object_jump_completed">
-        <xs:annotation>
-          <xs:documentation>
-            Event for when a ship has successfully jumped (object = jumping ship)
-          </xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-          <xs:attributeGroup ref="eventcondition" />
-          <xs:attributeGroup ref="objecteventsource" />
-        </xs:complexType>
-      </xs:element>
-
-      <xs:element name="event_object_jump_aborted">
-        <xs:annotation>
-          <xs:documentation>
-            Event for when a ship has aborted a jump sequence (object = jumping ship or jumpdrive)
-          </xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-          <xs:attributeGroup ref="eventcondition" />
-          <xs:attributeGroup ref="objecteventsource" />
-        </xs:complexType>
-      </xs:element>
-
       <xs:element name="event_object_attacked">
         <xs:annotation>
           <xs:documentation>
@@ -6543,8 +6535,8 @@
             </xs:annotation>
           </xs:attribute>
         </xs:complexType>
-      </xs:element>	  
-	  
+      </xs:element>
+
       <xs:element name="event_object_collided">
         <xs:annotation>
           <xs:documentation>
@@ -6564,6 +6556,25 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="event_object_triggered">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when an object is triggered (object = trigger object, param = triggerer)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="triggerer" type="object" >
+            <xs:annotation>
+              <xs:documentation>
+                The triggering object
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="event_object_commander_set">
         <xs:annotation>
           <xs:documentation>
@@ -6572,7 +6583,7 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
-		  <xs:attributeGroup ref="objecteventsource" />
+          <xs:attributeGroup ref="objecteventsource" />
           <xs:attribute name="commander" type="object" />
           <xs:attribute name="previous" type="object">
             <xs:annotation>
@@ -6756,6 +6767,42 @@
           <xs:attributeGroup ref="eventcondition" />
           <xs:attributeGroup ref="objecteventsource" />
           <xs:attribute name="follower" type="ship" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_jumpdrive_charging">
+        <xs:annotation>
+          <xs:documentation>
+            Event is raised when the ship jumpdrive begins charging (object = ship, param = time when the jumpdrive is fully charged)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_jump_aborted">
+        <xs:annotation>
+          <xs:documentation>
+            Event is raised when the ship aborts a jump procedure (e.g. due to taking damage) (object = ship)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_jump_completed">
+        <xs:annotation>
+          <xs:documentation>
+            Event is raised when the ship has completed a jump (object = ship)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
         </xs:complexType>
       </xs:element>
 
@@ -7327,6 +7374,39 @@
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
           <xs:attribute name="follower" type="ship" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_player_jumpdrive_charging">
+        <xs:annotation>
+          <xs:documentation>
+            Event is raised when the player ship jumpdrive begins charging (param = time when the jumpdrive is fully charged)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_player_jump_aborted">
+        <xs:annotation>
+          <xs:documentation>
+            Event is raised when the player ship aborts a jump procedure (e.g. due to taking damage).
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_player_jump_completed">
+        <xs:annotation>
+          <xs:documentation>
+            Event is raised when the player ship has completed a jump.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
         </xs:complexType>
       </xs:element>
 
@@ -9178,7 +9258,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="lockprice" type="booleanexpression">
+          <xs:attribute name="lockavgprice" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
                 Lock price to average price of ware, otherwise price is calculated based on storage amounts (optional, defaults to false)
@@ -11148,14 +11228,14 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="rollformation" type="boolean">
+          <xs:attribute name="rollformation" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
                 Whether the entire formation shape should roll with the leader (optional, defaults to false)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="rollmembers" type="boolean">
+          <xs:attribute name="rollmembers" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
                 Whether individual members should mimic the roll orientation of the leader (optional, defaults to true)
@@ -11181,7 +11261,20 @@
           <xs:attribute name="name" type="lvaluename" />
           <xs:attribute name="groupname" type="groupname" />
           <xs:attribute name="macro" type="macro" use="required"/>
-          <xs:attribute name="zone" type="zone" use="required" />
+          <xs:attribute name="zone" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Zone to create the lockbox in. (takes precedence from sector)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="sector" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Sector to create the lockbox in using position in the sector space. Creates a tempzone if a zone does not exist at the coordinates
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="owner" type="faction" />
         </xs:complexType>
       </xs:element>
@@ -11202,7 +11295,20 @@
           <xs:attribute name="name" type="lvaluename" />
           <xs:attribute name="groupname" type="groupname" />
           <xs:attribute name="macro" type="macro" use="required"/>
-          <xs:attribute name="zone" type="zone" use="required" />
+          <xs:attribute name="zone" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Zone to create the object in. (takes precedence from sector)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="sector" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Sector to create the object in using position in the sector space. Creates a tempzone if a zone does not exist at the coordinates
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="owner" type="faction" />
         </xs:complexType>
       </xs:element>
@@ -11316,14 +11422,14 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="unbundle" type="booleanexpression" use="optional">
+          <xs:attribute name="unbundle" type="boolean" use="optional">
             <xs:annotation>
               <xs:documentation>
                 Should the ware be unbundled (turn ware into ammo/units) on transfer? (optional, defaults to false)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="rebundle" type="booleanexpression" use="optional">
+          <xs:attribute name="rebundle" type="boolean" use="optional">
             <xs:annotation>
               <xs:documentation>
                 Should the ware be rebundled (convert ammo/unit -> ware) on transfer? (optional, defaults to false)
@@ -11345,19 +11451,6 @@
             </xs:annotation>
           </xs:attribute>
           <xs:attribute name="name" type="lvaluename" use="required" />
-        </xs:complexType>
-      </xs:element>
-
-      <xs:element name="add_trade_offer">
-        <xs:annotation>
-          <xs:documentation>
-            Add a trade offer to an object
-          </xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-          <xs:attributeGroup ref="action" />
-          <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="tradeoffer" type="tradeoffer" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -11501,7 +11594,7 @@
           <xs:attribute name="dock" type="expression">
             <xs:annotation>
               <xs:documentation>
-                Either a Dockslot, DockingBay component or Container component to spawn in (takes precedence from zone)
+                Either a Dockslot, DockingBay component or Container component to spawn in (takes precedence from zone or sector)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11515,7 +11608,14 @@
           <xs:attribute name="zone" type="expression">
             <xs:annotation>
               <xs:documentation>
-                Zone to spawn in (used if dock is omitted or invalid)
+                Zone to spawn in (used if dock is omitted or invalid, take precedence from sector)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="sector" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Sector to create the ship in using position in the sector space. Creates a tempzone if a zone does not exist at the coordinates
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -11546,7 +11646,20 @@
           <xs:attribute name="name" type="lvaluename" />
           <xs:attribute name="groupname" type="groupname" />
           <xs:attribute name="macro" type="macro" use="required"/>
-          <xs:attribute name="zone" type="zone" use="required" />
+          <xs:attribute name="zone" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Zone to create the station in. (takes precedence from sector)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="sector" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Sector to create the station in using position in the sector space. Creates a tempzone if a zone does not exist at the coordinates
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="owner" type="faction" />
         </xs:complexType>
       </xs:element>
@@ -12008,13 +12121,6 @@
         <xs:complexType>
           <xs:attributeGroup ref="action" />
           <xs:attribute name="object" type="object" use="required" />
-          <xs:attribute name="abandon" type="booleanexpression">
-            <xs:annotation>
-              <xs:documentation>
-                Is this ejection because of the NPCs abandoning? Fires event_object_abandoned (defaults to false)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -13250,6 +13356,35 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="get_waypoint_path">
+        <xs:annotation>
+          <xs:documentation>
+            Get position list of matching waypoints from a component, starting from a start waypoint and progressing along the links until the end is reached
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="space" type="expression" use="required" />
+          <xs:attribute name="tags" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Either a single tag or a list of tags which are required for the waypoints
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="start_tags" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Either a single tag or a list of tags which are required for the start waypoint (matched in addition to the other required tags, if they are defined)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="posname" type="lvaluename" use="required" />
+          <xs:attribute name="rotname" type="lvaluename" />
+          <xs:attribute name="radiusname" type="lvaluename" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="get_text_ids_in_range">
         <xs:annotation>
           <xs:documentation>
@@ -13389,6 +13524,23 @@
           </xs:attribute>
           <xs:attribute name="position" type="lvaluename" use="required" />
           <xs:attribute name="rotation" type="lvaluename" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="get_zone_at_position">
+        <xs:annotation>
+          <xs:documentation>
+            Get the zone at this sector position (may return null if none exists)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="position" type="position" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+          <xs:attributeGroup ref="action" />
+          <xs:attributeGroup ref="position" />
+          <xs:attribute name="sector" type="sector" use="required" />
+          <xs:attribute name="name" type="lvaluename" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -13753,6 +13905,38 @@
             <xs:annotation>
               <xs:documentation>
                 Prepare the pickup process, this makes sure the target stops rotating and is properly aligned for pickup (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="sort_collectables_by_value">
+        <xs:annotation>
+          <xs:documentation>
+            Sort a list of collectables by price value
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="expression" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                Collecting object, used to filter out collectables which can't be stored
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="collectables" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                List of collectables
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="name" type="lvalueexpression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Result list of sorted collectables
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -15136,6 +15320,33 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="hack_via_control_panel">
+        <xs:annotation>
+          <xs:documentation>
+            Hack an object via a control panel type
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="hacker" type="entity" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                The hacking entity (optional)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="type" type="controlpaneltypelookup" use="required"/>
+          <xs:attribute name="score" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Hacking score (0-5)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="set_room_locked">
         <xs:annotation>
           <xs:documentation>
@@ -15823,6 +16034,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="silent" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Suppress sound effect?
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attributeGroup ref="showhelp" />
         </xs:complexType>
       </xs:element>
@@ -16464,20 +16682,6 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="seller" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                New seller for the trade (optional)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
-          <xs:attribute name="buyer" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                New buyer for the trade (optional)
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -16979,6 +17183,28 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="activate_player_controls">
+        <xs:annotation>
+          <xs:documentation>
+            Activate player controls
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="deactivate_player_controls">
+        <xs:annotation>
+          <xs:documentation>
+            Deactivate player controls
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="patch_macro">
         <xs:annotation>
           <xs:documentation>
@@ -17012,6 +17238,24 @@
               </xs:attribute>
             </xs:extension>
           </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_playership_throttle">
+        <xs:annotation>
+          <xs:documentation>
+            Set the throttle value of the playership.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="value" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Value for throttle setting between full reverse (-1) and full forward (1)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 

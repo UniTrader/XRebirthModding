@@ -1414,6 +1414,13 @@
           <xs:group ref="missiondetails" minOccurs="0" maxOccurs="1" />
           <xs:attributeGroup ref="action" />
           <xs:attribute name="cue" type="cuename" use="required" />
+          <xs:attribute name="actor" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                The actor making the mission offer, used to start the briefing conversation
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="location" type="expression">
             <xs:annotation>
               <xs:documentation>
@@ -1425,6 +1432,13 @@
             <xs:annotation>
               <xs:documentation>
                 Duration of the mission
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="hidden" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Is the offer hidden from the BBS? If true, the mission offer can only be found via the offer location.
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>

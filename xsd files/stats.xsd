@@ -135,6 +135,7 @@
       <xs:enumeration value="easy" />
       <xs:enumeration value="medium" />
       <xs:enumeration value="hard" />
+      <xs:enumeration value="extreme" />
     </xs:restriction>
   </xs:simpleType>
 

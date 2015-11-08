@@ -94,6 +94,34 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="allowpitchrotation" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Whether to allow the x axis (pitch) for random rotation. Defaults to true.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="allowyawrotation" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Whether to allow the y axis (yaw) for random rotation. Defaults to true.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="allowrollrotation" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Whether to allow the z axis (roll) for random rotation. Defaults to true.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="boxchecks">
+      <xs:annotation>
+        <xs:documentation>
+          Whether to use exact bounding boxes instead of much faster spheres for obstruction checks when populating the field with objects. Defaults to false.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="resourcefield">

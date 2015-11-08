@@ -45,6 +45,15 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="factiontaglookup">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="police" />
+      <xs:enumeration value="protective" />
+      <xs:enumeration value="aggressive" />
+      <xs:enumeration value="economic" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="relationvalue">
     <xs:annotation>
       <xs:documentation>
@@ -291,12 +300,15 @@
         </xs:appinfo>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="tags" type="xs:string">
+    <xs:attribute name="tags">
       <xs:annotation>
         <xs:documentation>
           Tags
         </xs:documentation>
       </xs:annotation>
+      <xs:simpleType>
+        <xs:list itemType="factiontaglookup" />
+      </xs:simpleType>
     </xs:attribute>
     <xs:attribute name="known" type="xs:boolean">
       <xs:annotation>

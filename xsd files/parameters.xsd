@@ -551,6 +551,32 @@
     </xs:attribute>
   </xs:complexType>
 
+  <xs:complexType name="renderparams">
+    <xs:annotation>
+      <xs:documentation>
+        Parameters related to rendering
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="weaponglow" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Parameters related to weapon glow
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="max" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                The maximum glow value to be passed on to shaders
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="anycontent">
     <xs:sequence minOccurs="0" maxOccurs="unbounded">
       <xs:any processContents="skip" />
@@ -595,6 +621,8 @@
         <xs:element name="masstraffic" type="masstrafficparams" minOccurs="0" maxOccurs="1" />
         <xs:element name="lowattentioncombat" type="lowattentioncombatparams" minOccurs="0" maxOccurs="1" />
         <xs:element name="lootmagnet" type="lootmagnetparams" minOccurs="0" maxOccurs="1" />
+        <xs:element name="waypoint" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="render" type="renderparams" minOccurs="0" maxOccurs="1" />
       </xs:all>
     </xs:complexType>
   </xs:element>
