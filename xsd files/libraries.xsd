@@ -216,7 +216,6 @@
                     <xs:attribute name="macro" />
                     <xs:attribute name="class" />
                     <xs:attribute name="faction" />
-                    <xs:attribute name="range" type="xs:float" />
                   </xs:complexType>
                 </xs:element>
                 <xs:element name="difficulty" minOccurs="0" maxOccurs="1">
@@ -353,11 +352,11 @@
                   </xs:annotation>
                   <xs:complexType>
                     <xs:attribute name="interval" use="required">
-		      <xs:annotation>
-			<xs:documentation>
-			  Minimum job processing interval with +/- 25% random variation
-			</xs:documentation>
-		      </xs:annotation>
+                      <xs:annotation>
+                        <xs:documentation>
+                          Minimum job processing interval with +/- 25% random variation
+                        </xs:documentation>
+                      </xs:annotation>
                       <xs:simpleType>
                         <xs:restriction base="xs:double">
                           <xs:minExclusive value="0" />
@@ -365,11 +364,11 @@
                       </xs:simpleType>
                     </xs:attribute>
                     <xs:attribute name="start">
-		      <xs:annotation>
-			<xs:documentation>
-			  First job processing time (interval without variation is used if not specified)
-			</xs:documentation>
-		      </xs:annotation>
+                      <xs:annotation>
+                        <xs:documentation>
+                          First job processing time (interval without variation is used if not specified)
+                        </xs:documentation>
+                      </xs:annotation>
                       <xs:simpleType>
                         <xs:restriction base="xs:double">
                           <xs:minInclusive value="0" />
@@ -513,7 +512,7 @@
             <xs:attribute name="fullname" type="boolean">
               <xs:annotation>
                 <xs:documentation>
-                  Allow including ship type and variation in ship name? Defaults to false
+                  Allow including ship type and variation in ship name? Defaults to true
                 </xs:documentation>
               </xs:annotation>
             </xs:attribute>

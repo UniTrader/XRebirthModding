@@ -1017,6 +1017,13 @@
           </xs:documentation>
         </xs:annotation>
       </xs:enumeration>
+      <xs:enumeration value="khaak">
+        <xs:annotation>
+          <xs:documentation>
+            Kha'ak
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
 
@@ -1077,6 +1084,13 @@
             <xs:annotation>
               <xs:documentation>
                 Xenon
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="race.khaak">
+            <xs:annotation>
+              <xs:documentation>
+                Kha'ak
               </xs:documentation>
             </xs:annotation>
           </xs:enumeration>
@@ -2599,6 +2613,13 @@
             </xs:annotation>
           </xs:enumeration>
           <xs:enumeration value="formationshape.circle">
+            <xs:annotation>
+              <xs:documentation>
+                param = radius
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="formationshape.halfcircle">
             <xs:annotation>
               <xs:documentation>
                 param = radius
@@ -6701,7 +6722,7 @@
       <xs:element name="event_object_drone_removed">
         <xs:annotation>
           <xs:documentation>
-            Event for when a drone is removed from a commander (object = old commander, param = drone, param2 = old commander)
+            Event for when a drone is removed from a commander (object = old commander, param = drone, param2 = old commander, param3 = kill method if drone killed)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -6715,6 +6736,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="method" type="killmethodlookup" />
         </xs:complexType>
       </xs:element>
 
@@ -6797,12 +6819,13 @@
       <xs:element name="event_object_jump_completed">
         <xs:annotation>
           <xs:documentation>
-            Event is raised when the ship has completed a jump (object = ship)
+            Event is raised when the ship has completed a jump (object = ship, param = target)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
           <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="target" type="object" />
         </xs:complexType>
       </xs:element>
 
@@ -7214,6 +7237,25 @@
           </xs:attribute>
         </xs:complexType>
       </xs:element>
+      
+      <xs:element name="event_player_crafted_ammo">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the player crafts ammo from inventory wares (param = weapon macro, param2 = amount)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="macro" type="macro" />
+          <xs:attribute name="amount" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Ammo amount
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>      
 
       <xs:element name="event_player_collected_powerup">
         <xs:annotation>
@@ -7402,11 +7444,12 @@
       <xs:element name="event_player_jump_completed">
         <xs:annotation>
           <xs:documentation>
-            Event is raised when the player ship has completed a jump.
+            Event is raised when the player ship has completed a jump (param = target)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="target" type="object" />
         </xs:complexType>
       </xs:element>
 
@@ -8660,6 +8703,7 @@
                 <xs:enumeration value="scripts" />
                 <xs:enumeration value="scripts_verbose" />
                 <xs:enumeration value="combat" />
+                <xs:enumeration value="savegame" />
                 <xs:enumeration value="none" />
               </xs:restriction>
             </xs:simpleType>
@@ -9631,6 +9675,18 @@
             </xs:annotation>
           </xs:attribute>
           <xs:attribute name="known" type="booleanexpression" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_loot_magnet">
+        <xs:annotation>
+          <xs:documentation>
+            (De)Activates the loot magnet of the playership
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="active" type="booleanexpression" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -11661,6 +11717,13 @@
             </xs:annotation>
           </xs:attribute>
           <xs:attribute name="owner" type="faction" />
+          <xs:attribute name="buildlocation" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Build Location ComponentMacroSlot to connect the station to
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -11756,6 +11819,7 @@
                 <xs:enumeration value="scripts" />
                 <xs:enumeration value="scripts_verbose" />
                 <xs:enumeration value="combat" />
+                <xs:enumeration value="savegame" />
                 <xs:enumeration value="none" />
               </xs:restriction>
             </xs:simpleType>
@@ -17176,6 +17240,17 @@
         <xs:annotation>
           <xs:documentation>
             Stop playership autopilot
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="toggle_timewarp">
+        <xs:annotation>
+          <xs:documentation>
+            Toggle time warp (SETA). NOTE: Activation requires that SETA is in the player's inventory and the activation conditions are met. For example, SETA is not possible during a conversation.
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>

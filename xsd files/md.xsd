@@ -73,6 +73,9 @@
           <xs:enumeration value="missiontype.upkeep_credits" />
           <xs:enumeration value="missiontype.upkeep_subordinates" />
           <xs:enumeration value="missiontype.upkeep_units" />
+          <xs:enumeration value="missiontype.tutorial" />
+          <xs:enumeration value="missiontype.completed_tutorial" />
+          <xs:enumeration value="missiontype.hints" />
         </xs:restriction>
       </xs:simpleType>
     </xs:union>
@@ -1435,7 +1438,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="hidden" type="expression">
+          <xs:attribute name="hidden" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
                 Is the offer hidden from the BBS? If true, the mission offer can only be found via the offer location.
@@ -1665,6 +1668,13 @@
                     </xs:documentation>
                   </xs:annotation>
                 </xs:enumeration>
+                <xs:enumeration value="tutorialcompleted">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Tutorial completed successfully
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
                 <xs:enumeration value="failed">
                   <xs:annotation>
                     <xs:documentation>
@@ -1747,7 +1757,6 @@
         </xs:annotation>
         <xs:complexType>
           <xs:attributeGroup ref="action" />
-          <xs:attribute name="holomap" type="holomap" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -1989,6 +1998,17 @@
         <xs:annotation>
           <xs:documentation>
             Leave the playership cockpit
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="stop_remote_control">
+        <xs:annotation>
+          <xs:documentation>
+            Stop player remote control
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>

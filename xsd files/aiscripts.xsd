@@ -1368,6 +1368,13 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="boost" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Whether the object should boost. The flight control model / behaviour can have the final say over when and if boosting actually happens. (optional, defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
