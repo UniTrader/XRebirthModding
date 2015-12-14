@@ -640,6 +640,31 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="type" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Buy or sell?
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="buy">
+                  <xs:annotation>
+                    <xs:documentation>
+                      We want to buy, this will reduce sell-offer amounts.
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="sell">
+                  <xs:annotation>
+                    <xs:documentation>
+                      We want to sell, this will reduce buy-offer amounts.
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
           <xs:attribute name="entity" type="entity" use="required">
             <xs:annotation>
               <xs:documentation>
@@ -707,6 +732,31 @@
                 The container from which to remove the reservation.
               </xs:documentation>
             </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="type">
+            <xs:annotation>
+              <xs:documentation>
+                Type of reservation to remove (optional, defaults to all)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="buy">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Remove buy reservations only.
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="sell">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Remove sell reservations only.
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
           </xs:attribute>
           <xs:attribute name="entity" type="entity">
             <xs:annotation>

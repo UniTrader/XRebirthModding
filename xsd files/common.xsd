@@ -7237,7 +7237,7 @@
           </xs:attribute>
         </xs:complexType>
       </xs:element>
-      
+
       <xs:element name="event_player_crafted_ammo">
         <xs:annotation>
           <xs:documentation>
@@ -7255,7 +7255,7 @@
             </xs:annotation>
           </xs:attribute>
         </xs:complexType>
-      </xs:element>      
+      </xs:element>
 
       <xs:element name="event_player_collected_powerup">
         <xs:annotation>
@@ -11468,8 +11468,21 @@
             </xs:annotation>
           </xs:attribute>
           <xs:attribute name="ware" type="ware" use="required" />
-          <xs:attribute name="price" type="expression" use="required" />
+          <xs:attribute name="price" type="expression" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                The price of a single item
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="amount" type="expression" use="required" />
+          <xs:attribute name="desiredamount" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                The real amount we desire if available funds would not matter (optional, defaults to amount)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="minamount" type="expression" use="optional" />
           <xs:attribute name="fixedamount" type="boolean" use="optional">
             <xs:annotation>
@@ -13533,6 +13546,31 @@
                 The container to query for reserved amounts of the specified ware.
               </xs:documentation>
             </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="type" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Reservation type
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="buy">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Buy reservations only.
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="sell">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Sell reservations only.
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
           </xs:attribute>
           <xs:attribute name="entity" type="entity">
             <xs:annotation>
