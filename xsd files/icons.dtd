@@ -3,6 +3,7 @@
 <!ATTLIST icon
 	name CDATA #REQUIRED
 	texture CDATA #IMPLIED
+	personal CDATA #IMPLIED
 	width CDATA #IMPLIED
 	height CDATA #IMPLIED
 	selected CDATA #IMPLIED	
