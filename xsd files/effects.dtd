@@ -45,8 +45,7 @@
   id CDATA #REQUIRED
   ref NMTOKEN "none"
   forkeffect NMTOKEN "none"
-	forklod NMTOKEN "none"
-  forkmaterial NMTOKEN "none"
+  forklod NMTOKEN "none"
   alignment CDATA #IMPLIED
   emitterspace CDATA #IMPLIED
   minscale CDATA #IMPLIED
@@ -84,7 +83,6 @@
 <!ATTLIST force
   range CDATA #IMPLIED
   falloff CDATA #IMPLIED
-  reapplydelay CDATA #IMPLIED
   >
 <!ATTLIST linear
   attackduration CDATA #IMPLIED
@@ -144,7 +142,6 @@
   range CDATA #IMPLIED
   falloff CDATA #IMPLIED
   duration CDATA #IMPLIED
-  delay CDATA #IMPLIED
   >
 <!ATTLIST damagedeffects
   hull CDATA #IMPLIED

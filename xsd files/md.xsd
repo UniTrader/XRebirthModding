@@ -939,13 +939,6 @@
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
           <xs:attribute name="cue" type="cuename" />
-          <xs:attribute name="param" type="expression">
-            <xs:annotation>
-              <xs:documentation>
-                Script parameter passed from &lt;signal_cue_instantly&gt;
-              </xs:documentation>
-            </xs:annotation>
-          </xs:attribute>
         </xs:complexType>
       </xs:element>
 

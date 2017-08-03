@@ -363,6 +363,18 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="inventoryitemtraders">
+    <xs:sequence>
+      <xs:element name="trader" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="type" type="xs:string" use="required" />
+          <xs:attribute name="warebaskets" type="xs:string" use="required" />
+          <xs:attribute name="warebaskets2" type="xs:string" use="optional" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:attributeGroup name="vector3">
     <xs:attribute name="x" type="xs:float">
       <xs:annotation>
@@ -386,6 +398,25 @@
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
+  
+  <xs:complexType name="jobsparams">
+    <xs:sequence>
+      <xs:element name="factor" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Factor of job quotas
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="galaxy" type="xs:float"/>
+          <xs:attribute name="cluster" type="xs:float"/>
+          <xs:attribute name="sector" type="xs:float"/>
+          <xs:attribute name="zone" type="xs:float"/>
+          <xs:attribute name="station" type="xs:float"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
 
   <xs:complexType name="masstrafficparams">
     <xs:sequence>
@@ -793,6 +824,97 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="languages">
+    <xs:sequence>
+      <xs:element name="language" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="id" type="xs:string" />
+          <xs:attribute name="name" type="xs:string" />
+          <xs:attribute name="comment" type="xs:string" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pointerparams">
+    <xs:annotation>
+      <xs:documentation>
+        Parameters related to 3D pointers
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="cursors" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Mappings from mouse cursor ID to icon material
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="cursor" minOccurs="1" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  Mapping from mouse cursor ID to icon material
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:attribute name="id" type="xs:string">
+                  <xs:annotation>
+                    <xs:documentation>
+                      The mouse cursor ID
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="icon" type="xs:string">
+                  <xs:annotation>
+                    <xs:documentation>
+                      The icon material to be used when this cursor is set - if left empty the game will display a small sphere instead
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="scale" type="xs:float">
+                  <xs:annotation>
+                    <xs:documentation>
+                      The scale of the element (sphere or icon plane)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="length" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          The default length of the pointer if nothing is being pointed at
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="width" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          The width of the pointer
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="material" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          The material to be put on the pointer
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="iconscale" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          The base scale of the icon shown at the end of the line, will be modified by the distance to the camera to keep the screen size consistent
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
   <xs:complexType name="anycontent">
     <xs:sequence minOccurs="0" maxOccurs="unbounded">
       <xs:any processContents="skip" />
@@ -808,9 +930,11 @@
     </xs:annotation>
     <xs:complexType>
       <xs:all>
+        <xs:element name="languages" type="languages" minOccurs="0" maxOccurs="1" />
         <xs:element name="playerflight" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="aiflight" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="playerfirstperson" type="anycontent" minOccurs="0" maxOccurs="1" />
+        <xs:element name="playerfirstpersongeometry" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="playercamera" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="environmentobject" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="highlight" type="highlight" minOccurs="0" maxOccurs="1">
@@ -835,6 +959,8 @@
         <xs:element name="economy" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="hazardwarning" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="scriptparams" type="scriptparams" minOccurs="0" maxOccurs="1" />
+        <xs:element name="inventoryitemtraders" type="inventoryitemtraders" minOccurs="0" maxOccurs="1" />
+        <xs:element name="jobs" type="jobsparams" minOccurs="0" maxOccurs="1" />
         <xs:element name="masstraffic" type="masstrafficparams" minOccurs="0" maxOccurs="1" />
         <xs:element name="lowattentioncombat" type="lowattentioncombatparams" minOccurs="0" maxOccurs="1" />
         <xs:element name="lootmagnet" type="lootmagnetparams" minOccurs="0" maxOccurs="1" />
@@ -842,6 +968,7 @@
         <xs:element name="render" type="renderparams" minOccurs="0" maxOccurs="1" />
         <xs:element name="sound" type="soundparams" minOccurs="0" maxOccurs="1" />
         <xs:element name="unitloadouts" type="unitloadoutparams" minOccurs="0" maxOccurs="1" />
+        <xs:element name="pointer" type="pointerparams" minOccurs="0" maxOccurs="1" />
       </xs:all>
     </xs:complexType>
   </xs:element>

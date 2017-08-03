@@ -37,6 +37,8 @@
       <xs:enumeration value="ADDITIVE_SINGLE" />
       <xs:enumeration value="DISTORTION" />
       <xs:enumeration value="HAIR" />
+      <xs:enumeration value="SCREEN_OVERLAY" />
+      <xs:enumeration value="ADDITIVE_OVERLAY" />
     </xs:restriction>
   </xs:simpleType>
 

@@ -3881,7 +3881,7 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="log" type="boolean">
+    <xs:attribute name="log" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Add help text to logbook? Default is false
@@ -6160,6 +6160,25 @@
         <xs:complexType>
           <xs:attributeGroup ref="eventcondition" />
           <xs:attribute name="key" type="cutscenekey" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_long_range_scan_ping">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when an object is pinged by a long range scan. (object = scanned object, param = scanning object)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="scanner" type="object">
+            <xs:annotation>
+              <xs:documentation>
+                Object performing the scan
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 
@@ -15617,6 +15636,25 @@
             <xs:annotation>
               <xs:documentation>
                 Is the room locked? (default is true)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="set_all_doors_locked">
+        <xs:annotation>
+          <xs:documentation>
+            Set all doors in the room to be locked or not
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="room" type="object" use="required" />
+          <xs:attribute name="locked" type="booleanexpression">
+            <xs:annotation>
+              <xs:documentation>
+                Are the doors locked? (default is true)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
