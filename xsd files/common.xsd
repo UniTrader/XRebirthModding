@@ -2601,6 +2601,58 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="relationcomparison">
+    <xs:annotation>
+      <xs:documentation>
+        Behaviour to compare the relation range
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="exact">
+        <xs:annotation>
+          <xs:documentation>
+            Relation is in range (default)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ge">
+        <xs:annotation>
+          <xs:documentation>
+            Relation is greater than or equal
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="gt">
+        <xs:annotation>
+          <xs:documentation>
+            Relation is greater than
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="le">
+        <xs:annotation>
+          <xs:documentation>
+            Relation is less than or equal
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="lt">
+        <xs:annotation>
+          <xs:documentation>
+            Relation is less than
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="not">
+        <xs:annotation>
+          <xs:documentation>
+            Relation is not in range
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="formationshapelookup">
     <xs:union memberTypes="expression">
       <xs:simpleType>
@@ -2986,7 +3038,7 @@
     <xs:attribute name="checkoperational" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
-          Only include operational components? Otherwise include wrecked components (default true). Affects attributes class and exactclass.
+          Only include operational components? (default true) Otherwise also include construction and wrecked components. Affects attributes class and exactclass.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -3011,7 +3063,7 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="known" type="boolean">
+    <xs:attribute name="known" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Known to player?
@@ -3025,7 +3077,7 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="suspicious" type="boolean">
+    <xs:attribute name="suspicious" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Suspicious?
@@ -3039,14 +3091,14 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="hastradeoffer" type="boolean">
+    <xs:attribute name="hastradeoffer" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Component contains a trade offer?
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="hastradesubscription" type="boolean">
+    <xs:attribute name="hastradesubscription" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Player has subscribed to trade offer updates from this container?
@@ -3060,7 +3112,7 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="freemissionofferslot" type="boolean">
+    <xs:attribute name="freemissionofferslot" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Is a free mission offer location available at the container?
@@ -3167,21 +3219,21 @@
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findext_zone">
-    <xs:attribute name="priorityzone" type="boolean">
+    <xs:attribute name="priorityzone" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Is the zone the highest priority zone at its position?
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="tempzone" type="boolean">
+    <xs:attribute name="tempzone" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Is the zone temporary?
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="mapzone" type="boolean">
+    <xs:attribute name="mapzone" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Can the zone be shown on a map?
@@ -3191,21 +3243,21 @@
   </xs:attributeGroup>
 
   <xs:attributeGroup name="findext_damaged">
-    <xs:attribute name="restorable" type="boolean">
+    <xs:attribute name="restorable" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Wrecked components that can be restored (exclusive with 'repairable' and 'needsrepair')
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="repairable" type="boolean">
+    <xs:attribute name="repairable" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Damaged components that are still functional and can be repaired (exclusive with 'restorable' and 'needsrepair')
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="needsrepair" type="boolean">
+    <xs:attribute name="needsrepair" type="booleanexpression">
       <xs:annotation>
         <xs:documentation>
           Damaged components that are no longer functional and can be repaired (exclusive with 'restorable' and 'repairable')
@@ -3625,10 +3677,10 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="radius" type="expression" use="required">
+    <xs:attribute name="radius" type="expression">
       <xs:annotation>
         <xs:documentation>
-          Radius to indicate necessary space required for a safe position
+          Radius to indicate necessary space required for a safe position (optional, typically defaults to the radius of the bounding box if an object or macro is supplied)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -3649,7 +3701,7 @@
     <xs:attribute name="direction2" type="quadrantlookup">
       <xs:annotation>
         <xs:documentation>
-          Direction for safepos checks. Based on the orientation of the 'directionobject' if provided. Can be combined with 'direction'
+          Direction for safepos checks. Based on the orientation of the 'directionobject' if provided. Can be combined with 'direction' but ignored if opposing
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -3766,6 +3818,13 @@
       <xs:annotation>
         <xs:documentation>
           Optional, specifies the default confidence of the player option for the smalltalk mini-game (1 to 5, default is 0, i.e. no confidence is displayed)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="tooltip" type="expression">
+      <xs:annotation>
+        <xs:documentation>
+          Optional, specifies the tooltip displayed for this option.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -4528,59 +4587,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="comparison">
-            <xs:simpleType>
-              <xs:annotation>
-                <xs:documentation>
-                  Behaviour to compare the relation range
-                </xs:documentation>
-              </xs:annotation>
-              <xs:restriction base="xs:string">
-                <xs:enumeration value="exact">
-                  <xs:annotation>
-                    <xs:documentation>
-                      Relation is in range (default)
-                    </xs:documentation>
-                  </xs:annotation>
-                </xs:enumeration>
-                <xs:enumeration value="ge">
-                  <xs:annotation>
-                    <xs:documentation>
-                      Relation is greater than or equal
-                    </xs:documentation>
-                  </xs:annotation>
-                </xs:enumeration>
-                <xs:enumeration value="gt">
-                  <xs:annotation>
-                    <xs:documentation>
-                      Relation is greater than
-                    </xs:documentation>
-                  </xs:annotation>
-                </xs:enumeration>
-                <xs:enumeration value="le">
-                  <xs:annotation>
-                    <xs:documentation>
-                      Relation is less than or equal
-                    </xs:documentation>
-                  </xs:annotation>
-                </xs:enumeration>
-                <xs:enumeration value="lt">
-                  <xs:annotation>
-                    <xs:documentation>
-                      Relation is less than
-                    </xs:documentation>
-                  </xs:annotation>
-                </xs:enumeration>
-                <xs:enumeration value="not">
-                  <xs:annotation>
-                    <xs:documentation>
-                      Relation is not in range
-                    </xs:documentation>
-                  </xs:annotation>
-                </xs:enumeration>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:attribute>
+          <xs:attribute name="comparison" type="relationcomparison" />
           <xs:attribute name="negate" type="negatefilter" />
           <xs:attribute name="comment" type="comment" />
         </xs:complexType>
@@ -5744,7 +5751,7 @@
       <xs:element name="event_ui_triggered">
         <xs:annotation>
           <xs:documentation>
-            Event for when a UI control is triggered (param = screen ID, param2 = control ID)
+            Event for when a UI control is triggered (param = screen ID, param2 = control ID, param3 = screen parameters)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -6099,6 +6106,18 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_cutscene_camera_created">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the camera of a cutscene is created (param = cutscene key string)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="key" type="cutscenekey" />
         </xs:complexType>
       </xs:element>
 
@@ -6541,7 +6560,7 @@
       <xs:element name="event_object_collected_ware">
         <xs:annotation>
           <xs:documentation>
-            Event for the specified object collecting a ware drop (object = collecting object, param = ware, param2 = amount)
+            Event for the specified object collecting a ware drop (object = collecting object, param = ware, param2 = amount, param3 = collected object)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -6552,6 +6571,13 @@
             <xs:annotation>
               <xs:documentation>
                 Ware amount
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="collected" type="object" >
+            <xs:annotation>
+              <xs:documentation>
+                The collected object
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -6765,6 +6791,20 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="event_object_entered_anomaly">
+        <xs:annotation>
+          <xs:documentation>
+            Event for the specified object entering an anomaly (object = entering object, param = entry anomaly, param2 = exit anomaly)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="entry" type="object" />
+          <xs:attribute name="exit" type="object" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="event_object_incoming_missile">
         <xs:annotation>
           <xs:documentation>
@@ -6933,6 +6973,18 @@
           <xs:attribute name="param" type="expression" />
           <xs:attribute name="param2" type="expression" />
           <xs:attribute name="param3" type="expression" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="event_object_update_supply">
+        <xs:annotation>
+          <xs:documentation>
+            Event for the specified object to trigger an update to supply orders (object = signalled object)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attributeGroup ref="objecteventsource" />
         </xs:complexType>
       </xs:element>
 
@@ -7156,6 +7208,18 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="event_player_changed_activity">
+        <xs:annotation>
+          <xs:documentation>
+            Event for when the player changes activity (param = new activity)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="eventcondition" />
+          <xs:attribute name="activity" type="activityexprlookup" />
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="event_player_changed_target">
         <xs:annotation>
           <xs:documentation>
@@ -7271,7 +7335,7 @@
       <xs:element name="event_player_collected_ware">
         <xs:annotation>
           <xs:documentation>
-            Event for when the player collects a ware drop (param = ware, param2 = amount)
+            Event for when the player collects a ware drop (param = ware, param2 = amount, param3 = collected object)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -7281,6 +7345,13 @@
             <xs:annotation>
               <xs:documentation>
                 Ware amount
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="collected" type="object" >
+            <xs:annotation>
+              <xs:documentation>
+                The collected object
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -8273,7 +8344,7 @@
       <xs:element name="event_weapon_fired">
         <xs:annotation>
           <xs:documentation>
-            Event for the specified weapon firing a bullet (object = the weapon, param = bullet)
+            Event for the specified weapon firing (object = the weapon, param = fired bullet/missile/bomb)
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -9008,7 +9079,7 @@
       <xs:element name="add_ammo">
         <xs:annotation>
           <xs:documentation>
-            Add ammo to a defensible object (see also &lt;remove_ammo&gt; and &lt;deplete_ammo&gt;)
+            Add ammo to a defensible object (see also &lt;remove_ammo&gt; and &lt;deplete_ammo&gt;) NOTE: when used with unit macros storage limits are ignored! Use &lt;add_units&gt; instead!
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -9093,6 +9164,46 @@
             <xs:annotation>
               <xs:documentation>
                 Total ammo capacity for this type provided by launchers (excludes ammo capacity of base object)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="evaluate_unit_storage">
+        <xs:annotation>
+          <xs:documentation>
+            Evaluates the default unit storage of the given object. Returns lists containing unitcategories, mks, macros and amounts. Indices of the lists are in sync.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attribute name="object" type="object" use="required" />
+          <xs:attribute name="amounts" type="lvaluename">
+            <xs:annotation>
+              <xs:documentation>
+                List of amounts for the unit types (see other result lists, indices match)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="categories" type="lvaluename">
+            <xs:annotation>
+              <xs:documentation>
+                List of unit categories the unit types (see other result lists, indices match)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="macros" type="lvaluename">
+            <xs:annotation>
+              <xs:documentation>
+                List of macro names for the unit types (see other result lists, indices match)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="mks" type="lvaluename">
+            <xs:annotation>
+              <xs:documentation>
+                List of mks for the unit types to be used together with the respective category (see other result lists, indices match)
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -9655,7 +9766,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="known" type="expression" use="required" />
+          <xs:attribute name="known" type="booleanexpression" use="required" />
         </xs:complexType>
       </xs:element>
 
@@ -12641,6 +12752,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="multiple" type="findmultiple"/>
           <xs:attribute name="refobject" type="expression" use="required">
             <xs:annotation>
               <xs:documentation>
@@ -12651,7 +12763,7 @@
           <xs:attribute name="wares" type="expression" >
             <xs:annotation>
               <xs:documentation>
-                (optional, resultvalue) list of all the resources that can be gathered in the found zone
+                (optional, resultvalue) list of all the resources that can be gathered in the found zone. If used with multiple="true", gives a list of lists of resources synchronized with the zone list from $zone.
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -13067,6 +13179,13 @@
             </xs:annotation>
           </xs:attribute>
           <xs:attribute name="multiple" type="findmultiple" />
+          <xs:attribute name="check" type="boolean">
+            <xs:annotation>
+              <xs:documentation>
+                If this is set, the result value changes to a boolean and can be used to check if object has any tradeoffer parking slots at all (occupied or not)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
           <xs:attribute name="name" type="lvaluename" use="required" />
         </xs:complexType>
       </xs:element>
@@ -13636,9 +13755,6 @@
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-          <xs:sequence>
-            <xs:element name="position" type="position" minOccurs="0" maxOccurs="1" />
-          </xs:sequence>
           <xs:attributeGroup ref="action" />
           <xs:attributeGroup ref="position" />
           <xs:attribute name="sector" type="sector" use="required" />
@@ -14520,6 +14636,45 @@
             <xs:annotation>
               <xs:documentation>
                 Forced mission type, prevents random selection (see md/BoardingSupport.xml)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="request_gate">
+        <xs:annotation>
+          <xs:documentation>
+            Request from a ship to lock the Gate for going through (Use 'unlock' true to unlock)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action"/>
+          <xs:attribute name="ship" type="ship" use="required" >
+            <xs:annotation>
+              <xs:documentation>
+                Ship requesting the Gate
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="gate" type="object" use="required">
+            <xs:annotation>
+              <xs:documentation>
+                Gate to lock (or unlock if 'unlock' = true) for the ship
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="unlock" type="expression" >
+            <xs:annotation>
+              <xs:documentation>
+                Unlock the Gate for this ship. Safe to call if not requested befor (Optional, Default: false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="result" type="lvaluename" use="required" >
+            <xs:annotation>
+              <xs:documentation>
+                Whether or not the Gate request is successful
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -15993,6 +16148,24 @@
         </xs:complexType>
       </xs:element>
 
+      <xs:element name="set_trade_known">
+        <xs:annotation>
+          <xs:documentation>
+            Set a trade to be known by the player
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="trade" type="expression" use="required" />
+          <xs:attribute name="duration" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                Duration of time that the trade will remain in the player memory. Defaults to the standard memory duration of 18000 seconds
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
       <xs:element name="set_turret_targets">
         <xs:annotation>
           <xs:documentation>
@@ -16122,7 +16295,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
-          <xs:attribute name="force" type="boolean">
+          <xs:attribute name="force" type="booleanexpression">
             <xs:annotation>
               <xs:documentation>
                 Always show help text? If true, the help is shown even if the help text ID was already used before (ignored when using custom attribute)
@@ -16312,6 +16485,25 @@
             <xs:annotation>
               <xs:documentation>
                 (optional) delay this signal by the specified amount of time
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="schedule_supply_update">
+        <xs:annotation>
+          <xs:documentation>
+            Schedule when the supplied object(s) should next update supply orders for drones and missiles (only fully implemented for stations)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="action" />
+          <xs:attributeGroup ref="objecteventsource" />
+          <xs:attribute name="delay" type="expression">
+            <xs:annotation>
+              <xs:documentation>
+                (optional) if omitted, the update will be triggered immediately
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
@@ -16994,6 +17186,13 @@
           <xs:attributeGroup ref="action" />
           <xs:attribute name="object" type="object" use="required" />
           <xs:attribute name="zone" type="zone" use="required" />
+          <xs:attribute name="embarkplayer" type="boolean" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                If the object is the player primaryship, force the player to embark (defaults to false)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
         </xs:complexType>
       </xs:element>
 

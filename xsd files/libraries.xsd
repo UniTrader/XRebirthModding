@@ -184,28 +184,8 @@
                     </xs:sequence>
                   </xs:complexType>
                 </xs:element>
-                <xs:element name="quota">
-                  <xs:annotation>
-                    <xs:documentation>
-                      Quotas
-                    </xs:documentation>
-                  </xs:annotation>
-                  <xs:complexType>
-                    <xs:attribute name="galaxy" type="xs:integer" />
-                    <xs:attribute name="wing" type="xs:integer" />
-                    <xs:attribute name="cluster" type="xs:integer" />
-                    <xs:attribute name="sector" type="xs:integer" />
-                    <xs:attribute name="zone" type="xs:integer" />
-                    <xs:attribute name="station" type="comment" />
-                    <xs:attribute name="variation" type="xs:integer">
-                      <xs:annotation>
-                        <xs:documentation>
-                          Variation, requires wing attribute
-                        </xs:documentation>
-                      </xs:annotation>
-                    </xs:attribute>
-                  </xs:complexType>
-                </xs:element>
+                <xs:element name="quota" type="basequota" minOccurs="0" maxOccurs="1" />
+                <xs:element name="quotas" type="gamestartquotas" minOccurs="0" maxOccurs="1" />
                 <xs:element name="location">
                   <xs:annotation>
                     <xs:documentation>
@@ -502,6 +482,13 @@
                 </xs:documentation>
               </xs:annotation>
             </xs:attribute>
+            <xs:attribute name="disabled">
+              <xs:annotation>
+                <xs:documentation>
+                  Skips loading of the job completely, as if commented out (defaults to false)
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
             <xs:attribute name="startactive" type="boolean">
               <xs:annotation>
                 <xs:documentation>
@@ -533,5 +520,51 @@
       <xs:field xpath="@id" />
     </xs:key>
   </xs:element>
+
+  <xs:attributeGroup name="quotas">
+    <xs:attribute name="galaxy" type="xs:integer" />
+    <xs:attribute name="wing" type="xs:integer" />
+    <xs:attribute name="cluster" type="xs:integer" />
+    <xs:attribute name="sector" type="xs:integer" />
+    <xs:attribute name="zone" type="xs:integer" />
+    <xs:attribute name="station" type="comment" />
+    <xs:attribute name="variation" type="xs:integer">
+      <xs:annotation>
+        <xs:documentation>
+          Variation, requires wing attribute
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:complexType name="basequota">
+    <xs:annotation>
+      <xs:documentation>
+        Quotas across all gamestarts
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="quotas"/>
+  </xs:complexType>
+
+  <xs:complexType name="gamestartquota">
+    <xs:annotation>
+      <xs:documentation>
+        Quota entry for gamestart (or default if 'gamestart' omitted)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="quotas"/>
+    <xs:attribute name="gamestart" type="namestring"/>
+  </xs:complexType>
+
+  <xs:complexType name="gamestartquotas">
+    <xs:annotation>
+      <xs:documentation>
+        Quotas optionally filtered by gamestart
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="quota" type="gamestartquota" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:complexType>
 
 </xs:schema>

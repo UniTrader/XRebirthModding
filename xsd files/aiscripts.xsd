@@ -39,6 +39,17 @@
     <xs:restriction base="namestring" />
   </xs:simpleType>
 
+  <xs:simpleType name="resumeflag">
+    <xs:annotation>
+      <xs:documentation>
+        Resume this action when an interrupt script returns, instead of resuming at a label? This has no effect if a resume attribute was specified in &lt;run_interrupt_script&gt;.
+        If the action was already completed during the interrupt, the script will continue after the action immediately.
+        Note that changing the resume attribute has no effect on existing savegames. The resume state will be restored as it was saved before, even if the attribute changes in the script.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="boolean" />
+  </xs:simpleType>
+
   <!-- ===== Enumeration simple types ==== -->
 
   <xs:simpleType name="fbehaviourlookup">
@@ -572,7 +583,7 @@
         <xs:element name="on_attentionchange">
           <xs:annotation>
             <xs:documentation>
-              Actions to be performed on an attention level change. Blocking actions are not allowed.
+              Actions to be performed on an attention level change. Blocking actions are not allowed. &lt;break&gt; and &lt;continue&gt; only work on loops within the attention change actions.
             </xs:documentation>
           </xs:annotation>
           <xs:complexType>
@@ -604,7 +615,7 @@
               <xs:element name="actions" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
                   <xs:documentation>
-                    Actions to be performed on an interrupt. Blocking actions are not allowed.
+                    Actions to be performed on an interrupt. Blocking actions are not allowed. &lt;break&gt; and &lt;continue&gt; only work on loops within the interrupt actions.
                   </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
@@ -895,6 +906,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="resume" type="resumeflag" />
           <xs:attribute name="result" type="lvaluename" />
         </xs:complexType>
       </xs:element>
@@ -952,6 +964,7 @@
               </xs:documentation>
             </xs:annotation>
           </xs:attribute>
+          <xs:attribute name="resume" type="resumeflag" />
           <xs:attribute name="result" type="lvaluename" />
         </xs:complexType>
       </xs:element>
@@ -1619,7 +1632,7 @@
             <xs:element name="on_attentionchange" minOccurs="0" maxOccurs="1">
               <xs:annotation>
                 <xs:documentation>
-                  Actions to be performed when called script returns, in case the attention level changed in the meantime. Blocking actions are not allowed.
+                  Actions to be performed when called script returns, in case the attention level changed in the meantime. Blocking actions are not allowed. &lt;break&gt; and &lt;continue&gt; only work on loops within the attention change actions.
                 </xs:documentation>
               </xs:annotation>
               <xs:complexType>
@@ -1968,6 +1981,7 @@
           <xs:group ref="blockingaction" />
           <xs:attributeGroup ref="blockingaction" />
           <xs:attributeGroup ref="random" />
+          <xs:attribute name="resume" type="resumeflag" />
         </xs:complexType>
       </xs:element>
 
@@ -2119,7 +2133,7 @@
       <xs:element name="actions" minOccurs="0" maxOccurs="1">
         <xs:annotation>
           <xs:documentation>
-            Actions to be performed on the global interrupt. Blocking actions are not allowed.
+            Actions to be performed on the global interrupt. Blocking actions are not allowed. &lt;break&gt; and &lt;continue&gt; only work on loops within the interrupt actions.
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>

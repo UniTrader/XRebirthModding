@@ -51,6 +51,7 @@
       <xs:enumeration value="protective" />
       <xs:enumeration value="aggressive" />
       <xs:enumeration value="economic" />
+      <xs:enumeration value="watchdoguser" />
     </xs:restriction>
   </xs:simpleType>
 

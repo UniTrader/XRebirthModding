@@ -97,7 +97,7 @@
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="highlightcolour">
     <xs:annotation>
       <xs:documentation>
@@ -173,6 +173,84 @@
       </xs:simpleType>
     </xs:attribute>
   </xs:attributeGroup>
+
+  <xs:complexType name="curve">
+    <xs:sequence>
+      <xs:element name="point" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="position" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Input value
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="value" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Output value for this point's input value
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="default" type="xs:float">
+      <xs:annotation>
+        <xs:documentation>
+          Default value, used when input is outside of bounds defined by the curve
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="unitcategories">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="" />
+      <xs:enumeration value="defence" />
+      <xs:enumeration value="police" />
+      <xs:enumeration value="transport" />
+      <xs:enumeration value="welder" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="unitentry">
+    <xs:attribute name="category" type="unitcategories">
+      <xs:annotation>
+        <xs:documentation>
+          Unit category, see unitmap.xml
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="mk" type="xs:integer">
+      <xs:annotation>
+        <xs:documentation>
+          The mk number of the unit category
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="weight" type="xs:integer">
+      <xs:annotation>
+        <xs:documentation>
+          Weighting for distribution over unit capacity
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="requiredronelaunchpad" type="boolean">
+      <xs:annotation>
+        <xs:documentation>
+          Entry will only be processed for stations that have at least one drone launch pad
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="factiontags" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Entry will only be processed for stations where the owner faction matches at least one of the specified tags
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
 
   <xs:complexType name="highlightdef">
     <xs:sequence>
@@ -448,7 +526,7 @@
               </xs:annotation>
               <xs:complexType>
                 <xs:attributeGroup ref="argbcolor" />
-			  </xs:complexType>
+              </xs:complexType>
             </xs:element>
             <xs:element name="safe" minOccurs="0" maxOccurs="1">
               <xs:annotation>
@@ -458,12 +536,12 @@
               </xs:annotation>
               <xs:complexType>
                 <xs:attributeGroup ref="argbcolor" />
-			  </xs:complexType>
+              </xs:complexType>
             </xs:element>
-		  </xs:all>
+          </xs:all>
         </xs:complexType>
-	  </xs:element>
-	</xs:sequence>
+      </xs:element>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="lowattentioncombatparams">
@@ -644,6 +722,77 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="soundparams">
+    <xs:annotation>
+      <xs:documentation>
+        Parameters related to sounds
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="anomaly" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Parameters related to anomaly sounds
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="pitchcurve" type="curve">
+              <xs:annotation>
+                <xs:documentation>
+                  The section curve for the sound's pitch depending on the distance to the center (this is additive, so 0 is neutral)
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="volumecurve" type="curve">
+              <xs:annotation>
+                <xs:documentation>
+                  The section curve for the sound's volume depending on the distance to the center (this is a factor, so 1 is neutral)
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="unitloadoutparams">
+    <xs:annotation>
+      <xs:documentation>
+        Parameters related to default station unit loadouts
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="loadout" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Unit loadout definition
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="unit" type="unitentry" minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+          <xs:attribute name="name" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>
+                Loadout name
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="waregroups" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>
+                Space separated list of waregroup names. The wares associated with these groups will be checked against the products and tradewares of the station to see if it fits into this category
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="anycontent">
     <xs:sequence minOccurs="0" maxOccurs="unbounded">
       <xs:any processContents="skip" />
@@ -691,6 +840,8 @@
         <xs:element name="lootmagnet" type="lootmagnetparams" minOccurs="0" maxOccurs="1" />
         <xs:element name="waypoint" type="anycontent" minOccurs="0" maxOccurs="1" />
         <xs:element name="render" type="renderparams" minOccurs="0" maxOccurs="1" />
+        <xs:element name="sound" type="soundparams" minOccurs="0" maxOccurs="1" />
+        <xs:element name="unitloadouts" type="unitloadoutparams" minOccurs="0" maxOccurs="1" />
       </xs:all>
     </xs:complexType>
   </xs:element>
